@@ -13,3 +13,14 @@ Supported Platforms
 * Entreprise Linux 6 & 7
 * Fedora 21 & 22
 
+OpenIO SDS build
+--------
+
+To build OpenIO SDS, you'll need to build the packages in the following order:
+* openio-asn1c
+* gf-complete
+* jerasure
+* openio-sds-librain
+* For EL6, you'll need compat-libevent-20
+* openio-gridinit
+* openio-sds
