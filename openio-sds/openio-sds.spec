@@ -5,7 +5,7 @@
 Name:		openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:	0.7.2
+Version:	0.7.3
 Release:	1%{?dist}
 %define		tarversion %{version}
 Source0:	https://github.com/open-io/oio-sds/archive/v%{tarversion}.tar.gz
@@ -427,6 +427,10 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Mon Jun 22 2015 - 0.7.3-1 - Romain Acciari <romain.acciari@openio.io>
+- proxy: fixed listing of containers: the delimiter behavior was broken
+- gridagent: Fixed timeout management: uses monotonic clock with millisecond precision
+- sdk: improved
 * Wed Jun 17 2015 - 0.7.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Merge pull request #55 from jkasarherou/master
 * Wed Jun 17 2015 - 0.7.1-1 - Romain Acciari <romain.acciari@openio.io>
