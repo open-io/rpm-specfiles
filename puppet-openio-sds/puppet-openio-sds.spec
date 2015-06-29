@@ -1,12 +1,12 @@
 Name:		puppet-openio-sds
-Version:	20150618
+Version:	20150624
 Release:	1%{?dist}
 Summary:	Puppet module for OpenIO SDS solution
 
 Group:		openio
 License:	Apache 2.0
 URL:		http://www.openio.io/
-Source0:	http://www.openio.io/%{name}-%{version}.tar.bz2
+Source0:	https://github.com/open-io/puppet-openiosds/archive/master.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
@@ -20,7 +20,7 @@ Puppet module to install OpenIO SDS solution.
 
 
 %prep
-%setup -q
+%setup -q -n puppet-openiosds-master
 
 
 %build
@@ -38,6 +38,9 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Wed Jun 24 2015 - 20150624-1 - Romain Acciari <romain.acciari@openio.io>
+- Add account service
+- Add redis
 * Thu Jun 18 2015 - 20150618-1 - Romain Acciari <romain.acciari@openio.io>
 - Add proxy option to sds.conf
 - Add no_exec option to define types
