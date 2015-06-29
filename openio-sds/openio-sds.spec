@@ -1,11 +1,11 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %define cli_name oio
-%define tarname oio-sds
+%define tarname  oio-sds
 
 Name:		openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:	0.7.3
+Version:	0.7.4
 Release:	1%{?dist}
 %define		tarversion %{version}
 Source0:	https://github.com/open-io/oio-sds/archive/v%{tarversion}.tar.gz
@@ -15,7 +15,7 @@ Source0:	https://github.com/open-io/oio-sds/archive/v%{tarversion}.tar.gz
 Version:	test%{date}.%{tag}
 Release:	0%{?dist}
 %define		tarversion %{tag}
-#Source0:	%{name}-%{tarversion}.tar.bz2
+Source0:	https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %endif
 
 Summary:	OpenIO Cloud Storage Solution
@@ -26,7 +26,6 @@ Source1:        openio-sds.tmpfiles
 
 
 BuildRequires:	glib2-devel   >= 2.28.8
-#BuildRequires:	openssl-devel >= 0.9.8
 %if %{?fedora}0
 BuildRequires:  zookeeper-devel >= 3.3.4
 %else
@@ -47,15 +46,13 @@ BuildRequires:	libevent-devel >= 2.0
 %endif
 BuildRequires:	httpd-devel   >= 2.2
 BuildRequires:	lzo-devel     >= 2.0
-#BuildRequires:	gamin-devel
 BuildRequires:	openio-gridinit-devel
 BuildRequires:	net-snmp-devel
 BuildRequires:	openio-asn1c  >= 0.9.27
 BuildRequires:	cmake,bison,flex
-#BuildRequires:	dbus,dbus-devel,dbus-glib-devel,dbus-glib
 BuildRequires:	librain-devel
+BuildRequires:	libdb-devel
 BuildRequires:	json-c, json-c-devel
-#BuildRequires:	librdkafka-devel
 
 %description
 OpenIO software storage solution is designed to handle PETA-bytes of
@@ -163,6 +160,7 @@ Summary: Apache HTTPd module for OpenIO Cloud Storage Solution
 Group: openio
 Requires:	%{name}-server  = %{version}
 Requires:	httpd          >= 2.2
+Requires:	libdb
 %description mod-httpd
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -183,22 +181,6 @@ data in a distributed way, data such as: images, videos, documents, emails,
 and any other personal unstructured data.
 OpenIO is a fork of Redcurrant, from Worldline by Atos.
 This package contains Apache HTTPd module for OpenIO SDS solution.
-
-
-%package integrityloop
-Summary: Integrity Loop for OpenIO Cloud Storage Solution
-Group: openio
-Requires:	%{name}-server = %{version}
-#Requires:	dbus-glib,dbus
-Requires:       json-c
-Requires:       libcurl
-Requires:       zeromq3
-%description integrityloop
-OpenIO software storage solution is designed to handle PETA-bytes of
-data in a distributed way, data such as: images, videos, documents, emails,
-and any other personal unstructured data.
-OpenIO is a fork of Redcurrant, from Worldline by Atos.
-This package contains integrity loop files for OpenIO SDS solution.
 
 
 %package tools
@@ -233,16 +215,11 @@ cmake \
 
 make %{?_smp_mflags}
 
-# Build python
-(cd rules-motor/lib/python && %{__python} ./setup.py build)
-#(cd crawler/listener       && %{__python} ./setup.py build)
-
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-(cd rules-motor/lib/python; %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT)
 (cd python; %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT)
 
 
@@ -310,8 +287,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_libdir}/libmeta2v2utils.so*
 %{_libdir}/librawxclient.so*
 %{_libdir}/librawx.so*
-%{_libdir}/librulesmotorc2py.so*
-%{_libdir}/librulesmotorpy2c.so*
 %{_libdir}/libserver.so*
 %{_libdir}/libsqliterepo.so*
 %{_libdir}/libsqliteutils.so*
@@ -333,7 +308,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-gridc-stats
 %{_bindir}/%{cli_name}-oid2cid
 %{_bindir}/%{cli_name}-m1hash
-%{_bindir}/%{cli_name}-path2container
 %{_bindir}/%{cli_name}-proxy-monitor.py
 %{_bindir}/%{cli_name}-rawx-compress
 %{_bindir}/%{cli_name}-rawx-uncompress
@@ -344,8 +318,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-proxy
 %{_bindir}/zk-bootstrap.py*
 %{python_sitelib}/oio*
-%{python_sitelib}/pymotor
-%{python_sitelib}/python_rules_motor*-py*.egg-info
 /usr/lib/tmpfiles.d/openio-sds.conf
 %{_bindir}/%{cli_name}-account-agent.py
 %{_bindir}/%{cli_name}-account-monitor.py
@@ -371,15 +343,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %defattr(755,root,root,-)
 %{_libdir}/httpd/modules/mod_dav_rainx.so*
 %{_bindir}/%{cli_name}-rainx-monitor.py
-
-%files integrityloop
-%defattr(755,root,root,-)
-%{_libdir}/libintegrity.so*
-%{_bindir}/%{cli_name}-chunk-crawler
-%{_bindir}/%{cli_name}-rawx-mover
-%{_bindir}/%{cli_name}-rawx-list
-%{_bindir}/%{cli_name}-policycheck
-%{_bindir}/%{cli_name}-meta2-crawler
 
 %files tools
 %defattr(755,root,root,-)
@@ -410,8 +373,6 @@ fi
 /sbin/ldconfig
 %post mod-httpd-rainx
 /sbin/ldconfig
-%post integrityloop
-/sbin/ldconfig
 
 %postun common
 /sbin/ldconfig
@@ -423,10 +384,13 @@ fi
 /sbin/ldconfig
 %postun mod-httpd
 /sbin/ldconfig
-%postun integrityloop
-/sbin/ldconfig
 
 %changelog
+* Mon Jun 29 2015 - 0.7.4-1 - Romain Acciari <romain.acciari@openio.io>
+- event-agent improvements
+- proxy evolution for more adaptation with the future Swift interop.
+- SDK fixes
+- server fixes
 * Mon Jun 22 2015 - 0.7.3-1 - Romain Acciari <romain.acciari@openio.io>
 - proxy: fixed listing of containers: the delimiter behavior was broken
 - gridagent: Fixed timeout management: uses monotonic clock with millisecond precision
