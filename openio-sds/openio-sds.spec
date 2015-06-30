@@ -6,7 +6,7 @@ Name:		openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:	0.7.4
-Release:	1%{?dist}
+Release:	2%{?dist}
 %define		tarversion %{version}
 Source0:	https://github.com/open-io/oio-sds/archive/v%{tarversion}.tar.gz
 %else
@@ -54,6 +54,7 @@ BuildRequires:	librain-devel
 BuildRequires:	libdb-devel
 BuildRequires:	json-c, json-c-devel
 
+
 %description
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -67,7 +68,6 @@ Group: openio
 Requires:	expat
 Requires:	glib2         >= 2.28
 Requires:	openio-asn1c  >= 0.9.27
-#Requires:	openssl       >= 0.9.8
 Requires:	zlib
 %if %{?fedora}0
 BuildRequires:  zookeeper >= 3.3.4
@@ -108,6 +108,7 @@ Requires:	openio-gridinit-utils
 Requires:	openio-asn1c       >= 0.9.27
 Requires:	python-gunicorn >= 19.0
 Requires:	python-flask,python-eventlet,python-zmq,python-redis,python-requests
+Obsoletes:      openio-sds-integrityloop
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -386,6 +387,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Tue Jun 30 2015 - 0.7.4-2 - Romain Acciari <romain.acciari@openio.io>
+- Obsoletes intregrityloop
 * Mon Jun 29 2015 - 0.7.4-1 - Romain Acciari <romain.acciari@openio.io>
 - event-agent improvements
 - proxy evolution for more adaptation with the future Swift interop.
