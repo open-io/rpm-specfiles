@@ -1,12 +1,12 @@
 Name:		puppet-openio-sds-profile
-Version:	20150520
+Version:	%(date +"%Y%m%d")
 Release:	1%{?dist}
 Summary:	OpenIO minimal profile
 
 Group:		openio
 License:	Apache 2.0
 URL:		http://www.openio.io/
-Source0:	http://www.openio.io/%{name}-%{version}.tar.gz
+Source0:	https://github.com/open-io/puppet-openiosds-profile/archive/master.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
@@ -18,7 +18,7 @@ Puppet manifests to install OpenIO SDS solution using Vagrant.
 
 
 %prep
-%setup -q
+%setup -q -n puppet-openiosds-profile-master
 
 
 %build
@@ -35,6 +35,8 @@ Puppet manifests to install OpenIO SDS solution using Vagrant.
 
 
 %changelog
+* Mon Jul 06 2015 - 20150706-1 - Romain Acciari <romain.acciari@openio.io>
+- Permit additionnal parameters
 * Wed May 20 2015 - 20150520-1 - Romain Acciari <romain.acciari@openio.io>
 - Fix minimal profile to wait for meta1 to register.
 * Tue May 19 2015 - 20150519-1 - Romain Acciari <romain.acciari@openio.io>

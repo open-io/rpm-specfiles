@@ -5,8 +5,8 @@
 Name:		openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:	0.7.4
-Release:	2%{?dist}
+Version:	0.7.6
+Release:	1%{?dist}
 %define		tarversion %{version}
 Source0:	https://github.com/open-io/oio-sds/archive/v%{tarversion}.tar.gz
 %else
@@ -387,6 +387,13 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Fri Jul 03 2015 - 0.7.6-1 - Romain Acciari <romain.acciari@openio.io>
+- Accounts autocreation
+- Various minor fixes and improvements (debug traces, error reporting)
+* Tue Jun 30 2015 - 0.7.5-1 - Romain Acciari <romain.acciari@openio.io>
+- proxy: fixed flag detection
+- svc-monitor: lighter traces
+- cmake: SDK_ONLY directive
 * Tue Jun 30 2015 - 0.7.4-2 - Romain Acciari <romain.acciari@openio.io>
 - Obsoletes intregrityloop
 * Mon Jun 29 2015 - 0.7.4-1 - Romain Acciari <romain.acciari@openio.io>

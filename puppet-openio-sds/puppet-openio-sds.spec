@@ -1,5 +1,5 @@
 Name:		puppet-openio-sds
-Version:	20150624
+Version:	%(date +%Y%m%d)
 Release:	1%{?dist}
 Summary:	Puppet module for OpenIO SDS solution
 
@@ -38,6 +38,10 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Wed Jul 01 2015 - 20150701-1 - Romain Acciari <romain.acciari@openio.io>
+- Fix redis
+* Tue Jun 30 2015 - 20150630-1 - Romain Acciari <romain.acciari@openio.io>
+- Fix oioswift
 * Wed Jun 24 2015 - 20150624-1 - Romain Acciari <romain.acciari@openio.io>
 - Add account service
 - Add redis

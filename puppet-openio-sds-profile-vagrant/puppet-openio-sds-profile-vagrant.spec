@@ -1,12 +1,12 @@
 Name:		puppet-openio-sds-profile-vagrant
-Version:	20150527
+Version:	%(date +"%Y%m%d")
 Release:	1%{?dist}
 Summary:	OpenIO profile for Vagrant deployment
 
 Group:		openio
 License:	Apache 2.0
 URL:		http://www.openio.io/
-Source0:	http://www.openio.io/%{name}-%{version}.tar.gz
+Source0:	https://github.com/open-io/puppet-openiosds-profile-vagrant/archive/master.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
@@ -18,7 +18,7 @@ OpenIO profile using Puppet to configure a Vagrant box.
 
 
 %prep
-%setup -q
+%setup -q -n puppet-openiosds-profile-vagrant-master
 
 
 %build
@@ -35,6 +35,8 @@ OpenIO profile using Puppet to configure a Vagrant box.
 
 
 %changelog
+* Tue Jun 30 2015 - 20150630-1 - Romain Acciari <romain.acciari@openio.io>
+- Add event agent
 * Wed May 27 2015 - 20150527-1 - Romain Acciari <romain.acciari@openio.io>
 - Remove oioswift temporarily
 * Sun Mar 29 2015 - 20150329-1 - Romain Acciari <romain.acciari@openio.io>
