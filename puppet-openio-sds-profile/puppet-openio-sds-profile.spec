@@ -35,6 +35,8 @@ Puppet manifests to install OpenIO SDS solution using Vagrant.
 
 
 %changelog
+* Thu Aug 20 2015 - 20150820-1 - Romain Acciari <romain.acciari@openio.io>
+- Fix for puppet-openiosds
 * Mon Jul 06 2015 - 20150706-1 - Romain Acciari <romain.acciari@openio.io>
 - Permit additionnal parameters
 * Wed May 20 2015 - 20150520-1 - Romain Acciari <romain.acciari@openio.io>
