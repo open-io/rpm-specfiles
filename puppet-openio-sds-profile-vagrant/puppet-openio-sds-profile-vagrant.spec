@@ -35,6 +35,10 @@ OpenIO profile using Puppet to configure a Vagrant box.
 
 
 %changelog
+* Thu Aug 20 2015 - 20150820-1 - Romain Acciari <romain.acciari@openio.io>
+- Fix for puppet-openiosds
+* Wed Jul 22 2015 - 20150722-1 - Romain Acciari <romain.acciari@openio.io>
+- Add bootstrap to zookeeper
 * Tue Jun 30 2015 - 20150630-1 - Romain Acciari <romain.acciari@openio.io>
 - Add event agent
 * Wed May 27 2015 - 20150527-1 - Romain Acciari <romain.acciari@openio.io>
