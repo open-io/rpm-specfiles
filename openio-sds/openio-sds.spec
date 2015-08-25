@@ -47,7 +47,6 @@ BuildRequires:	libevent-devel >= 2.0
 BuildRequires:	httpd-devel   >= 2.2
 BuildRequires:	lzo-devel     >= 2.0
 BuildRequires:	openio-gridinit-devel
-BuildRequires:	net-snmp-devel
 BuildRequires:	openio-asn1c  >= 0.9.27
 BuildRequires:	cmake,bison,flex
 BuildRequires:	librain-devel
@@ -107,7 +106,7 @@ Requires:	lzo                >= 2.0
 Requires:	openio-gridinit-utils
 Requires:	openio-asn1c       >= 0.9.27
 Requires:	python-gunicorn >= 19.0
-Requires:	python-flask,python-eventlet,python-zmq,python-redis,python-requests
+Requires:	python-flask,python-eventlet,python-zmq,python-redis,python-requests,python-pbr
 Obsoletes:      openio-sds-integrityloop
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
@@ -141,19 +140,6 @@ data in a distributed way, data such as: images, videos, documents, emails,
 and any other personal unstructured data.
 OpenIO is a fork of Redcurrant, from Worldline by Atos.
 This package contains header files for OpenIO SDS solution client.
-
-
-%package mod-snmp
-Summary: Net-SNMP module for OpenIO Cloud Storage Solution
-Group: openio
-Requires:	%{name}-server = %{version}
-Requires:	net-snmp
-%description mod-snmp
-OpenIO software storage solution is designed to handle PETA-bytes of
-data in a distributed way, data such as: images, videos, documents, emails,
-and any other personal unstructured data.
-OpenIO is a fork of Redcurrant, from Worldline by Atos.
-This package contains Net-SNMP module for OpenIO SDS solution.
 
 
 %package mod-httpd
@@ -216,12 +202,15 @@ cmake \
 
 make %{?_smp_mflags}
 
+# Build python
+(cd python; PBR_VERSION=0.0.1 %{__python} setup.py build)
+
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-(cd python; %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT)
+(cd python; PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT)
 
 
 # Install OpenIO SDS directories
@@ -251,7 +240,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_libdir}/libmeta0remote.so*
 %{_libdir}/libmeta1remote.so*
 %{_libdir}/libmeta2v2remote.so*
-%{_libdir}/liboiosds.so*
+%{_libdir}/liboio*
 # TODO find why libserver is necessary in common
 %{_libdir}/libserver.so*
 # TODO find why libsqliterepo is necessary in common
@@ -294,6 +283,8 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_libdir}/libstatsclient.so*
 %{_bindir}/%{cli_name}
 %{_bindir}/%{cli_name}-account-server
+%{_bindir}/%{cli_name}-blob-auditor
+%{_bindir}/%{cli_name}-blob-mover
 %{_bindir}/%{cli_name}-cluster
 %{_bindir}/%{cli_name}-cluster-agent
 %{_bindir}/%{cli_name}-cluster-register 
@@ -331,10 +322,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %defattr(-,root,root,-)
 %{_prefix}/include/*
 
-%files mod-snmp
-%defattr(755,root,root,-)
-%{_libdir}/snmp/grid_storage.so*
-
 %files mod-httpd
 %defattr(755,root,root,-)
 %{_libdir}/httpd/modules/mod_dav_rawx.so*
@@ -368,8 +355,6 @@ fi
 /sbin/ldconfig
 %post client
 /sbin/ldconfig
-%post mod-snmp
-/sbin/ldconfig
 %post mod-httpd
 /sbin/ldconfig
 %post mod-httpd-rainx
@@ -381,12 +366,12 @@ fi
 /sbin/ldconfig
 %postun client
 /sbin/ldconfig
-%postun mod-snmp
-/sbin/ldconfig
 %postun mod-httpd
 /sbin/ldconfig
 
 %changelog
+* Wed Aug 19 2015 - 0.8.0-1 - Romain Acciari <romain.acciari@openio.io>
+- Remove Net-SNMP package
 * Fri Jul 03 2015 - 0.7.6-1 - Romain Acciari <romain.acciari@openio.io>
 - Accounts autocreation
 - Various minor fixes and improvements (debug traces, error reporting)
