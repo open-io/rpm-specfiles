@@ -1,11 +1,11 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%define tarname oioswift
 
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        0.3.1
 Release:        1%{?dist}
+%define         tarname oioswift
 %define         tarversion %{version}
 Source0:        https://pypi.python.org/packages/source/o/oioswift/oioswift-%{tarversion}.tar.gz
 %else
@@ -13,6 +13,7 @@ Source0:        https://pypi.python.org/packages/source/o/oioswift/oioswift-%{ta
 %define         date %(date +"%Y%m%d%H%M")
 Version:        test%{date}.%{tag}
 Release:        0%{?dist}
+%define         tarname oio-swift
 %define         tarversion %{tag}
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
 %endif
