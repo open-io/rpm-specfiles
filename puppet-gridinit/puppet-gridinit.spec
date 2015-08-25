@@ -1,12 +1,12 @@
 Name:		puppet-gridinit
-Version:	20150618
+Version:	%(date +"%Y%m%d")
 Release:	1%{?dist}
 Summary:	Puppet module for gridinit from OpenIO
 
 Group:		openio
 License:	Apache 2.0
 URL:		http://www.openio.io/
-Source0:	http://www.openio.io/%{name}-%{version}.tar.bz2
+Source0:	https://github.com/open-io/puppet-gridinit/archive/master.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
@@ -18,7 +18,7 @@ Puppet module to install OpenIO SDS solution.
 
 
 %prep
-%setup -q
+%setup -q -n puppet-gridinit-master
 
 
 %build
@@ -36,6 +36,8 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Thu Jul 09 2015 - 20150709-1 - Romain Acciari <romain.acciari@openio.io>
+- Require package before service
 * Thu Jun 18 2015 - 20150618-1 - Romain Acciari <romain.acciari@openio.io>
 - Add no_exec option
 * Thu Mar 19 2015 - 20150319-2 - Romain Acciari <romain.acciari@openio.io>
