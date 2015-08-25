@@ -38,6 +38,11 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Wed Jul 22 2015 - 20150722-1 - Romain Acciari <romain.acciari@openio.io>
+- Enhanced zookeeper
+- Do not bootstrap by default
+* Thu Jul 09 2015 - 20150709-1 - Romain Acciari <romain.acciari@openio.io>
+- Add default redis install to account service
 * Wed Jul 01 2015 - 20150701-1 - Romain Acciari <romain.acciari@openio.io>
 - Fix redis
 * Tue Jun 30 2015 - 20150630-1 - Romain Acciari <romain.acciari@openio.io>
