@@ -26,6 +26,7 @@ BuildRequires:  python-setuptools
 #BuildRequires:  python-pbr
 Requires:       python-eventlet >= 0.15.2
 Requires:       python-requests
+Requires:       cliff-tablib
 #Requires:       python-pbr
 
 Obsoletes:	python-openio-sds-client
@@ -42,9 +43,14 @@ Python API for OpenIO SDS
 
 %install
 rm -rf $RPM_BUILD_ROOT
+%if %{?_with_test:0}%{!?_with_test:1}
 %{__python} setup.py install --root $RPM_BUILD_ROOT
+%else
+PBR_VERSION=0.0.1.dev %{__python} setup.py install --root $RPM_BUILD_ROOT
+%endif
 
 %files
+%{_bindir}/*
 %{python_sitelib}/*
 
 
