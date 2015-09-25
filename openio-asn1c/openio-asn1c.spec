@@ -7,7 +7,7 @@ Summary:	Free, Open Source ASN.1 compiler
 
 License:	BSD
 URL:		http://lionet.info/asn1c
-Source0:	http://lionet.info/soft/%{name}-%{version}.tar.gz
+Source0:	http://lionet.info/soft/asn1c-%{version}.tar.gz
 
 BuildRequires:	autoconf,automake,libtool
 #Requires:	
@@ -34,7 +34,6 @@ make install DESTDIR=%{buildroot}
 %{__rm} -rf $RPM_BUILD_ROOT/%{_libdir}/*.la # Clean useless files
 %{__mv} $RPM_BUILD_ROOT/%{_defaultdocdir}/%{realname} \
         $RPM_BUILD_ROOT/%{_defaultdocdir}/%{name}-%{version}
-
 
 %files
 #%doc BUGS COPYING ChangeLog FAQ README.md
