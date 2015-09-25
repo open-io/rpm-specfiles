@@ -5,7 +5,7 @@
 Name:		openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:	0.7.6
+Version:	0.8.3
 Release:	1%{?dist}
 %define		tarversion %{version}
 Source0:	https://github.com/open-io/oio-sds/archive/v%{tarversion}.tar.gz
@@ -16,6 +16,7 @@ Version:	test%{date}.%{tag}
 Release:	0%{?dist}
 %define		tarversion %{tag}
 Source0:	https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
+Epoch:		1
 %endif
 
 Summary:	OpenIO Cloud Storage Solution
@@ -51,7 +52,7 @@ BuildRequires:	openio-asn1c  >= 0.9.27
 BuildRequires:	cmake,bison,flex
 BuildRequires:	librain-devel
 BuildRequires:	libdb-devel
-BuildRequires:	json-c, json-c-devel
+BuildRequires:	json-c >= 0.12, json-c-devel >= 0.12
 
 
 %description
@@ -68,6 +69,7 @@ Requires:	expat
 Requires:	glib2         >= 2.28
 Requires:	openio-asn1c  >= 0.9.27
 Requires:	zlib
+Requires:	json-c        >= 0.12
 %if %{?fedora}0
 BuildRequires:  zookeeper >= 3.3.4
 %else
@@ -84,7 +86,11 @@ This package contains common files used by other OpenIO SDS packages.
 %package server
 Summary: Server files for OpenIO Cloud Storage Solution
 Group: openio
+%if %{?_with_test:0}%{!?_with_test:1}
 Requires:	%{name}-common = %{version}
+%else
+Requires:	%{name}-common = 1:%{version}
+%endif
 %if %{?fedora}0
 BuildRequires:  zookeeper >= 3.3.4
 Requires:       python-zookeeper
@@ -120,7 +126,11 @@ solution.
 %package client
 Summary: Client files for OpenIO Cloud Storage Solution
 Group: openio
+%if %{?_with_test:0}%{!?_with_test:1}
 Requires:	%{name}-common  = %{version}
+%else
+Requires:	%{name}-common  = 1:%{version}
+%endif
 Requires:	neon           >= 0.29
 %description client
 OpenIO software storage solution is designed to handle PETA-bytes of
@@ -133,7 +143,11 @@ This package contains client files for OpenIO SDS solution.
 %package client-devel
 Summary: Header files for OpenIO Cloud Storage Solution client
 Group: openio
+%if %{?_with_test:0}%{!?_with_test:1}
 Requires:	%{name}-client = %{version}
+%else
+Requires:	%{name}-client = 1:%{version}
+%endif
 %description client-devel
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -145,7 +159,11 @@ This package contains header files for OpenIO SDS solution client.
 %package mod-httpd
 Summary: Apache HTTPd module for OpenIO Cloud Storage Solution
 Group: openio
+%if %{?_with_test:0}%{!?_with_test:1}
 Requires:	%{name}-server  = %{version}
+%else
+Requires:	%{name}-server  = 1:%{version}
+%endif
 Requires:	httpd          >= 2.2
 Requires:	libdb
 %description mod-httpd
@@ -159,7 +177,11 @@ This package contains Apache HTTPd module for OpenIO SDS solution.
 %package mod-httpd-rainx
 Summary: Apache HTTPd module for OpenIO Cloud Storage Solution
 Group: openio
+%if %{?_with_test:0}%{!?_with_test:1}
 Requires:	%{name}-server  = %{version}
+%else
+Requires:	%{name}-server  = 1:%{version}
+%endif
 Requires:	httpd          >= 2.2
 Requires:       librain
 %description mod-httpd-rainx
@@ -173,7 +195,11 @@ This package contains Apache HTTPd module for OpenIO SDS solution.
 %package tools
 Summary: Side tools for OpenIO Cloud Storage Solution
 Group: openio
+%if %{?_with_test:0}%{!?_with_test:1}
 Requires:       %{name}-server = %{version}
+%else
+Requires:       %{name}-server = 1:%{version}
+%endif
 %description tools
 penIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -197,6 +223,7 @@ cmake \
   -DLZO_INCDIR="%{_includedir}/lzo" \
   -DMOCKS=1 \
   -DSOCKET_OPTIMIZED=1 \
+  -DSTACK_PROTECTOR=1 \
   "-DGCLUSTER_AGENT_SOCK_PATH=\"/run/oio/sds/sds-agent-0.sock\"" \
   .
 
@@ -226,6 +253,8 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_datarootdir}/%{name}-%{version}/client_examples
 %{__install} -m 644 tools/{oio-grep.c,oio-roundtrip.c} ${RPM_BUILD_ROOT}%{_datarootdir}/%{name}-%{version}/client_examples/
 
+# Install test_roundtrip
+%{__install} -m 755 core/test_roundtrip ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-test-roundtrip
 
 %files common
 #%defattr(-,root,root,-)
@@ -285,6 +314,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-account-server
 %{_bindir}/%{cli_name}-blob-auditor
 %{_bindir}/%{cli_name}-blob-mover
+%{_bindir}/%{cli_name}-conscience-agent
 %{_bindir}/%{cli_name}-cluster
 %{_bindir}/%{cli_name}-cluster-agent
 %{_bindir}/%{cli_name}-cluster-register 
@@ -338,6 +368,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-grep
 %{_bindir}/%{cli_name}-reset.sh
 %{_bindir}/%{cli_name}-roundtrip*
+%{_bindir}/%{cli_name}-test*
 %{_bindir}/zk-reset.py
 %{_datarootdir}/%{name}-%{version}/client_examples
 
@@ -370,8 +401,18 @@ fi
 /sbin/ldconfig
 
 %changelog
-* Wed Aug 19 2015 - 0.8.0-1 - Romain Acciari <romain.acciari@openio.io>
+* Wed Sep 16 2015 - 0.8.3-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Mon Sep 14 2015 - 0.8.2-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Thu Sep 10 2015 - 0.8.1-2 - Romain Acciari <romain.acciari@openio.io>
+- Add STACK_PROTECTOR flag
+- Require json-c >= 0.12
+* Wed Sep 02 2015 - 0.8.1-1 - Romain Acciari <romain.acciari@openio.io>
+- Bugfix release
+* Fri Aug 28 2015 - 0.8.0-1 - Romain Acciari <romain.acciari@openio.io>
 - Remove Net-SNMP package
+- Add new files
 * Fri Jul 03 2015 - 0.7.6-1 - Romain Acciari <romain.acciari@openio.io>
 - Accounts autocreation
 - Various minor fixes and improvements (debug traces, error reporting)
