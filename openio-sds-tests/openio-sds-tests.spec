@@ -7,7 +7,7 @@ Summary:        OpenIO SDS Functionnal Validation
 
 License:        LGPL
 URL:            http://www.openio.io/
-Source0:        %{name}-%{version}.tar.bz2
+Source0:        testing-8ce1a074d340c3a88da8d88d1a24610a94f730c8.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
@@ -18,7 +18,7 @@ Requires:       python-oiopy
 OpenIO SDS Functionnal Validation
 
 %prep
-%setup -q
+%setup -q -n testing.git
 
 
 %build
@@ -33,6 +33,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Sep 15 2015 Romain Acciari <romain.acciari@openio.io>
+- New release
+* Tue Sep 01 2015 Romain Acciari <romain.acciari@openio.io>
+- New release
+* Wed Aug 26 2015 Romain Acciari <romain.acciari@openio.io>
+- New release
 * Tue May 12 2015 Romain Acciari <romain.acciari@openio.io>
 - Update
 * Mon Mar 16 2015 Guillaume Delaporte <guillaume.delaporte@openio.io>
