@@ -4,7 +4,7 @@
 Name:           python-oiopy
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.4.0
+Version:        0.5.3
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://pypi.python.org/packages/source/o/oiopy/oiopy-%{tarversion}.tar.gz
@@ -15,6 +15,7 @@ Version:        test%{date}.%{tag}
 Release:        0%{?dist}
 %define         tarversion %{tag}
 Source0:        https://github.com/open-io/oiopy/archive/%{tarversion}.tar.gz
+Epoch:          1
 %endif
 
 Summary:        Python API for OpenIO SDS
@@ -26,7 +27,10 @@ BuildRequires:  python-setuptools
 #BuildRequires:  python-pbr
 Requires:       python-eventlet >= 0.15.2
 Requires:       python-requests
-Requires:       cliff-tablib
+Requires:       python-cliff-tablib
+Requires:       python-cliff >= 1.13
+Requires:	python-tablib
+Requires:	python-pbr >= 0.11
 #Requires:       python-pbr
 
 Obsoletes:	python-openio-sds-client
@@ -46,7 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{?_with_test:0}%{!?_with_test:1}
 %{__python} setup.py install --root $RPM_BUILD_ROOT
 %else
-PBR_VERSION=0.0.1.dev %{__python} setup.py install --root $RPM_BUILD_ROOT
+PBR_VERSION=0.5.2 %{__python} setup.py install --root $RPM_BUILD_ROOT
 %endif
 
 %files
@@ -55,6 +59,16 @@ PBR_VERSION=0.0.1.dev %{__python} setup.py install --root $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Sep 16 2015 0.5.3-1 Romain Acciari <romain.acciari@openio.io>
+- New release
+* Mon Sep 14 2015 0.5.2-1 Romain Acciari <romain.acciari@openio.io>
+- New release
+* Thu Sep 03 2015 0.5.1-2 Romain Acciari <romain.acciari@openio.io>
+- Update dependencies
+* Wed Sep 02 2015 0.5.1-1 Romain Acciari <romain.acciari@openio.io>
+- New release
+* Fri Aug 28 2015 0.5.0-1 Romain Acciari <romain.acciari@openio.io>
+- New release
 * Mon Jun 29 2015 0.4.0-1 Romain Acciari <romain.acciari@openio.io>
 - Account support
 * Thu Apr 23 2015 0.3-2 Romain Acciari <romain.acciari@openio.io>
