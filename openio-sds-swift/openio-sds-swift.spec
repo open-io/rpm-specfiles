@@ -3,7 +3,7 @@
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.3.1
+Version:        0.4.1
 Release:        1%{?dist}
 %define         tarname oioswift
 %define         tarversion %{version}
@@ -16,6 +16,7 @@ Release:        0%{?dist}
 %define         tarname oio-swift
 %define         tarversion %{tag}
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
+Epoch:          1
 %endif
 
 Summary:        Swift Gateway for OpenIO SDS
@@ -24,7 +25,7 @@ URL:            http://www.openio.io/
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
-Requires:	python-oiopy >= 0.3
+Requires:	python-oiopy >= 0.5.2
 Requires:	openstack-swift-proxy
 
 
@@ -47,6 +48,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Sep 14 2015 - 0.4.1-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Fri Sep 04 2015 - 0.4.0-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+- Update requires
 * Mon Jun 29 2015 - 0.3.0-1 - Romain Acciari <romain.acciari@openio.io>
 - account autocreate on account POST
 * Mon Jun 29 2015 - 0.3.0-1 - Romain Acciari <romain.acciari@openio.io>
