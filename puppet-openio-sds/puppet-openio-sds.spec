@@ -38,6 +38,10 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Wed Sep 16 2015 - 20150916-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Wed Sep 02 2015 - 20150902-1 - Romain Acciari <romain.acciari@openio.io>
+- New released pushed to Puppet Forge
 * Wed Jul 22 2015 - 20150722-1 - Romain Acciari <romain.acciari@openio.io>
 - Enhanced zookeeper
 - Do not bootstrap by default
