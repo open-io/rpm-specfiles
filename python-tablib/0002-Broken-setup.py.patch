@@ -1,0 +1,30 @@
+From 855d513ee6934a33f0b3f515e7ea2fbc65e33aef Mon Sep 17 00:00:00 2001
+From: Ralph Bean <rbean@redhat.com>
+Date: Fri, 6 Jul 2012 16:14:09 -0400
+Subject: [PATCH 2/2] Broken-setup.py.
+
+---
+ setup.py |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index dc59038..469551c 100755
+--- a/setup.py
++++ b/setup.py
+@@ -46,8 +46,12 @@ setup(
+     author_email='me@kennethreitz.com',
+     url='http://python-tablib.org',
+     packages=[
+-        'tablib', 'tablib.formats',
++        'tablib',
++        'tablib.formats',
+         'tablib.packages',
++        'tablib.packages.omnijson',
++        'tablib.packages.odf',
++        'tablib.packages.xlrd',
+         'tablib.packages.xlwt',
+         'tablib.packages.openpyxl',
+         'tablib.packages.openpyxl.shared',
+-- 
+1.7.10.4
+
