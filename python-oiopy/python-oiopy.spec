@@ -19,7 +19,7 @@ Epoch:          1
 %endif
 
 Summary:        Python API for OpenIO SDS
-License:        LGPL v3
+License:        LGPLv3
 URL:            http://www.openio.io/
 
 BuildArch:      noarch
@@ -59,23 +59,23 @@ PBR_VERSION=0.5.2 %{__python} setup.py install --root $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Sep 16 2015 0.5.3-1 Romain Acciari <romain.acciari@openio.io>
+* Wed Sep 16 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.3-1
 - New release
-* Mon Sep 14 2015 0.5.2-1 Romain Acciari <romain.acciari@openio.io>
+* Mon Sep 14 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.2-1
 - New release
-* Thu Sep 03 2015 0.5.1-2 Romain Acciari <romain.acciari@openio.io>
+* Thu Sep 03 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.1-2
 - Update dependencies
-* Wed Sep 02 2015 0.5.1-1 Romain Acciari <romain.acciari@openio.io>
+* Wed Sep 02 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.1-1
 - New release
-* Fri Aug 28 2015 0.5.0-1 Romain Acciari <romain.acciari@openio.io>
+* Fri Aug 28 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.0-1
 - New release
-* Mon Jun 29 2015 0.4.0-1 Romain Acciari <romain.acciari@openio.io>
+* Mon Jun 29 2015 Romain Acciari <romain.acciari@openio.io> - 0.4.0-1
 - Account support
-* Thu Apr 23 2015 0.3-2 Romain Acciari <romain.acciari@openio.io>
+* Thu Apr 23 2015 Romain Acciari <romain.acciari@openio.io> - 0.3-2
 - Package renamed
-* Mon Apr 20 2015 0.3-1 Romain Acciari <romain.acciari@openio.io>
+* Mon Apr 20 2015 Romain Acciari <romain.acciari@openio.io> - 0.3-1
 - Jka proxyd pool
-* Fri Apr 10 2015 0.2-1 Romain Acciari <romain.acciari@openio.io>
+* Fri Apr 10 2015 Romain Acciari <romain.acciari@openio.io> - 0.2-1
 - New release to fit with OpenIO SDS 0.3
-* Fri Feb 13 2015 0.1-1 Julien Kasarherou <julien.kasarherou@openio.io>
+* Fri Feb 13 2015 Julien Kasarherou <julien.kasarherou@openio.io> - 0.1-1
 - Initial release
