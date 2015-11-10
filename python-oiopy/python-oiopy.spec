@@ -59,23 +59,23 @@ PBR_VERSION=0.5.2 %{__python} setup.py install --root $RPM_BUILD_ROOT
 
 
 %changelog
-* Wed Sep 16 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.3-1
+* Wed Sep 16 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.3-1%{?dist}
 - New release
-* Mon Sep 14 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.2-1
+* Mon Sep 14 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.2-1%{?dist}
 - New release
-* Thu Sep 03 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.1-2
+* Thu Sep 03 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.1-2%{?dist}
 - Update dependencies
-* Wed Sep 02 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.1-1
+* Wed Sep 02 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.1-1%{?dist}
 - New release
-* Fri Aug 28 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.0-1
+* Fri Aug 28 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.0-1%{?dist}
 - New release
-* Mon Jun 29 2015 Romain Acciari <romain.acciari@openio.io> - 0.4.0-1
+* Mon Jun 29 2015 Romain Acciari <romain.acciari@openio.io> - 0.4.0-1%{?dist}
 - Account support
-* Thu Apr 23 2015 Romain Acciari <romain.acciari@openio.io> - 0.3-2
+* Thu Apr 23 2015 Romain Acciari <romain.acciari@openio.io> - 0.3-2%{?dist}
 - Package renamed
-* Mon Apr 20 2015 Romain Acciari <romain.acciari@openio.io> - 0.3-1
+* Mon Apr 20 2015 Romain Acciari <romain.acciari@openio.io> - 0.3-1%{?dist}
 - Jka proxyd pool
-* Fri Apr 10 2015 Romain Acciari <romain.acciari@openio.io> - 0.2-1
+* Fri Apr 10 2015 Romain Acciari <romain.acciari@openio.io> - 0.2-1%{?dist}
 - New release to fit with OpenIO SDS 0.3
-* Fri Feb 13 2015 Julien Kasarherou <julien.kasarherou@openio.io> - 0.1-1
+* Fri Feb 13 2015 Julien Kasarherou <julien.kasarherou@openio.io> - 0.1-1%{?dist}
 - Initial release
