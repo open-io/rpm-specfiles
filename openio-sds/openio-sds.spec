@@ -26,33 +26,33 @@ URL:		http://www.openio.io/
 Source1:        openio-sds.tmpfiles
 
 
-BuildRequires:	glib2-devel   >= 2.28.8
+BuildRequires:	glib2-devel              >= 2.28.8
 %if %{?fedora}0
-BuildRequires:  zookeeper-devel >= 3.3.4
+BuildRequires:  zookeeper-devel          >= 3.3.4
 %else
-BuildRequires:  zookeeper-lib-devel >= 3.3.4
+BuildRequires:  zookeeper-lib-devel      >= 3.3.4
 %endif
-BuildRequires:	neon-devel    >= 0.29
 BuildRequires:	python-devel
 BuildRequires:	python-setuptools
 BuildRequires:  zeromq3-devel
 BuildRequires:	libcurl-devel
-BuildRequires:	apr-devel     >= 1.2
-BuildRequires:	sqlite-devel  >= 3.7.11
-BuildRequires:	libattr-devel >= 2.4.32
+BuildRequires:	apr-devel                >= 1.2
+BuildRequires:	sqlite-devel             >= 3.7.11
+BuildRequires:	libattr-devel            >= 2.4.32
 %if %{?el6}0
 BuildRequires:	compat-libevent-20-devel >= 2.0
 %else
-BuildRequires:	libevent-devel >= 2.0
+BuildRequires:	libevent-devel           >= 2.0
 %endif
-BuildRequires:	httpd-devel   >= 2.2
-BuildRequires:	lzo-devel     >= 2.0
+BuildRequires:	httpd-devel              >= 2.2
+BuildRequires:	lzo-devel                >= 2.0
 BuildRequires:	openio-gridinit-devel
-BuildRequires:	openio-asn1c  >= 0.9.27
+BuildRequires:	openio-asn1c             >= 0.9.27
 BuildRequires:	cmake,bison,flex
 BuildRequires:	librain-devel
 BuildRequires:	libdb-devel
-BuildRequires:	json-c >= 0.12, json-c-devel >= 0.12
+BuildRequires:	json-c                   >= 0.12
+BuildRequires:	json-c-devel             >= 0.12
 
 
 %description
@@ -71,7 +71,7 @@ Requires:	openio-asn1c  >= 0.9.27
 Requires:	zlib
 Requires:	json-c        >= 0.12
 %if %{?fedora}0
-BuildRequires:  zookeeper >= 3.3.4
+BuildRequires:  zookeeper     >= 3.3.4
 %else
 BuildRequires:  zookeeper-lib >= 3.3.4
 %endif
@@ -92,14 +92,13 @@ Requires:	%{name}-common = %{version}
 Requires:	%{name}-common = 1:%{version}
 %endif
 %if %{?fedora}0
-BuildRequires:  zookeeper >= 3.3.4
+BuildRequires:  zookeeper          >= 3.3.4
 Requires:       python-zookeeper
 %else
-BuildRequires:  zookeeper-lib >= 3.3.4
+BuildRequires:  zookeeper-lib      >= 3.3.4
 Requires:       python-ZooKeeper
 %endif
-Requires:	neon               >= 0.29
-Requires:	python             >= 2.6
+Requires:	python             >= 2.7
 Requires:	apr                >= 1.2
 Requires:	sqlite             >= 3.7.11
 Requires:	libattr            >= 2.4.32
@@ -111,9 +110,10 @@ BuildRequires:	libevent           >= 2.0
 Requires:	lzo                >= 2.0
 Requires:	openio-gridinit-utils
 Requires:	openio-asn1c       >= 0.9.27
-Requires:	python-gunicorn >= 19.0
-Requires:	python-flask,python-eventlet,python-zmq,python-redis,python-requests,python-pbr
-Obsoletes:      openio-sds-integrityloop
+Requires:	python-gunicorn    >= 19.0
+Requires:	python-flask,python-eventlet,python-zmq,python-redis,python-requests
+Requires:	pyxattr            >= 0.4
+Requires:	python-simplejson  >= 2.0.9
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -121,23 +121,6 @@ and any other personal unstructured data.
 OpenIO is a fork of Redcurrant, from Worldline by Atos.
 This package contains all needed server files to run OpenIO SDS
 solution.
-
-
-%package client
-Summary: Client files for OpenIO Cloud Storage Solution
-Group: openio
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:	%{name}-common  = %{version}
-%else
-Requires:	%{name}-common  = 1:%{version}
-%endif
-Requires:	neon           >= 0.29
-%description client
-OpenIO software storage solution is designed to handle PETA-bytes of
-data in a distributed way, data such as: images, videos, documents, emails,
-and any other personal unstructured data.
-OpenIO is a fork of Redcurrant, from Worldline by Atos.
-This package contains client files for OpenIO SDS solution.
 
 
 %package client-devel
@@ -243,26 +226,19 @@ make DESTDIR=$RPM_BUILD_ROOT install
 # Install OpenIO SDS directories
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_localstatedir}/log/oio/sds \
                 ${RPM_BUILD_ROOT}%{_sharedstatedir}/oio/sds \
-                ${RPM_BUILD_ROOT}%{_sysconfdir}/oio/sds
+                ${RPM_BUILD_ROOT}%{_sysconfdir}/oio/sds \
+		${RPM_BUILD_ROOT}%{_datarootdir}/%{name}-%{version}
 
 # Install tmpfiles
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_tmpfilesdir} ${RPM_BUILD_ROOT}/run/oio/sds
 %{__install} -m 644 %{SOURCE1} ${RPM_BUILD_ROOT}%{_tmpfilesdir}/openio-sds.conf
 
-# Install source code samples
-%{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_datarootdir}/%{name}-%{version}/client_examples
-%{__install} -m 644 tools/{oio-grep.c,oio-roundtrip.c} ${RPM_BUILD_ROOT}%{_datarootdir}/%{name}-%{version}/client_examples/
-
-# Install test_roundtrip
-%{__install} -m 755 core/test_roundtrip ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-test-roundtrip
 
 %files common
 #%defattr(-,root,root,-)
 %defattr(755,root,root,-)
-%{_libdir}/libgridclient.so*
 %{_libdir}/libgridcluster-conscience.so*
 %{_libdir}/libgridcluster.so*
-%{_libdir}/libgridcluster-remote.so*
 %{_libdir}/libhcresolve.so*
 %{_libdir}/libmeta0utils.so*
 %{_libdir}/libmetautils.so*
@@ -279,11 +255,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_libdir}/libmeta2v2lbutils.so*
 %{_libdir}/libmeta2v2utils.so*
 %{_libdir}/libsqliteutils.so*
-%{_libdir}/librawxclient.so*
-%{_libdir}/libstatsclient.so*
 %{_bindir}/%{cli_name}-daemon
-%{_bindir}/%{cli_name}-admin
-%{_bindir}/%{cli_name}-dir
 %defattr(0644,openio,openio,0755)
 %{_sysconfdir}/oio
 %{_localstatedir}/log/oio
@@ -295,7 +267,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %files server
 %defattr(-,root,root,-)
 %defattr(755,root,root,-)
-%{_libdir}/grid/acl.so*
 %{_libdir}/grid/msg_conscience.so*
 %{_libdir}/grid/msg_fallback.so*
 %{_libdir}/grid/msg_ping.so*
@@ -304,21 +275,17 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_libdir}/libmeta1v2.so*
 %{_libdir}/libmeta2v2.so*
 %{_libdir}/libmeta2v2utils.so*
-%{_libdir}/librawxclient.so*
 %{_libdir}/librawx.so*
 %{_libdir}/libserver.so*
 %{_libdir}/libsqliterepo.so*
 %{_libdir}/libsqliteutils.so*
-%{_libdir}/libstatsclient.so*
-%{_bindir}/%{cli_name}
 %{_bindir}/%{cli_name}-account-server
 %{_bindir}/%{cli_name}-blob-auditor
 %{_bindir}/%{cli_name}-blob-mover
 %{_bindir}/%{cli_name}-conscience-agent
 %{_bindir}/%{cli_name}-cluster
 %{_bindir}/%{cli_name}-cluster-agent
-%{_bindir}/%{cli_name}-cluster-register 
-%{_bindir}/%{cli_name}-dump-addr
+%{_bindir}/%{cli_name}-echo-server
 %{_bindir}/%{cli_name}-event-agent
 %{_bindir}/%{cli_name}-meta0-init
 %{_bindir}/%{cli_name}-meta0-client
@@ -326,10 +293,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-meta1-server
 %{_bindir}/%{cli_name}-meta2-server
 %{_bindir}/%{cli_name}-meta1-client
-%{_bindir}/%{cli_name}-gridc-ping
-%{_bindir}/%{cli_name}-gridc-stats
-%{_bindir}/%{cli_name}-oid2cid
-%{_bindir}/%{cli_name}-m1hash
 %{_bindir}/%{cli_name}-proxy-monitor.py
 %{_bindir}/%{cli_name}-rawx-compress
 %{_bindir}/%{cli_name}-rawx-uncompress
@@ -337,16 +300,12 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-sqlx
 %{_bindir}/%{cli_name}-sqlx-server
 %{_bindir}/%{cli_name}-svc-monitor
+%{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
 %{_bindir}/zk-bootstrap.py*
 %{python_sitelib}/oio*
 /usr/lib/tmpfiles.d/openio-sds.conf
-%{_bindir}/%{cli_name}-account-agent.py
 %{_bindir}/%{cli_name}-account-monitor.py
-
-%files client
-%defattr(755,root,root,-)
-%{_libdir}/libgridclient.so*
 
 %files client-devel
 %defattr(-,root,root,-)
@@ -365,12 +324,8 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %files tools
 %defattr(755,root,root,-)
 %{_bindir}/%{cli_name}-bootstrap.py
-%{_bindir}/%{cli_name}-grep
 %{_bindir}/%{cli_name}-reset.sh
-%{_bindir}/%{cli_name}-roundtrip*
-%{_bindir}/%{cli_name}-test*
 %{_bindir}/zk-reset.py
-%{_datarootdir}/%{name}-%{version}/client_examples
 
 
 %pre common
@@ -384,8 +339,6 @@ fi
 /sbin/ldconfig
 %post server
 /sbin/ldconfig
-%post client
-/sbin/ldconfig
 %post mod-httpd
 /sbin/ldconfig
 %post mod-httpd-rainx
@@ -394,8 +347,6 @@ fi
 %postun common
 /sbin/ldconfig
 %postun server
-/sbin/ldconfig
-%postun client
 /sbin/ldconfig
 %postun mod-httpd
 /sbin/ldconfig
