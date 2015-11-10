@@ -4,7 +4,7 @@ Release:	1%{?dist}
 Summary:	Rain library for OpenIO SDS solution
 
 Group:		openio
-License:	LGPL
+License:	MIT
 URL:		https://mirrors.atosworldline.com/external/
 Source0:	%{name}-%{version}.tar.bz2
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
