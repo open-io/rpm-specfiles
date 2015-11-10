@@ -5,7 +5,7 @@ Release:	3%{?dist}
 Summary:	OpenIO gridinit daemon
 
 Group:		openio
-License:	GPL v3
+License:	AGPLv3
 #URL:		
 Source0:	https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
 Source1:	%{realname}.systemd
