@@ -252,7 +252,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_libdir}/libsqliterepo.so*
 %{_libdir}/libsqlitereporemote.so*
 %{_libdir}/libsqlxsrv.so*
-%{_libdir}/libmeta2v2lbutils.so*
 %{_libdir}/libmeta2v2utils.so*
 %{_libdir}/libsqliteutils.so*
 %{_bindir}/%{cli_name}-daemon
