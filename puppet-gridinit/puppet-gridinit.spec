@@ -1,12 +1,12 @@
 Name:		puppet-gridinit
-Version:	%(date +"%Y%m%d")
+Version:	1.1.0
 Release:	1%{?dist}
 Summary:	Puppet module for gridinit from OpenIO
 
 Group:		openio
 License:	Apache 2.0
 URL:		http://www.openio.io/
-Source0:	https://github.com/open-io/puppet-gridinit/archive/master.tar.gz
+Source0:	https://github.com/open-io/puppet-gridinit/archive/%{version}.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
@@ -18,7 +18,7 @@ Puppet module to install OpenIO SDS solution.
 
 
 %prep
-%setup -q -n puppet-gridinit-master
+%setup -q -n puppet-gridinit-%{version}
 
 
 %build
@@ -36,19 +36,21 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
-* Thu Jul 09 2015 - 20150709-1 - Romain Acciari <romain.acciari@openio.io>
+* Wed Dec 02 2015 - 1.1.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Thu Jul 09 2015 - 20150709-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Require package before service
-* Thu Jun 18 2015 - 20150618-1 - Romain Acciari <romain.acciari@openio.io>
+* Thu Jun 18 2015 - 20150618-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Add no_exec option
-* Thu Mar 19 2015 - 20150319-2 - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 20150319-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - start_at_boot is enabled by default
-* Thu Mar 19 2015 - 20150319-1 - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 20150319-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Remove log4c
-* Wed Mar 18 2015 - 20150318-1 - Romain Acciari <romain.acciari@openio.io>
+* Wed Mar 18 2015 - 20150318-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Wait 1 second before reloading to let the daemon create the socket
 - Fix root user
 - Fix runstatedir to /run/gridinit
-* Mon Mar 09 2015 - 20150309-1 - Romain Acciari <romain.acciari@openio.io>
+* Mon Mar 09 2015 - 20150309-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Fix runstatedir to /run
-* Fri Mar 06 2015 - 20150306-1 - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 06 2015 - 20150306-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Initial release
