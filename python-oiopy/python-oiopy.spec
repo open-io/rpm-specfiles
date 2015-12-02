@@ -4,7 +4,7 @@
 Name:           python-oiopy
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.5.3
+Version:        0.6.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://pypi.python.org/packages/source/o/oiopy/oiopy-%{tarversion}.tar.gz
@@ -24,14 +24,12 @@ URL:            http://www.openio.io/
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
-#BuildRequires:  python-pbr
 Requires:       python-eventlet >= 0.15.2
 Requires:       python-requests
 Requires:       python-cliff-tablib
 Requires:       python-cliff >= 1.13
 Requires:	python-tablib
 Requires:	python-pbr >= 0.11
-#Requires:       python-pbr
 
 Obsoletes:	python-openio-sds-client
 
@@ -59,6 +57,8 @@ PBR_VERSION=0.5.2 %{__python} setup.py install --root $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec 01 2015 Romain Acciari <romain.acciari@openio.io> - 0.6-1%{?dist}
+- New release for the 15.12
 * Wed Sep 16 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.3-1%{?dist}
 - New release
 * Mon Sep 14 2015 Romain Acciari <romain.acciari@openio.io> - 0.5.2-1%{?dist}
