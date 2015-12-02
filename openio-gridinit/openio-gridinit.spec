@@ -1,27 +1,26 @@
-%define		realname gridinit
-Name:		openio-%{realname}
-Version:	1.4
-Release:	3%{?dist}
-Summary:	OpenIO gridinit daemon
+%define         realname gridinit
+Name:           openio-%{realname}
+Version:        1.5
+Release:        1%{?dist}
+Summary:        OpenIO gridinit daemon
 
-Group:		openio
-License:	AGPLv3
-#URL:		
-Source0:	https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
-Source1:	%{realname}.systemd
+License:        AGPLv3
+#URL:
+Source0:        https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
+Source1:        %{realname}.systemd
 Source2:        %{name}.tmpfiles
-Source3:	%{name}-rsyslog.conf
-Source4:	%{name}-logrotate.conf
+Source3:        %{name}-rsyslog.conf
+Source4:        %{name}-logrotate.conf
 
 # Requires
-BuildRequires: autoconf,automake,libtool
-BuildRequires: git,bison,flex,cmake
-BuildRequires: glib2-devel >= 2.28.8
-BuildRequires: libevent-devel >= 2.0
+BuildRequires:  autoconf,automake,libtool
+BuildRequires:  git,bison,flex,cmake
+BuildRequires:  glib2-devel    >= 2.28.8
+BuildRequires:  libevent-devel >= 2.0
 
-Requires: glib2 >= 2.28.8
-Requires: libevent >= 2.0
-Requires: %{name}-utils       = %{version}
+Requires:       glib2         >= 2.28.8
+Requires:       libevent      >= 2.0
+Requires:       %{name}-utils  = %{version}
 
 
 %description
@@ -31,11 +30,10 @@ interface through a UNIX socket. Services can be started/stopped/monitored.
 OpenIO gridinit is a fork of Redcurrant gridinit, from Worldline by Atos.
 
 
-%package	utils
-Summary:	Grid Init utilities libraries
-License:	GPL v3
-Group:		openio
-Requires:	glib2 >= 2.28.8
+%package        utils
+Summary:        Grid Init utilities libraries
+License:        GPL v3
+Requires:       glib2 >= 2.28.8
 %description	utils
 C code library with children processes management features. This library is
 internally used by the gridinit process.
@@ -43,7 +41,6 @@ internally used by the gridinit process.
 %package        devel
 Summary:        Grid Init devel headers
 License:        GPL v3
-Group:          openio
 Requires:       %{name}-utils
 %description    devel
 Devel files for OpenIO gridinit.
@@ -55,10 +52,10 @@ Devel files for OpenIO gridinit.
 
 %build
 cmake \
-	-DCMAKE_BUILD_TYPE=RelWithDebInfo \
-	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
-        "-DGRIDINIT_SOCKET_PATH=\"/run/%{realname}/%{realname}.sock\"" \
-	.
+  -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+  -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+  -DGRIDINIT_SOCK_PATH="/run/%{realname}/%{realname}.sock" \
+  .
 
 make %{?_smp_mflags}
 
@@ -140,27 +137,30 @@ fi
 
 
 %changelog
-* Thu Jun 04 2015 - 1.4-3 - Romain Acciari <romain.acciari@openio.io>
+* Wed Nov 25 2015 - 1.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- Fix GCC version detection
+- Fix default socket path
+* Thu Jun 04 2015 - 1.4-3%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Fix tmpfiles
-* Thu Apr 09 2015 - 1.4-1 - Romain Acciari <romain.acciari@openio.io>
+* Thu Apr 09 2015 - 1.4-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release to come with OpenIO SDS 0.3
-* Thu Mar 19 2015 - 1.3.1-2 - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 1.3.1-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Fix systemd reload on update
-* Thu Mar 19 2015 - 1.3.1-1 - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 1.3.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Fix PREFIX in spec file
 - Fix socket path
 - Add rsyslog support
 - Add logrotate rule
-* Wed Mar 18 2015 - 20150310-2 - Romain Acciari <romain.acciari@openio.io>
+* Wed Mar 18 2015 - 20150310-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Add tmpfiles
 - Cleaned spec file
 - Moved from /run to /run/gridinit
-* Tue Mar 10 2015 - 20150310-1 - Romain Acciari <romain.acciari@openio.io>
+* Tue Mar 10 2015 - 20150310-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Mar 06 2015 - 20150309-1 - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 06 2015 - 20150309-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Fix socket path
 - Remove runstatedir (using /run)
-* Fri Mar 06 2015 - 20150203-2 - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 06 2015 - 20150203-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Fix for systemd
-* Tue Feb 03 2015 - 20150203-1 - Romain Acciari <romain.acciari@openio.io>
+* Tue Feb 03 2015 - 20150203-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Inital release
