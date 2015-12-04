@@ -1,12 +1,13 @@
 Name:           gf-complete
-Version:        1
+Version:        1.03
 Release:        1%{?dist}
 Summary:        A Comprehensive Open Source Library for Galois Field Arithmetic
 
 Group:          Librairies
 License:        BSD
-URL:            http://web.eecs.utk.edu/~plank/plank/www/software.html
-Source0:        %{name}-%{version}.tar.bz2
+URL:            https://github.com/open-io/gf-complete
+Source0:        https://github.com/open-io/gf-complete/archive/master.tar.gz
+Patch0:         do-not-use-sse-ac-ext.patch
 
 BuildRequires:  autoconf,automake,libtool
 #Requires:       
@@ -16,23 +17,24 @@ A Comprehensive Open Source Library for Galois Field Arithmetic.
 
 
 %package	tools
-Summary:	A Comprehensive Open Source Library for Galois Field Arithmetic
-Group:		Tools
-Requires:	gf-complete = %{version}
-%description	tools
+Summary:        A Comprehensive Open Source Library for Galois Field Arithmetic
+Group:          Tools
+Requires:       gf-complete = %{version}
+%description    tools
 Tools for gf-complete.
 
 
-%package	devel
-Summary:	A Comprehensive Open Source Library for Galois Field Arithmetic
-Group:		Development
-Requires:	gf-complete = %{version}
-%description	devel
+%package        devel
+Summary:        A Comprehensive Open Source Library for Galois Field Arithmetic
+Group:          Development
+Requires:       gf-complete = %{version}
+%description    devel
 Headers for gf-complete.
 
 
 %prep
-%setup -q
+%setup -q -n %{name}-master
+%patch0 -p1
 
 
 %build
@@ -65,5 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Mon Feb 02 2015 <romain.acciari@openio.io> - 1-1
+* Thu Dec 03 2015 <romain.acciari@openio.io> - 1.03-2%{?dist}
+- New old release 1.03
+- Add patch to build on Fedora 23
+* Mon Feb 02 2015 <romain.acciari@openio.io> - 1-1%{?dist}
 - Initial release
