@@ -1,12 +1,12 @@
 Name:           jerasure
-Version:        2
-Release:        1%{?dist}
+Version:        2.0
+Release:        2%{?dist}
 Summary:        A Library in C Facilitating Erasure Coding for Storage Applications
 
 Group:          Libraries
 License:        BSD
-URL:            https://bitbucket.org/jimplank/jerasure
-Source0:        %{name}-%{version}.tar.bz2
+URL:            http://lab.jerasure.org/jerasure/jerasure
+Source0:        jerasure-ff7032153ea230fb59596f1f8a0e9ad8653addfb.tar.gz
 
 BuildRequires:  gf-complete-devel
 Requires:       gf-complete
@@ -32,7 +32,7 @@ Requires:	gf-complete-devel
 Headers for jerasure library.
 
 %prep
-%setup -q
+%setup -q -n gf-complete.git
 
 
 %build
@@ -64,5 +64,7 @@ Headers for jerasure library.
 
 
 %changelog
+* Mon Dec 07 2015 - 2.0-2 - Romain Acciari <romain.acciari@openio.io>
+- Fix URL and Source0 (Issue open-io/rpm-specfiles#1)
 * Mon Feb 02 2015 - 2-1 - Romain Acciari <romain.acciari@openio.io>
 - Initial release
