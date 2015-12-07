@@ -104,11 +104,12 @@ Requires:       compat-libevent-20 >= 2.0
 %else
 BuildRequires:  libevent           >= 2.0
 %endif
+Requires:       leveldb
 Requires:       lzo                >= 2.0
 Requires:       openio-gridinit-utils
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.0
-Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests
+Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests,python-plyvel
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
 %description server
