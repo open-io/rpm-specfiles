@@ -1,5 +1,5 @@
 Name:		puppet-stdlib
-Version:	4.5.1
+Version:	4.9.0
 Release:	1%{?dist}
 Summary:	Puppet module for PuppetLabs stdlib
 
@@ -11,6 +11,7 @@ BuildArch:	noarch
 #BuildRequires:	
 Requires:       puppet >= 3.6
 
+Provides:       puppetlabs-stdlib = %{version}
 
 %description
 Puppet module to install PuppetLabs stdlib.
@@ -44,5 +45,7 @@ The stdlib module adds the following resources to Puppet:
 
 
 %changelog
+* Sat Dec 05 2015 - 4.9.0-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Fri Mar 06 2015 - 4.5.1-1 - Romain Acciari <romain.acciari@openio.io>
 - Initial release
