@@ -5,8 +5,8 @@ Summary:        A Comprehensive Open Source Library for Galois Field Arithmetic
 
 Group:          Librairies
 License:        BSD
-URL:            https://github.com/open-io/gf-complete
-Source0:        https://github.com/open-io/gf-complete/archive/master.tar.gz
+URL:            http://lab.jerasure.org/jerasure/gf-complete/
+Source0:        gf-complete-363da207236617b1d50f04bb191a14f0de364303.tar.gz
 Patch0:         do-not-use-sse-ac-ext.patch
 
 BuildRequires:  autoconf,automake,libtool
@@ -67,8 +67,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Thu Dec 03 2015 <romain.acciari@openio.io> - 1.03-2%{?dist}
+* Thu Dec 03 2015 <romain.acciari@openio.io> - 1.03-1%{?dist}
 - New old release 1.03
 - Add patch to build on Fedora 23
+- New URL and Source (Issue open-io/rpm-specfiles#2)
 * Mon Feb 02 2015 <romain.acciari@openio.io> - 1-1%{?dist}
 - Initial release
