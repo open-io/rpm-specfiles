@@ -1,5 +1,5 @@
 Name:		puppet-gridinit
-Version:	1.1.0
+Version:	1.1.1
 Release:	1%{?dist}
 Summary:	Puppet module for gridinit from OpenIO
 
@@ -10,8 +10,8 @@ Source0:	https://github.com/open-io/puppet-gridinit/archive/%{version}.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
-Requires:	puppet >= 3.6
-Requires:       puppet-stdlib >= 4.5.1
+Requires:	puppet            >= 3.6
+Requires:       puppetlabs-stdlib >= 4.6.0
 
 %description
 Puppet module to install OpenIO SDS solution.
@@ -34,8 +34,10 @@ Puppet module to install OpenIO SDS solution.
 %{_datarootdir}/puppet/modules/gridinit
 
 
-
 %changelog
+* Mon Dec 07 2015 - 1.1.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
+- Update puppetlabs-stdlib dependency
 * Wed Dec 02 2015 - 1.1.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Jul 09 2015 - 20150709-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
