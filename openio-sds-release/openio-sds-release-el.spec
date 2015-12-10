@@ -39,7 +39,7 @@ install -pm 644 %{SOURCE0} .
 %install
 # Install GPG key
 install -Dpm 644 %{SOURCE0} \
-    $RPM_BUILD_ROOT%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-OPENIO-%{version}
+    $RPM_BUILD_ROOT%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-OPENIO-0
 
 ### Install yum stable repositories
 install -dm 755 $RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d
