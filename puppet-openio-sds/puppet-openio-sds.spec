@@ -1,5 +1,5 @@
 Name:           puppet-openio-sds
-Version:        1.1.0
+Version:        1.1.1
 Release:        1%{?dist}
 Summary:        Puppet module for OpenIO SDS solution
 
@@ -9,9 +9,9 @@ Source0:        https://github.com/open-io/puppet-openiosds/archive/%{version}.t
 BuildArch:      noarch
 
 #BuildRequires:
-Requires:       puppet >= 3.6
+Requires:       puppet            >= 3.6
 Requires:       puppet-gridinit
-Requires:       puppet-stdlib >= 4.5.1
+Requires:       puppetlabs-stdlib >= 4.6.0
 
 
 %description
@@ -37,6 +37,9 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Wed Dec 02 2015 - 1.1.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release 1.1.1
+- Update puppetlabs-stdlib dependency
 * Wed Dec 02 2015 - 1.1.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release 1.1.0
 * Wed Sep 16 2015 - 20150916-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
