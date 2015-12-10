@@ -35,6 +35,9 @@ Puppet manifests to install OpenIO SDS solution using Vagrant.
 
 
 %changelog
+* Tue Dec 08 2015 - 20151208-1 - Romain Acciari <romain.acciari@openio.io>
+- Fixes for Fedora 23
+- Update minimal profile
 * Wed Sep 02 2015 - 20150902-1 - Romain Acciari <romain.acciari@openio.io>
 - New release for Docker
 * Thu Aug 20 2015 - 20150820-1 - Romain Acciari <romain.acciari@openio.io>
