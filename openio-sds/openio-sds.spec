@@ -5,7 +5,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -121,14 +121,10 @@ This package contains all needed server files to run OpenIO SDS
 solution.
 
 
-%package client-devel
-Summary: Header files for OpenIO Cloud Storage Solution client
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:       %{name}-client = %{version}
-%else
-Requires:       %{name}-client = 1:%{version}
-%endif
-%description client-devel
+%package common-devel
+Summary: Header files for OpenIO Cloud Storage Solution
+Requires:       %{name}-common = %{version}
+%description common-devel
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
 and any other personal unstructured data.
@@ -303,7 +299,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 /usr/lib/tmpfiles.d/openio-sds.conf
 %{_bindir}/%{cli_name}-account-monitor.py
 
-%files client-devel
+%files common-devel
 %defattr(-,root,root,-)
 %{_prefix}/include/*
 
@@ -348,6 +344,9 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Mon Dec 14 2015 - 1.0.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
+- Renamed client-devel to common-devel
 * Tue Dec 01 2015 - 1.0.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release 1.0.0
 * Wed Sep 16 2015 - 0.8.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
