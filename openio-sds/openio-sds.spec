@@ -123,7 +123,11 @@ solution.
 
 %package common-devel
 Summary: Header files for OpenIO Cloud Storage Solution
+%if %{?_with_test:0}%{!?_with_test:1}
 Requires:       %{name}-common = %{version}
+%else
+Requires:       %{name}-common = 1:%{version}
+%endif
 %description common-devel
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -302,6 +306,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %files common-devel
 %defattr(-,root,root,-)
 %{_prefix}/include/*
+%{_libdir}/pkgconfig/oio-sds.pc
 
 %files mod-httpd
 %defattr(755,root,root,-)
