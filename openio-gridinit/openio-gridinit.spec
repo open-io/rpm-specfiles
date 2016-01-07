@@ -17,10 +17,16 @@ BuildRequires:  autoconf,automake,libtool
 BuildRequires:  git,bison,flex,cmake
 BuildRequires:  glib2-devel    >= 2.28.8
 BuildRequires:  libevent-devel >= 2.0
+%if 0%{?suse_version}
+BuildRequires:  systemd
+%endif
 
 Requires:       glib2         >= 2.28.8
 Requires:       libevent      >= 2.0
 Requires:       %{name}-utils  = %{version}
+%if 0%{?suse_version}
+Requires:  systemd
+%endif
 
 
 %description
