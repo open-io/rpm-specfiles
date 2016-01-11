@@ -1,0 +1,23 @@
+diff -up cmake-2.8.10.2/Modules/CMakeNinjaFindMake.cmake.ninja cmake-2.8.10.2/Modules/CMakeNinjaFindMake.cmake
+--- cmake-2.8.10.2/Modules/CMakeNinjaFindMake.cmake.ninja	2012-11-27 06:26:32.000000000 -0700
++++ cmake-2.8.10.2/Modules/CMakeNinjaFindMake.cmake	2013-02-08 09:30:26.437739370 -0700
+@@ -12,6 +12,6 @@
+ # (To distribute this file outside of CMake, substitute the full
+ #  License text for the above reference.)
+ 
+-find_program(CMAKE_MAKE_PROGRAM ninja
++find_program(CMAKE_MAKE_PROGRAM ninja-build
+   DOC "Program used to build from build.ninja files.")
+ mark_as_advanced(CMAKE_MAKE_PROGRAM)
+diff -up cmake-2.8.10.2/Source/cmGlobalNinjaGenerator.cxx.ninja cmake-2.8.10.2/Source/cmGlobalNinjaGenerator.cxx
+--- cmake-2.8.10.2/Source/cmGlobalNinjaGenerator.cxx.ninja	2012-11-27 06:26:33.000000000 -0700
++++ cmake-2.8.10.2/Source/cmGlobalNinjaGenerator.cxx	2013-02-08 09:32:30.397949661 -0700
+@@ -1034,7 +1034,7 @@ std::string cmGlobalNinjaGenerator::ninj
+              lgen->GetMakefile()->GetRequiredDefinition("CMAKE_MAKE_PROGRAM"),
+                                     cmLocalGenerator::SHELL);
+   }
+-  return "ninja";
++  return "ninja-build";
+ }
+ 
+ void cmGlobalNinjaGenerator::WriteTargetClean(std::ostream& os)

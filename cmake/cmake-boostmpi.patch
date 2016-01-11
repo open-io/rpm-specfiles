@@ -1,0 +1,67 @@
+commit a22eeca3fd7fe022e06001428d5e903913467fa0
+Author: Brad King <brad.king@kitware.com>
+Date:   Fri Feb 7 16:45:10 2014 -0500
+
+    FindBoost: Search next to MPI libraries for boost_mpi (#14739)
+    
+    Some distributions place boost_mpi next to the MPI libraries against
+    which it was built instead of next to the other Boost libraries.  If
+    find_package(MPI) has already been run prior to find_package(Boost) then
+    MPI_CXX_LIBRARIES or MPI_C_LIBRARIES may be set to the location of the
+    MPI libraries.  Teach FindBoost.cmake to look there for boost_mpi and
+    boost_mpi_python after looking next to the other Boost libraries but
+    not consider the location to be Boost_LIBRARY_DIR.
+
+diff --git a/Modules/FindBoost.cmake b/Modules/FindBoost.cmake
+index ae8baab..945694d 100644
+--- a/Modules/FindBoost.cmake
++++ b/Modules/FindBoost.cmake
+@@ -305,10 +305,15 @@ endmacro()
+ macro(_Boost_FIND_LIBRARY var)
+   find_library(${var} ${ARGN})
+ 
+-  # If we found the first library save Boost_LIBRARY_DIR.
+-  if(${var} AND NOT Boost_LIBRARY_DIR)
+-    get_filename_component(_dir "${${var}}" PATH)
+-    set(Boost_LIBRARY_DIR "${_dir}" CACHE PATH "Boost library directory" FORCE)
++  if(${var})
++    # If this is the first library found then save Boost_LIBRARY_DIR.
++    if(NOT Boost_LIBRARY_DIR)
++      get_filename_component(_dir "${${var}}" PATH)
++      set(Boost_LIBRARY_DIR "${_dir}" CACHE PATH "Boost library directory" FORCE)
++    endif()
++  elseif(_Boost_FIND_LIBRARY_HINTS_FOR_COMPONENT)
++    # Try component-specific hints but do not save Boost_LIBRARY_DIR.
++    find_library(${var} HINTS ${_Boost_FIND_LIBRARY_HINTS_FOR_COMPONENT} ${ARGN})
+   endif()
+ 
+   # If Boost_LIBRARY_DIR is known then search only there.
+@@ -935,6 +940,28 @@ foreach(COMPONENT ${Boost_FIND_COMPONENTS})
+   set( _boost_docstring_release "Boost ${COMPONENT} library (release)")
+   set( _boost_docstring_debug   "Boost ${COMPONENT} library (debug)")
+ 
++  # Compute component-specific hints.
++  set(_Boost_FIND_LIBRARY_HINTS_FOR_COMPONENT "")
++  if(${COMPONENT} STREQUAL "mpi" OR ${COMPONENT} STREQUAL "mpi_python")
++    foreach(lib ${MPI_CXX_LIBRARIES} ${MPI_C_LIBRARIES})
++      if(IS_ABSOLUTE "${lib}")
++        get_filename_component(libdir "${lib}" PATH)
++        string(REPLACE "\\" "/" libdir "${libdir}")
++        list(APPEND _Boost_FIND_LIBRARY_HINTS_FOR_COMPONENT ${libdir})
++      endif()
++    endforeach()
++  endif()
++
++  # Consolidate and report component-specific hints.
++  if(_Boost_FIND_LIBRARY_HINTS_FOR_COMPONENT)
++    list(REMOVE_DUPLICATES _Boost_FIND_LIBRARY_HINTS_FOR_COMPONENT)
++    if(Boost_DEBUG)
++      message(STATUS "[ ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE} ] "
++        "Component-specific library search paths for ${COMPONENT}: "
++        "${_Boost_FIND_LIBRARY_HINTS_FOR_COMPONENT}")
++    endif()
++  endif()
++
+   #
+   # Find RELEASE libraries
+   #
