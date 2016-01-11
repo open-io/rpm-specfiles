@@ -48,7 +48,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{?_with_test:0}%{!?_with_test:1}
 %{__python} setup.py install --root $RPM_BUILD_ROOT
 %else
-PBR_VERSION=0.5.2 %{__python} setup.py install --root $RPM_BUILD_ROOT
+PBR_VERSION=0.6.0 %{__python} setup.py install --root $RPM_BUILD_ROOT
 %endif
 
 %files
