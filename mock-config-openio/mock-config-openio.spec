@@ -1,5 +1,5 @@
 Name:           mock-config-openio
-Version:        1.1
+Version:        15.12.0
 Release:        1%{?dist}
 Summary:        Mock configuration file for building OpenIO packages
 
@@ -36,6 +36,8 @@ RHEL/CentOS distributions.
 
 
 %changelog
+* Tue Dec 29 2015 Romain Acciari <romain.acciari@openio.io> - 15.12.0-1%{?dist}
+- Update to 15.12
 * Wed Dec 02 2015 Romain Acciari <romain.acciari@openio.io> - 1.1-1%{?dist}
 - Add Fedora 23 support
 * Fri Nov 20 2015 Romain Acciari <romain.acciari@openio.io> - 1.0-1%{?dist}
