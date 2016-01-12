@@ -30,6 +30,7 @@ BuildRequires:  glib2-devel    >= 2.28.8
 BuildRequires:  libevent-devel >= 2.0
 %if 0%{?suse_version}
 BuildRequires:  systemd
+BuildRequires:  rsyslog
 %endif
 
 Requires:       glib2         >= 2.28.8
@@ -141,7 +142,7 @@ if [ $1 -eq 1 ] ; then
 else
    /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : 
 fi
-/usr/bin/systemctl reload-or-restart rsyslog.service
+/usr/bin/systemctl reload-or-restart rsyslog.service || : 
 %preun
 if [ $1 -eq 0 ] ; then 
   # Package removal, not upgrade 
@@ -154,7 +155,7 @@ if [ $1 -ge 1 ] ; then
   # Package upgrade, not uninstall 
   /usr/bin/systemctl try-restart gridinit.service >/dev/null 2>&1 || : 
 fi
-/usr/bin/systemctl reload-or-restart rsyslog.service
+/usr/bin/systemctl reload-or-restart rsyslog.service || : 
 
 %post utils
 /sbin/ldconfig
