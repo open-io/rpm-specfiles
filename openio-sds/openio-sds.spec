@@ -279,6 +279,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-conscience-agent
 %{_bindir}/%{cli_name}-cluster
 %{_bindir}/%{cli_name}-cluster-agent
+%{_bindir}/%{cli_name}-crawler-storage-tierer
 %{_bindir}/%{cli_name}-echo-server
 %{_bindir}/%{cli_name}-event-agent
 %{_bindir}/%{cli_name}-meta0-init
