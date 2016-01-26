@@ -1,12 +1,23 @@
 %define         realname gridinit
+
 Name:           openio-%{realname}
+%if %{?_with_test:0}%{!?_with_test:1}
 Version:        1.5
 Release:        1%{?dist}
-Summary:        OpenIO gridinit daemon
+%define         tarversion %{version}
+Source0:        https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
+%else
+%define         date %(date +"%Y%m%d%H%M")
+Version:        test%{date}.%{tag}
+Release:        0%{?dist}
+%define         tarversion %{tag}
+Source0:        https://github.com/open-io/gridinit/archive/%{tarversion}.tar.gz
+Epoch:          1
+%endif
 
+Summary:        OpenIO gridinit daemon
 License:        AGPLv3
 #URL:
-Source0:        https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
 Source1:        %{realname}.systemd
 Source2:        %{name}.tmpfiles
 Source3:        %{name}-rsyslog.conf
@@ -23,7 +34,12 @@ BuildRequires:  systemd
 
 Requires:       glib2         >= 2.28.8
 Requires:       libevent      >= 2.0
+%if %{?_with_test:0}%{!?_with_test:1}
 Requires:       %{name}-utils  = %{version}
+%else
+Requires:       %{name}-utils  = 1:%{version}
+%endif
+# SuSe requires
 %if 0%{?suse_version}
 Requires:  systemd
 %endif
@@ -47,13 +63,17 @@ internally used by the gridinit process.
 %package        devel
 Summary:        Grid Init devel headers
 License:        GPL v3
-Requires:       %{name}-utils
+%if %{?_with_test:0}%{!?_with_test:1}
+Requires:       %{name}-utils  = %{version}
+%else
+Requires:       %{name}-utils  = 1:%{version}
+%endif
 %description    devel
 Devel files for OpenIO gridinit.
 
 
 %prep
-%setup -q -n %{realname}-%{version}
+%setup -q -n %{realname}-%{tarversion}
 
 
 %build
