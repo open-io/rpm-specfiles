@@ -1,13 +1,16 @@
 %define		realname asn1c
 
 Name:		openio-%{realname}
-Version:	0.9.27
+Version:	0.9.27.1
 Release:	1%{?dist}
 Summary:	Free, Open Source ASN.1 compiler
 
 License:	BSD
 URL:		http://lionet.info/asn1c
-Source0:	http://lionet.info/soft/asn1c-%{version}.tar.gz
+Source0:	https://github.com/open-io/asn1c/archive/v%{version}.tar.gz
+%if 0%{?suse_version}
+Source1:	%{name}-rpmlintrc
+%endif
 
 BuildRequires:	autoconf,automake,libtool
 #Requires:	
@@ -19,12 +22,12 @@ CXER, EXTENDED-XER, PER.
 
 
 %prep
-%setup -q
+%setup -q -n %{realname}-%{version}
 autoreconf -iv
 
 
 %build
-%configure
+%configure --docdir=%{_defaultdocdir}
 make %{?_smp_mflags}
 
 
@@ -32,7 +35,10 @@ make %{?_smp_mflags}
 make install DESTDIR=%{buildroot}
 
 %{__rm} -rf $RPM_BUILD_ROOT/%{_libdir}/*.la # Clean useless files
-%{__mv} $RPM_BUILD_ROOT/%{_defaultdocdir}/%{realname} \
+
+# --docdir option is broken
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_defaultdocdir}
+%{__mv} $RPM_BUILD_ROOT/%{_datadir}/doc/%{realname} \
         $RPM_BUILD_ROOT/%{_defaultdocdir}/%{name}-%{version}
 
 %files
@@ -46,5 +52,8 @@ make install DESTDIR=%{buildroot}
 
 
 %changelog
+* Sun Jan 31 2016 Florent Venntier <florent.vennetier@openio.io> - 0.9.27.1-1
+- Compile custom OpenIO version
+
 * Tue Feb 03 2015 Romain Acciari <romain.acciari@openio.io> - 0.9.27-1
 - Initial release

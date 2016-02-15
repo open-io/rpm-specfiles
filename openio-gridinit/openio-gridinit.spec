@@ -16,12 +16,15 @@ Epoch:          1
 %endif
 
 Summary:        OpenIO gridinit daemon
-License:        AGPLv3
+License:        AGPL-3.0+
 #URL:
 Source1:        %{realname}.systemd
 Source2:        %{name}.tmpfiles
 Source3:        %{name}-rsyslog.conf
 Source4:        %{name}-logrotate.conf
+%if 0%{?suse_version}
+Source5:        %{name}-rpmlintrc
+%endif
 
 # Requires
 BuildRequires:  autoconf,automake,libtool
@@ -30,6 +33,7 @@ BuildRequires:  glib2-devel    >= 2.28.8
 BuildRequires:  libevent-devel >= 2.0
 %if 0%{?suse_version}
 BuildRequires:  systemd
+BuildRequires:  rsyslog
 %endif
 
 Requires:       glib2         >= 2.28.8
@@ -54,7 +58,7 @@ OpenIO gridinit is a fork of Redcurrant gridinit, from Worldline by Atos.
 
 %package        utils
 Summary:        Grid Init utilities libraries
-License:        GPL v3
+License:        AGPL-3.0+
 Requires:       glib2 >= 2.28.8
 %description	utils
 C code library with children processes management features. This library is
@@ -62,7 +66,7 @@ internally used by the gridinit process.
 
 %package        devel
 Summary:        Grid Init devel headers
-License:        GPL v3
+License:        AGPL-3.0+
 %if %{?_with_test:0}%{!?_with_test:1}
 Requires:       %{name}-utils  = %{version}
 %else
@@ -121,17 +125,18 @@ make DESTDIR=%{buildroot} install
 %dir %{_sysconfdir}/%{realname}
 %config(noreplace) %{_sysconfdir}/%{realname}/*
 %{_prefix}/lib/tmpfiles.d/*
-/run/%{realname}
-%{_sysconfdir}/rsyslog.d/*
-%{_sysconfdir}/logrotate.d/*
+%ghost /run/%{realname}
+%config %{_sysconfdir}/rsyslog.d/*
+%config %{_sysconfdir}/logrotate.d/*
 
 %files utils
 %defattr(-,root,root,-)
-%{_libdir}/libgridinit-utils.*
+%{_libdir}/libgridinit-utils.so.*
 
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/*.h
+%{_libdir}/libgridinit-utils.so
 
 
 %post
@@ -141,7 +146,7 @@ if [ $1 -eq 1 ] ; then
 else
    /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : 
 fi
-/usr/bin/systemctl reload-or-restart rsyslog.service
+/usr/bin/systemctl reload-or-restart rsyslog.service || : 
 %preun
 if [ $1 -eq 0 ] ; then 
   # Package removal, not upgrade 
@@ -154,7 +159,7 @@ if [ $1 -ge 1 ] ; then
   # Package upgrade, not uninstall 
   /usr/bin/systemctl try-restart gridinit.service >/dev/null 2>&1 || : 
 fi
-/usr/bin/systemctl reload-or-restart rsyslog.service
+/usr/bin/systemctl reload-or-restart rsyslog.service || : 
 
 %post utils
 /sbin/ldconfig
