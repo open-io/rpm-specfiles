@@ -12,7 +12,7 @@ BuildArch:	noarch
 #BuildRequires:	
 Requires:	puppet            >= 3.6
 
-Provides:       puppet-keepalaived = %{version}
+Provides:       puppet-keepalived = %{version}
 
 %description
 Puppet module to install arioch keepalived for OpenIO SDS solution.
