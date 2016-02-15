@@ -1,4 +1,4 @@
-Name:		puppet-gridinit
+Name:		puppet-keepalived
 Version:	1.2.3
 Release:	1%{?dist}
 Summary:	Puppet module for keepalived by arioch for OpenIO SDS
@@ -11,14 +11,15 @@ BuildArch:	noarch
 
 #BuildRequires:	
 Requires:	puppet            >= 3.6
-Requires:       puppetlabs-stdlib >= 4.6.0
+
+Provides:       puppet-keepalaived = %{version}
 
 %description
 Puppet module to install arioch keepalived for OpenIO SDS solution.
 
 
 %prep
-%setup -q -n puppet-keepalived-%{version}
+%setup -q -n arioch-keepalived-%{version}
 
 
 %build
