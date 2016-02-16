@@ -11,6 +11,7 @@ BuildArch:	noarch
 
 #BuildRequires:	
 Requires:	puppet            >= 3.6
+Requires:	puppet-concat     >= 2.1
 
 Provides:       puppet-keepalived = %{version}
 
