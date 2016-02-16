@@ -3,9 +3,8 @@ Version:	2.1.0
 Release:	1%{?dist}
 Summary:	Concat puppet module for openio
 
-Group:		openio
 License:	Apache 2.0
-URL:		http://www.openio.io/
+URL:		http://www.puppetlabs.com/	
 Source0:	https://github.com/puppetlabs/puppetlabs-concat/archive/%{version}.tar.gz
 BuildArch:	noarch
 
@@ -15,7 +14,7 @@ Requires:	puppet            >= 3.6
 Provides:       puppet-concat = %{version}
 
 %description
-Concat Puppet module for OpenIO SDS solution.
+Concat Puppet module.
 The concat module lets you construct files from multiple ordered fragments of text.
 
 
