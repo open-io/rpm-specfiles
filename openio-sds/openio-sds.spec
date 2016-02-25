@@ -45,7 +45,6 @@ BuildRequires:  libevent-devel           >= 2.0
 %endif
 BuildRequires:  httpd-devel              >= 2.2
 BuildRequires:  lzo-devel                >= 2.0
-BuildRequires:  openio-gridinit-devel
 BuildRequires:  openio-asn1c             >= 0.9.27
 BuildRequires:  cmake,bison,flex
 BuildRequires:  librain-devel
@@ -106,7 +105,6 @@ BuildRequires:  libevent           >= 2.0
 %endif
 Requires:       leveldb
 Requires:       lzo                >= 2.0
-Requires:       openio-gridinit-utils
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
 Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests,python-plyvel,PyYAML
