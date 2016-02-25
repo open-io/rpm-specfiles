@@ -5,7 +5,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.0.1
+Version:        1.1.rc0
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -108,8 +108,8 @@ Requires:       leveldb
 Requires:       lzo                >= 2.0
 Requires:       openio-gridinit-utils
 Requires:       openio-asn1c       >= 0.9.27
-Requires:       python-gunicorn    >= 19.0
-Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests,python-plyvel
+Requires:       python-gunicorn    >= 19.4.5
+Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests,python-plyvel,PyYAML
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
 %description server
@@ -201,6 +201,7 @@ cmake \
   -DMOCKS=1 \
   -DSOCKET_OPTIMIZED=1 \
   -DSTACK_PROTECTOR=1 \
+  -DOIOSDS_RELEASE=%{version} \
   "-DGCLUSTER_AGENT_SOCK_PATH=\"/run/oio/sds/sds-agent-0.sock\"" \
   .
 
@@ -288,21 +289,16 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-meta1-server
 %{_bindir}/%{cli_name}-meta2-server
 %{_bindir}/%{cli_name}-meta1-client
-%{_bindir}/%{cli_name}-proxy-monitor.py
 %{_bindir}/%{cli_name}-rawx-compress
 %{_bindir}/%{cli_name}-rawx-uncompress
-%{_bindir}/%{cli_name}-rdir-monitor.py
 %{_bindir}/%{cli_name}-rdir-server
-%{_bindir}/%{cli_name}-redis-monitor.py
 %{_bindir}/%{cli_name}-sqlx
 %{_bindir}/%{cli_name}-sqlx-server
-%{_bindir}/%{cli_name}-svc-monitor
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
 %{_bindir}/zk-bootstrap.py*
 %{python_sitelib}/oio*
 /usr/lib/tmpfiles.d/openio-sds.conf
-%{_bindir}/%{cli_name}-account-monitor.py
 
 %files common-devel
 %defattr(-,root,root,-)
@@ -312,12 +308,10 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %files mod-httpd
 %defattr(755,root,root,-)
 %{_libdir}/httpd/modules/mod_dav_rawx.so*
-%{_bindir}/%{cli_name}-rawx-monitor.py
 
 %files mod-httpd-rainx
 %defattr(755,root,root,-)
 %{_libdir}/httpd/modules/mod_dav_rainx.so*
-%{_bindir}/%{cli_name}-rainx-monitor.py
 
 %files tools
 %defattr(755,root,root,-)
@@ -350,90 +344,61 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Thu Feb 25 2016 - 1.1.rc0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Mon Dec 14 2015 - 1.0.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
-- Renamed client-devel to common-devel
+- Renamed package client-devel to common-devel
 * Tue Dec 01 2015 - 1.0.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release 1.0.0
 * Wed Sep 16 2015 - 0.8.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- New release
+- Bugfix release
 * Mon Sep 14 2015 - 0.8.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- New release
+- Bugfix release
 * Thu Sep 10 2015 - 0.8.1-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Add STACK_PROTECTOR flag
-- Require json-c >= 0.12
+- Bugfix release
 * Wed Sep 02 2015 - 0.8.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
 * Fri Aug 28 2015 - 0.8.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
 - Remove Net-SNMP package
-- Add new files
 * Fri Jul 03 2015 - 0.7.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Accounts autocreation
-- Various minor fixes and improvements (debug traces, error reporting)
+- Bugfix release
 * Tue Jun 30 2015 - 0.7.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- proxy: fixed flag detection
-- svc-monitor: lighter traces
-- cmake: SDK_ONLY directive
+- Bugfix release
 * Tue Jun 30 2015 - 0.7.4-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Obsoletes intregrityloop
+- Remove integrityloop package
 * Mon Jun 29 2015 - 0.7.4-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- event-agent improvements
-- proxy evolution for more adaptation with the future Swift interop.
-- SDK fixes
-- server fixes
+- Bugfix release
 * Mon Jun 22 2015 - 0.7.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- proxy: fixed listing of containers: the delimiter behavior was broken
-- gridagent: Fixed timeout management: uses monotonic clock with millisecond precision
-- sdk: improved
+- Bugfix release
 * Wed Jun 17 2015 - 0.7.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Merge pull request #55 from jkasarherou/master
+- Bugfix release
 * Wed Jun 17 2015 - 0.7.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Merge pull request #53 from jfsmig/master
-- SDK improvements, better access logs, svc-monitor fixed.
+- Bugfix release
 * Tue Jun 09 2015 - 0.7-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Removed useless BuildRequires
 - Add python dependencies in server
 * Thu May 28 2015 - 0.6.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Fixed logging
+- Bugfix release
 * Tue May 26 2015 - 0.6.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Minor changes destined to help integrate OIO SDS's C client in external applications.
+- Bugfix release
 * Sun May 17 2015 - 0.6.4-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- metautils: fixed memory leaks when extracting message bodies.
+- Bugfix release
 * Fri May 15 2015 - 0.6.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Memleaks fixed in: oio-proxy,oio-meta1-server
+- Bugfix release
 * Wed May 13 2015 - 0.6.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- The memleaks concerned every sqliterepo-based services : meta0, meta1, meta2, sqlx.
+- Bugfix release
 * Tue May 12 2015 - 0.6.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- M2V2 felt when deleting content properties (while setting a property with an empty value)
+- Bugfix release
 * Mon May 11 2015 - 0.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Bump to 0.6
+- New release
 * Fri Apr 24 2015 - 0.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Merge pull request #14 from jfsmig/master
-- m2v2: uses ZMQ 3.X instead of ZMQ 4.X
+- New release
 * Thu Apr 09 2015 - 0.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Update to 0.3
+- New release
 * Wed Mar 25 2015 - 0.2.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- m2v2: disables checks upon PUT and UPDATE
+- Bugfix release
 * Thu Mar 19 2015 - 0.2.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Fix meta1 error
-* Wed Mar 18 2015 - 20150318-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Cleaned the spec
-- Add tmpfiles
-* Fri Mar 13 2015 - 20150313-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Daily update
-* Thu Mar 12 2015 - 20150312-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Just another daily release
-* Wed Mar 11 2015 - 20150311-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Fix other hardcoded paths
-- Fix tools permissions
-* Tue Mar 10 2015 - 20150310-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Fix agent sock path
-- Many other fixes
-* Fri Mar 06 2015 - 20150306-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Fix directories, user and group in spec file
-* Fri Mar 06 2015 - 20150306-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Fix meta1 replication
-- Update to current development
-* Mon Feb 02 2015 - 20150202-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Initial release
