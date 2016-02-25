@@ -1,17 +1,30 @@
+%define tarname librain
+
 Name:		openio-sds-librain
-Version:	0.8
-Release:	1%{?dist}
-Summary:	Rain library for OpenIO SDS solution
 
-Group:		openio
-License:	MIT
-URL:		https://mirrors.atosworldline.com/external/
-Source0:	%{name}-%{version}.tar.bz2
-BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+%if %{?_with_test:0}%{!?_with_test:1}
+Version:        0.8
+Release:        1%{?dist}
+%define         tarversion %{version}
+Source0:        https://github.com/open-io/librain/archive/%{tarversion}.tar.gz
+%else
+# Testing purpose only. Do not modify.
+%define         date %(date +"%Y%m%d%H%M")
+Version:        test%{date}.%{tag}
+Release:        0%{?dist}
+%define         tarversion %{tag}
+Source0:        https://github.com/open-io/librain/archive/%{tarversion}.tar.gz
+Epoch:          1
+%endif
+
+Summary:        Rain library for OpenIO SDS solution
+License:        MIT
+URL:            https://github.com/open-io/librain/
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 
-BuildRequires: cmake
-BuildRequires: jerasure-devel
+BuildRequires:  cmake
+BuildRequires:  jerasure-devel
 
 %description
 A Library in C/C++ Facilitating Erasure Coding for Storage Applications.
@@ -27,7 +40,7 @@ Header files for OpenIO SDS RAIN library.
 
 
 %prep
-%setup -q
+%setup -q -n %{tarname}-%{tarversion}
 sed -i -e "s@jerasure/jerasure.h@jerasure.h@g" librain.c
 
 

@@ -24,12 +24,12 @@ URL:            http://www.openio.io/
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
+BuildRequires:	python-pbr >= 0.11
 Requires:       python-eventlet >= 0.15.2
 Requires:       python-requests
 Requires:       python-cliff-tablib
 Requires:       python-cliff >= 1.13
 Requires:	python-tablib
-Requires:	python-pbr >= 0.11
 
 Obsoletes:	python-openio-sds-client
 

@@ -11,8 +11,8 @@
 %global with_tests   %{?_with_tests:1}%{!?_with_tests:0}
 
 Name:              redis
-Version:           3.0.6
-Release:           3%{?dist}
+Version:           3.0.7
+Release:           1%{?dist}
 Summary:           A persistent key-value database
 License:           BSD
 URL:               http://redis.io
@@ -243,6 +243,9 @@ fi
 
 
 %changelog
+* Mon Feb 22 2016 Romain Acciari <romain.acciari@openio.io> - 3.0.7-1
+- Upstream 3.0.7
+
 * Mon Feb  8 2016 Haïkel Guémar <hguemar@fedoraproject.org> - 3.0.6-3
 - Fix redis-shutdown to handle password-protected instances shutdown
 

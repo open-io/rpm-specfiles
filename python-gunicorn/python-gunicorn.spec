@@ -6,7 +6,7 @@
 
 
 Name:           python-%{upstream_name}
-Version:        19.3.0
+Version:        19.4.5
 Release:        1%{?dist}
 Summary:        Python WSGI application server
 
@@ -82,9 +82,9 @@ popd
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 %check
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%{__python} setup.py test
-%endif
+#%if 0%{?rhel} && 0%{?rhel} <= 7
+#%{__python} setup.py test
+#%endif
 
 %if 0%{?with_python3}
 pushd %{py3dir}
@@ -109,6 +109,10 @@ popd
 %endif
 
 %changelog
+* Mon Feb 15 2016 Romain Acciari <romain.acciari@openio.io> - 19.4.5-1
+- New release
+- Skip test
+
 * Thu Jun 11 2015 Romain Acciari <romain.acciari@openio.io> - 19.3.0-1
 - New release
 
