@@ -15,11 +15,11 @@
 
 Summary:        Protocol Buffers - Google's data interchange format
 Name:           protobuf
-Version:        3.0.0_beta_1
+Version:        3.0.0_beta_2
 Release:        1%{?dist}
 License:        BSD
 Group:          Development/Libraries
-Source0:        https://github.com/google/protobuf/archive/v3.0.0-beta-1.tar.gz
+Source0:        https://github.com/google/protobuf/archive/v3.0.0-beta-2.tar.gz
 Source1:        ftdetect-proto.vim
 Source2:        protobuf-init.el
 Patch0:         protobuf-2.5.0-emacs-24.4.patch
@@ -182,7 +182,7 @@ This package contains the API documentation for %{name}-java.
 %endif
 
 %prep
-%setup -q -n %{name}-3.0.0-beta-1
+%setup -q -n %{name}-3.0.0-beta-2
 %patch0 -p1 -b .emacs
 %if %{with gtest}
 rm -rf gtest
@@ -326,7 +326,10 @@ install -p -m 0644 %{SOURCE2} $RPM_BUILD_ROOT%{emacs_startdir}
 %endif
 
 %changelog
-* Fri Dec 18 2015 Romain Acciari <romain.acciari@openio.io> - 3.0.0-beta1-1-1
+* Fri Dec 18 2015 Romain Acciari <romain.acciari@openio.io> - 3.0.0_beta_2-1
+- Update to 3.0.0-beta-2
+
+* Fri Dec 18 2015 Romain Acciari <romain.acciari@openio.io> - 3.0.0_beta1_1-1
 - Update to 3.0.0-beta1-1
 
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.6.1-2
