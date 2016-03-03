@@ -4,7 +4,7 @@
 Name:           python-oiopy
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.7.0
+Version:        0.7.1
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://pypi.python.org/packages/source/o/oiopy/oiopy-%{tarversion}.tar.gz
@@ -57,6 +57,8 @@ PBR_VERSION=0.6.0 %{__python} setup.py install --root $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 03 2016 Romain Acciari <romain.acciari@openio.io> - 0.7.1-1%{?dist}
+- New release
 * Fri Feb 26 2016 Romain Acciari <romain.acciari@openio.io> - 0.7.0-1%{?dist}
 - New release
 * Tue Dec 01 2015 Romain Acciari <romain.acciari@openio.io> - 0.6-1%{?dist}
