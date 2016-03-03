@@ -2,7 +2,7 @@
 
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.5
+Version:        1.6
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
@@ -168,6 +168,8 @@ fi
 
 
 %changelog
+* Mon Feb 29 2016 - 1.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Wed Nov 25 2015 - 1.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Fix GCC version detection
 - Fix default socket path
