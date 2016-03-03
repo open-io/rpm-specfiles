@@ -5,7 +5,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.1.rc0
+Version:        2.0.0.c1
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -342,6 +342,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Thu Mar 03 2016 - 2.0.0.c1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Thu Feb 25 2016 - 1.1.rc0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Mon Dec 14 2015 - 1.0.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
