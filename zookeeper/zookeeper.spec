@@ -3,12 +3,12 @@
 
 Summary: High-performance coordination service for distributed applications.
 Name: zookeeper
-Version: 3.4.6
-Release: 2%{?dist}
+Version: 3.4.8
+Release: 1%{?dist}
 License: Apache License v2.0
 Group: Applications/Databases
 URL: http://hadoop.apache.org/zookeeper/
-Source0: http://www.apache.org/dyn/closer.cgi/hadoop/zookeeper/zookeeper-%{version}/zookeeper-%{version}.tar.gz
+Source0: http://www-us.apache.org/dist/zookeeper/zookeeper-%{version}/zookeeper-%{version}.tar.gz
 Source1: zookeeper.init
 Source2: zookeeper.logrotate
 Source3: zoo.cfg
@@ -202,24 +202,5 @@ if [ "$1" -ge "1" ] ; then
 fi
 
 %changelog
-* Tue Oct 07 2012 Romain Acciari <romain.acciari@atos.net> - 3.4.6-2
-- Remove el5 support
-- Rename packages as in Fedora
-* Tue Oct 07 2012 Romain Acciari <romain.acciari@atos.net> - 3.4.6-1
-- Bump to 3.4.6
-- Fix python2.6 for el5
-* Mon Apr 23 2012 Remi Nivet <remi.nivet@atos.net> - 3.4.3-4
-- Add python 2.6 pkg on CentOS 5
-* Tue Mar 13 2012 Romain Acciari <romain.acciari@tos.net> - 3.4.3-3
-- Fix stop level to happen latter than other services
-* Fri Feb 17 2012 Romain Acciari <romain.acciari@tos.net> - 3.4.3-2
-- Rewrite spec to be a bit cleaner
-- Install stuff in the right place
-* Fri Feb 17 2012 Romain Acciari <romain.acciari@tos.net> - 3.4.3-1
-- Try new branch 3.4 with log and snapshot cleaning
-* Thu Feb 16 2012 Romain Acciari <romain.acciari@atos.net> - 3.3.3-1
-- Test with another release
-* Mon Jan 30 2012 Romain Acciari <romain.acciari@atos.net> - 3.3.4-1
-- New release
-* Fri Nov 12 2010 Daniel Lundin <dln@eintr.org> - 3.3.2-2
-- Update to 3.3.2
+* Wed Mar 16 2016 Romain Acciari <romain.acciari@openio.io> - 3.4.8-1
+- Initial release

@@ -3,7 +3,7 @@
 Name:		openio-sds-librain
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.8
+Version:        1.0.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/librain/archive/%{tarversion}.tar.gz
@@ -71,5 +71,7 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Mon Feb 02 2015 - 0.8-1 - Romain Acciari <romain.acciari@openio.io>
+* Mon Mar 14 2016 - Romain Acciari <romain.acciari@openio.io> - 1.0.0-1
+- New release
+* Mon Feb 02 2015 - Romain Acciari <romain.acciari@openio.io> - 0.8-1
 - Initial release

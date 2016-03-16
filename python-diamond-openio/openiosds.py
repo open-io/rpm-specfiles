@@ -50,7 +50,7 @@ class OpenIOSDSCollector(diamond.collector.Collector):
         """
         config = super(OpenIOSDSCollector, self).get_default_config()
         config.update({
-            'path':     'openio',
+            'path': 'openio',
             # Namespaces
             'namespaces': ['OPENIO'],
         })
@@ -69,7 +69,7 @@ class OpenIOSDSCollector(diamond.collector.Collector):
         for ns in namespaces:
             config = oiopy.utils.load_sds_conf(ns)
             if not config:
-              self.log.error('No configuration not found for namespace '+ns)
+              self.log.error('No configuration found for namespace '+ns)
               continue
             proxy = config['proxy']
             self.get_stats(http,ns,proxy)
@@ -77,23 +77,20 @@ class OpenIOSDSCollector(diamond.collector.Collector):
 
     def get_stats(self, http, namespace, proxy):
 
-        service_types = http.request('GET', proxy+'/v3.0/'+namespace+'/conscience/info?what=types')
-        service_types = ast.literal_eval(service_types.data)
-        for srv_type in service_types:
-            services = http.request('GET', proxy+'/v3.0/'+namespace+'/conscience/list?type='+srv_type)
-            services = json.loads(services.data)
-            for s in services:
-                 metric_name = srv_type+'.'+string.replace(s['addr'],'.','_')+'.score'
-                 metric_value = self.cast_str(s['score'])
-                 if not isinstance(metric_value, basestring):
-                     self.publish(metric_name, metric_value)
-                 if srv_type == 'rawx':
-                     self.get_rawx_stats(http,s['addr'])
-                 elif srv_type == 'meta2':
-                     self.get_gridd_stats(http,proxy,s['addr'],srv_type)
+        services = http.request('GET', proxy+'/v3.0/'+namespace+'/local/list')
+        services = json.loads(services.data)
+        for s in services:
+            metric_name = namespace+'.'+s['type']+'.'+string.replace(s['addr'],'.','_')+'.score'
+            metric_value = self.cast_str(s['score'])
+            if not isinstance(metric_value, basestring):
+                self.publish(metric_name, metric_value)
+            if s['type'] == 'rawx':
+                self.get_rawx_stats(http,s['addr'],namespace)
+            elif s['type'] == 'meta2':
+                self.get_gridd_stats(http,proxy,s['addr'],namespace,s['type'])
 
 
-    def get_rawx_stats(self,http,addr,srv_type='rawx'):
+    def get_rawx_stats(self,http,addr,namespace,srv_type='rawx'):
         stat = http.request('GET', addr+'/stat')
         for m in (stat.data).split('\n'):
             if not m:
@@ -101,11 +98,11 @@ class OpenIOSDSCollector(diamond.collector.Collector):
             metric_type, metric_name, metric_value = m.split(' ')
             metric_value = self.cast_str(metric_value)
             if not isinstance(metric_value, basestring):
-                metric_name = srv_type+'.'+string.replace(addr,'.','_')+'.'+metric_name
+                metric_name = namespace+'.'+srv_type+'.'+string.replace(addr,'.','_')+'.'+metric_name
                 self.publish(metric_name, metric_value,metric_type=metric_type.upper())
 
 
-    def get_gridd_stats(self,http,proxy,addr,srv_type):
+    def get_gridd_stats(self,http,proxy,addr,namespace,srv_type):
         stat = http.request('POST', proxy+'/v3.0/forward/stats?id='+addr)
         for m in (stat.data).split('\n'):
             if not m:
@@ -113,7 +110,7 @@ class OpenIOSDSCollector(diamond.collector.Collector):
             metric_type, metric_name, metric_value = m.split(' ')
             metric_value = self.cast_str(metric_value)
             if not isinstance(metric_value, basestring):
-                metric_name = srv_type+'.'+string.replace(addr,'.','_')+'.'+metric_name
+                metric_name = namespace+'.'+srv_type+'.'+string.replace(addr,'.','_')+'.'+metric_name
                 self.publish(metric_name, metric_value,metric_type=metric_type.upper())
 
 

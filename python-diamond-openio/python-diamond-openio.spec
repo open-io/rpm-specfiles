@@ -1,5 +1,5 @@
 Name:           python-diamond-openio
-Version:        0.1
+Version:        0.2
 Release:        1%{?dist}
 Summary:        Diamond collector for OpenIO SDS
 
@@ -31,5 +31,7 @@ Diamond collector for OpenIO SDS object storage solution.
 
 
 %changelog
+* Wed Mar 02 2016 Romain Acciari <romain.acciari@openio.io> - 0.2-1%{?dist}
+- New release
 * Fri Jan 29 2016 Romain Acciari <romain.acciari@openio.io> - 0.1-1%{?dist}
 - Initial release
