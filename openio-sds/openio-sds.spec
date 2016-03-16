@@ -206,14 +206,14 @@ cmake \
 make %{?_smp_mflags}
 
 # Build python
-(cd python; PBR_VERSION=0.0.1 %{__python} setup.py build)
+PBR_VERSION=0.0.1 %{__python} setup.py build
 
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-(cd python; PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT)
+PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 
 # Install OpenIO SDS directories
@@ -228,7 +228,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 
 
 %files common
-%defattr(755,root,root,-)
+%defattr(755,root,root,755)
 %{_libdir}/libgridcluster-conscience.so*
 %{_libdir}/libgridcluster.so*
 %{_libdir}/libhcresolve.so*
@@ -256,8 +256,7 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %dir %{_datarootdir}/%{name}-%{version}
 
 %files server
-%defattr(-,root,root,-)
-%defattr(755,root,root,-)
+%defattr(755,root,root,755)
 %{_libdir}/grid/msg_conscience.so*
 %{_libdir}/grid/msg_fallback.so*
 %{_libdir}/grid/msg_ping.so*
@@ -277,7 +276,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-blob-rebuilder
 %{_bindir}/%{cli_name}-conscience-agent
 %{_bindir}/%{cli_name}-cluster
-%{_bindir}/%{cli_name}-cluster-agent
 %{_bindir}/%{cli_name}-crawler-storage-tierer
 %{_bindir}/%{cli_name}-echo-server
 %{_bindir}/%{cli_name}-event-agent
@@ -295,27 +293,31 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
 %{_bindir}/zk-bootstrap.py*
+%defattr(644,root,root,755)
 %{python_sitelib}/oio*
 /usr/lib/tmpfiles.d/openio-sds.conf
 
 %files common-devel
-%defattr(-,root,root,-)
+%defattr(644,root,root,755)
 %{_prefix}/include/*
 %{_libdir}/pkgconfig/oio-sds.pc
 
 %files mod-httpd
-%defattr(755,root,root,-)
+%defattr(755,root,root,755)
 %{_libdir}/httpd/modules/mod_dav_rawx.so*
 
 %files mod-httpd-rainx
-%defattr(755,root,root,-)
+%defattr(755,root,root,755)
 %{_libdir}/httpd/modules/mod_dav_rainx.so*
 
 %files tools
-%defattr(755,root,root,-)
+%defattr(755,root,root,755)
 %{_bindir}/%{cli_name}-bootstrap.py
 %{_bindir}/%{cli_name}-reset.sh
 %{_bindir}/zk-reset.py
+%{_bindir}/%{cli_name}-test-config.py
+%{_bindir}/%{cli_name}-unlock-all.sh
+%{_bindir}/%{cli_name}-wait-scored.sh
 
 
 %pre common
@@ -342,6 +344,10 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Thu Mar 16 2016 - 2.0.0.c2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
+- Fix %defattr warnings
+- Add files
 * Thu Mar 03 2016 - 2.0.0.c1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Feb 25 2016 - 1.1.rc0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
