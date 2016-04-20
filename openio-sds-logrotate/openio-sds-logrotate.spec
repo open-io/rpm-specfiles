@@ -31,7 +31,7 @@ This package contains logrotate configuration for the OpenIO SDS solution.
 
 
 %changelog
-* Wed Apr 20 2016 - 1.2-1 - Sebastien Lapierre <sebastien.lapierre@openio.io>
+* Wed Apr 20 2016 - 1.3-1 - Sebastien Lapierre <sebastien.lapierre@openio.io>
 - Fix deleted file symptom for http-errors.log
 * Fri Mar 18 2016 - 1.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Add event, account, rdir
