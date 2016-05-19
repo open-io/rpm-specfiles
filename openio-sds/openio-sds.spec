@@ -5,7 +5,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.0.0.c1
+Version:        2.0.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -344,14 +344,18 @@ fi
 /sbin/ldconfig
 
 %changelog
-* Thu Mar 16 2016 - 2.0.0.c2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Apr 19 2016 - 2.0.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
+* Fri Apr 15 2016 - 2.0.0.c3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release candidate
+* Wed Mar 16 2016 - 2.0.0.c2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release candidate
 - Fix %defattr warnings
 - Add files
 * Thu Mar 03 2016 - 2.0.0.c1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- New release
+- New release candidate (change major version)
 * Thu Feb 25 2016 - 1.1.rc0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- New release
+- New release cadidate
 * Mon Dec 14 2015 - 1.0.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Renamed package client-devel to common-devel
