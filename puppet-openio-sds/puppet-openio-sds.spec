@@ -1,5 +1,5 @@
 Name:           puppet-openio-sds
-Version:        1.1.38
+Version:        1.1.41
 Release:        1%{?dist}
 Summary:        Puppet module for OpenIO SDS solution
 
@@ -37,6 +37,10 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Fri May 13 2016 - 1.1.41-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Tue Apr 26 2016 - 1.1.39-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Fri Apr 15 2016 - 1.1.38-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Mar 25 2016 - 1.1.26-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
