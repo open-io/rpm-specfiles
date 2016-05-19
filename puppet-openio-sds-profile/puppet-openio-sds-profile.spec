@@ -35,6 +35,8 @@ Puppet manifests to install OpenIO SDS solution using Vagrant.
 
 
 %changelog
+* Sun Apr 17 2016 - 20160417-1 - Romain Acciari <romain.acciari@openio.io>
+- Prepare for 16.04 release
 * Tue Dec 08 2015 - 20151208-1 - Romain Acciari <romain.acciari@openio.io>
 - Fixes for Fedora 23
 - Update minimal profile
