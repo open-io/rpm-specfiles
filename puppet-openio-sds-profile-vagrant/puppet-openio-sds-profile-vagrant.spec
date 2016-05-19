@@ -6,7 +6,8 @@ Summary:	OpenIO profile for Vagrant deployment
 Group:		openio
 License:	Apache 2.0
 URL:		http://www.openio.io/
-Source0:	https://github.com/open-io/puppet-openiosds-profile-vagrant/archive/master.tar.gz
+#Source0:	https://github.com/open-io/puppet-openiosds-profile-vagrant/archive/master.tar.gz
+Source0:	https://github.com/racciari/puppet-openiosds-profile-vagrant/archive/master.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
@@ -25,16 +26,18 @@ OpenIO profile using Puppet to configure a Vagrant box.
 
 
 %install
-%{__mkdir_p} $RPM_BUILD_ROOT/%{_datarootdir}/puppet/modules/openiosds/profiles/vagrant
-%{__cp} -a * $RPM_BUILD_ROOT/%{_datarootdir}/puppet/modules/openiosds/profiles/vagrant
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_datarootdir}/puppet/modules/openiosds/profiles
+%{__cp} -a vagrant* $RPM_BUILD_ROOT/%{_datarootdir}/puppet/modules/openiosds/profiles/
 
 
 %files
 %defattr(-,root,root,-)
-%{_datarootdir}/puppet/modules/openiosds/profiles/vagrant
+%{_datarootdir}/puppet/modules/openiosds/profiles/*
 
 
 %changelog
+* Sun Apr 17 2016 - 20160417-1 - Romain Acciari <romain.acciari@openio.io>
+- Prepare for 16.04 release
 * Thu Aug 20 2015 - 20150820-1 - Romain Acciari <romain.acciari@openio.io>
 - Fix for puppet-openiosds
 * Wed Jul 22 2015 - 20150722-1 - Romain Acciari <romain.acciari@openio.io>
