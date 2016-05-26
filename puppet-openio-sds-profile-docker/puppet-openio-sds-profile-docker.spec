@@ -6,7 +6,7 @@ Summary:	OpenIO profile for Docker
 Group:		openio
 License:	Apache 2.0
 URL:		http://www.openio.io/
-Source0:	https://github.com/open-io/puppet-openiosds-profile-docker/archive/master.tar.gz
+Source0:	https://github.com/racciari/puppet-openiosds-profile-docker/archive/master.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
@@ -25,16 +25,18 @@ OpenIO profile using Puppet for Docker.
 
 
 %install
-%{__mkdir_p} $RPM_BUILD_ROOT/%{_datarootdir}/puppet/modules/openiosds/profiles/docker
-%{__cp} -a * $RPM_BUILD_ROOT/%{_datarootdir}/puppet/modules/openiosds/profiles/docker
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_datarootdir}/puppet/modules/openiosds/profiles/
+%{__cp} -a docker* $RPM_BUILD_ROOT/%{_datarootdir}/puppet/modules/openiosds/profiles/
 
 
 %files
 %defattr(-,root,root,-)
-%{_datarootdir}/puppet/modules/openiosds/profiles/docker
+%{_datarootdir}/puppet/modules/openiosds/profiles/docker*
 
 
 %changelog
+* Wed May 25 2016 - 20160525-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Wed Sep 02 2015 - 20150902-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Jun 18 2015 - 20150618-1 - Romain Acciari <romain.acciari@openio.io>
