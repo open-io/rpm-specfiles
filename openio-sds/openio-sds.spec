@@ -5,8 +5,8 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.0.0
-Release:        1%{?dist}
+Version:        2.1.0.c0
+Release:        2%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
@@ -14,7 +14,7 @@ Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %define         date %(date +"%Y%m%d%H%M")
 Version:        test%{date}.%{tag}
 Release:        0%{?dist}
-%define         tarversion %{tag}
+#define         tarversion %{tag}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
@@ -190,15 +190,13 @@ This package contains side tools for OpenIO SDS solution.
 
 %build
 cmake \
-  -DCMAKE_BUILD_TYPE="Debug" \
+  -DCMAKE_BUILD_TYPE="Release" \
   -DCMAKE_INSTALL_PREFIX="%{_prefix}" \
   -DEXE_PREFIX="%{cli_name}" \
   -DZK_LIBDIR="%{_libdir}" \
   -DZK_INCDIR="%{_includedir}/zookeeper" \
   -DLZO_INCDIR="%{_includedir}/lzo" \
-  -DMOCKS=1 \
   -DSOCKET_OPTIMIZED=1 \
-  -DSTACK_PROTECTOR=1 \
   -DOIOSDS_RELEASE=%{version} \
   "-DGCLUSTER_AGENT_SOCK_PATH=\"/run/oio/sds/sds-agent-0.sock\"" \
   .
@@ -279,6 +277,7 @@ PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BU
 %{_bindir}/%{cli_name}-crawler-storage-tierer
 %{_bindir}/%{cli_name}-echo-server
 %{_bindir}/%{cli_name}-event-agent
+%{_bindir}/%{cli_name}-get-parameters-from-config.py
 %{_bindir}/%{cli_name}-meta0-init
 %{_bindir}/%{cli_name}-meta0-client
 %{_bindir}/%{cli_name}-meta0-server
@@ -344,6 +343,10 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Tue May 17 2016 - 2.1.0.c0-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- Recompile with CMAKE_BUILD_TYPE="RelWithDebInfo"
+* Mon May 09 2016 - 2.1.0.c0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- Testing new release 2.1.0.c0
 * Tue Apr 19 2016 - 2.0.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Apr 15 2016 - 2.0.0.c3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
