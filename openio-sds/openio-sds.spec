@@ -108,11 +108,11 @@ Requires:       leveldb
 Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
-Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests,python-plyvel,PyYAML
+Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests >= 2.6.0,python-plyvel,PyYAML
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
 # Python oiopy dependencies
-Requires:       python-eventlet >= 0.15.2, python-requests, python-cliff-tablib, python-cliff >= 1.13, python-tablib, python-pyeclib >= 1.2.0
+Requires:       python-eventlet >= 0.15.2, python-requests >= 2.6.0, python-cliff-tablib, python-cliff >= 1.13, python-tablib, python-pyeclib >= 1.2.0
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
