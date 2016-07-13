@@ -1,5 +1,5 @@
 Name:           python-diamond-openio
-Version:        0.2
+Version:        0.3
 Release:        1%{?dist}
 Summary:        Diamond collector for OpenIO SDS
 
@@ -9,6 +9,7 @@ Source0:        openiosds.py
 
 #BuildRequires:  
 Requires:       python-diamond,python-oiopy,python-urllib3
+Requires:       openio-sds-server
 
 %description
 Diamond collector for OpenIO SDS object storage solution.
@@ -31,6 +32,10 @@ Diamond collector for OpenIO SDS object storage solution.
 
 
 %changelog
+* Thu May 26 2016 Romain Acciari <romain.acciari@openio.io> - 0.4-1%{?dist}
+- New release updated by Vladimir Dombrovski
+* Thu May 26 2016 Romain Acciari <romain.acciari@openio.io> - 0.3-1%{?dist}
+- New release updated by Florent Vennetier
 * Wed Mar 02 2016 Romain Acciari <romain.acciari@openio.io> - 0.2-1%{?dist}
 - New release
 * Fri Jan 29 2016 Romain Acciari <romain.acciari@openio.io> - 0.1-1%{?dist}
