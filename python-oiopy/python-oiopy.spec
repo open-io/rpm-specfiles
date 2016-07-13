@@ -30,6 +30,7 @@ Requires:       python-requests
 Requires:       python-cliff-tablib
 Requires:       python-cliff >= 1.13
 Requires:	python-tablib
+Requires:       python-pyeclib >= 1.2.0
 
 Obsoletes:	python-openio-sds-client
 
