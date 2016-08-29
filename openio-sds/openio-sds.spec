@@ -5,9 +5,10 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.1.0.c0
-Release:        2%{?dist}
-%define         tarversion %{version}
+Version:        3.0.0
+Release:        0.2.beta1%{?dist}
+%define         tarversion 3.0.0.b1
+#define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
@@ -190,14 +191,14 @@ cmake \
 make %{?_smp_mflags}
 
 # Build python
-PBR_VERSION=0.0.1 %{__python} setup.py build
+PBR_VERSION=3.0.0 %{__python} setup.py build
 
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+PBR_VERSION=3.0.0 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 
 # Install OpenIO SDS directories
@@ -298,6 +299,8 @@ PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BU
 %{_bindir}/zk-reset.py
 %{_bindir}/%{cli_name}-unlock-all.sh
 %{_bindir}/%{cli_name}-wait-scored.sh
+%{_bindir}/%{cli_name}-test-config.py
+%{_bindir}/%{cli_name}-flush-all.sh
 
 
 %pre common
