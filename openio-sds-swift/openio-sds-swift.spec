@@ -11,7 +11,8 @@ Source0:        https://pypi.python.org/packages/source/o/oioswift/oioswift-%{ta
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
-Version:        test%{date}.%{tag}
+%global         shortcommit %(c=%{tag}; echo ${c:0:7})
+Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarname oio-swift
 %define         tarversion %{tag}
@@ -25,7 +26,7 @@ URL:            http://www.openio.io/
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
-Requires:       python-oiopy >= 0.5.2
+Requires:       openio-sds-common
 Requires:       openstack-swift-proxy
 Requires:       python-lxml
 
