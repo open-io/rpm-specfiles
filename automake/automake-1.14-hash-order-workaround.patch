@@ -1,0 +1,38 @@
+diff --git a/t/preproc-errmsg.sh b/t/preproc-errmsg.sh
+index 704562d..891ae43 100644
+--- a/t/preproc-errmsg.sh
++++ b/t/preproc-errmsg.sh
+@@ -48,7 +48,7 @@ END
+ $ACLOCAL
+ AUTOMAKE_fails
+ 
+-cat > expected << 'END'
++sort > expected << 'END'
+ sub/sub2/more.mk:1: sub_sub2_UNDEFINED must be set with '=' before using '+='
+ Makefile.am:2: 'sub/local.mk' included from here
+ sub/local.mk:2: 'sub/sub2/more.mk' included from here
+@@ -71,7 +71,7 @@ END
+ sed -e '/warnings are treated as errors/d' stderr > t1
+ sed -e 's/: warning:/:/' t1 > t2
+ sed -e 's/: error:/:/' t2 > t3
+-sed -e 's/  */ /g' t3 > obtained
++sed -e 's/  */ /g' t3 | sort > obtained
+ 
+ diff expected obtained
+ 
+diff --git a/t/primary-prefix-invalid-couples.tap b/t/primary-prefix-invalid-couples.tap
+index 64f11f8..09b332a 100644
+-a/t/primary-prefix-invalid-couples.tap
++++ b/t/primary-prefix-invalid-couples.tap
+@@ -186,8 +186,10 @@ grep -v 'dir.* not a legitimate directory' stderr && exit 1
+ # Check that the same failures are present without the '--add-missing'
+ # option.
+ mv stderr stderr.old
++cat stderr.old | sort > a
+ AUTOMAKE_fails -d "automake error out on mismatched prefix/primary couples"
++cat stderr | sort > b
+ command_ok_ "... and with the same diagnostic of 'automake -a'" \
+-            diff stderr.old stderr
++            diff a b
+ 
+ :

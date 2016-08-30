@@ -5,14 +5,16 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.0.0.c1
-Release:        1%{?dist}
-%define         tarversion %{version}
+Version:        3.0.0
+Release:        0.2.beta1%{?dist}
+%define         tarversion 3.0.0.b1
+#define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
-Version:        test%{date}.%{tag}
+%global         shortcommit %(c=%{tag}; echo ${c:0:7})
+Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -107,9 +109,11 @@ Requires:       leveldb
 Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
-Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests,python-plyvel,PyYAML
+Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests >= 2.6.0,python-plyvel,PyYAML
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
+# Python oiopy dependencies
+Requires:       python-eventlet >= 0.15.2, python-requests >= 2.6.0, python-cliff-tablib, python-cliff >= 1.13, python-tablib, python-pyeclib >= 1.2.0
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -151,23 +155,6 @@ OpenIO is a fork of Redcurrant, from Worldline by Atos.
 This package contains Apache HTTPd module for OpenIO SDS solution.
 
 
-%package mod-httpd-rainx
-Summary: Apache HTTPd module for OpenIO Cloud Storage Solution
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:       %{name}-server  = %{version}
-%else
-Requires:       %{name}-server  = 1:%{version}
-%endif
-Requires:       httpd          >= 2.2
-Requires:       librain
-%description mod-httpd-rainx
-OpenIO software storage solution is designed to handle PETA-bytes of
-data in a distributed way, data such as: images, videos, documents, emails,
-and any other personal unstructured data.
-OpenIO is a fork of Redcurrant, from Worldline by Atos.
-This package contains Apache HTTPd module for OpenIO SDS solution.
-
-
 %package tools
 Summary: Side tools for OpenIO Cloud Storage Solution
 %if %{?_with_test:0}%{!?_with_test:1}
@@ -190,15 +177,13 @@ This package contains side tools for OpenIO SDS solution.
 
 %build
 cmake \
-  -DCMAKE_BUILD_TYPE="Debug" \
+  -DCMAKE_BUILD_TYPE="Release" \
   -DCMAKE_INSTALL_PREFIX="%{_prefix}" \
   -DEXE_PREFIX="%{cli_name}" \
   -DZK_LIBDIR="%{_libdir}" \
   -DZK_INCDIR="%{_includedir}/zookeeper" \
   -DLZO_INCDIR="%{_includedir}/lzo" \
-  -DMOCKS=1 \
   -DSOCKET_OPTIMIZED=1 \
-  -DSTACK_PROTECTOR=1 \
   -DOIOSDS_RELEASE=%{version} \
   "-DGCLUSTER_AGENT_SOCK_PATH=\"/run/oio/sds/sds-agent-0.sock\"" \
   .
@@ -206,14 +191,14 @@ cmake \
 make %{?_smp_mflags}
 
 # Build python
-PBR_VERSION=0.0.1 %{__python} setup.py build
+PBR_VERSION=3.0.0 %{__python} setup.py build
 
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+PBR_VERSION=3.0.0 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 
 # Install OpenIO SDS directories
@@ -293,6 +278,7 @@ PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BU
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
 %{_bindir}/zk-bootstrap.py*
+%{_bindir}/openio
 %defattr(644,root,root,755)
 %{python_sitelib}/oio*
 /usr/lib/tmpfiles.d/openio-sds.conf
@@ -306,18 +292,15 @@ PBR_VERSION=0.0.1 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BU
 %defattr(755,root,root,755)
 %{_libdir}/httpd/modules/mod_dav_rawx.so*
 
-%files mod-httpd-rainx
-%defattr(755,root,root,755)
-%{_libdir}/httpd/modules/mod_dav_rainx.so*
-
 %files tools
 %defattr(755,root,root,755)
 %{_bindir}/%{cli_name}-bootstrap.py
 %{_bindir}/%{cli_name}-reset.sh
 %{_bindir}/zk-reset.py
-%{_bindir}/%{cli_name}-test-config.py
 %{_bindir}/%{cli_name}-unlock-all.sh
 %{_bindir}/%{cli_name}-wait-scored.sh
+%{_bindir}/%{cli_name}-test-config.py
+%{_bindir}/%{cli_name}-flush-all.sh
 
 
 %pre common
@@ -333,8 +316,6 @@ fi
 /sbin/ldconfig
 %post mod-httpd
 /sbin/ldconfig
-%post mod-httpd-rainx
-/sbin/ldconfig
 
 %postun common
 /sbin/ldconfig
@@ -344,14 +325,24 @@ fi
 /sbin/ldconfig
 
 %changelog
-* Thu Mar 16 2016 - 2.0.0.c2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Jun 17 2016 - 2.1.0.XX-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- Python API (python-oiopy) is now part of the core
+* Tue May 17 2016 - 2.1.0.c0-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- Recompile with CMAKE_BUILD_TYPE="RelWithDebInfo"
+* Mon May 09 2016 - 2.1.0.c0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- Testing new release 2.1.0.c0
+* Tue Apr 19 2016 - 2.0.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
+* Fri Apr 15 2016 - 2.0.0.c3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release candidate
+* Wed Mar 16 2016 - 2.0.0.c2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release candidate
 - Fix %defattr warnings
 - Add files
 * Thu Mar 03 2016 - 2.0.0.c1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- New release
+- New release candidate (change major version)
 * Thu Feb 25 2016 - 1.1.rc0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- New release
+- New release cadidate
 * Mon Dec 14 2015 - 1.0.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Renamed package client-devel to common-devel

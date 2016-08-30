@@ -3,7 +3,7 @@
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        1.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
 %else
@@ -114,6 +114,9 @@ make DESTDIR=%{buildroot} install
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}/etc/logrotate.d
 %{__install} -m644 %{SOURCE4} ${RPM_BUILD_ROOT}/etc/logrotate.d/gridinit.conf
 
+# Install /run directory
+%{__mkdir_p} -v %{buildroot}/run/%{realname}
+
 # Remove dirty .la
 %{__rm} -vf %{buildroot}%{_libdir}/gridinit/*.la
 
@@ -125,7 +128,7 @@ make DESTDIR=%{buildroot} install
 %dir %{_sysconfdir}/%{realname}
 %config(noreplace) %{_sysconfdir}/%{realname}/*
 %{_prefix}/lib/tmpfiles.d/*
-%ghost /run/%{realname}
+/run/%{realname}
 %config %{_sysconfdir}/rsyslog.d/*
 %config %{_sysconfdir}/logrotate.d/*
 
@@ -168,6 +171,8 @@ fi
 
 
 %changelog
+* Sun Apr 17 2016 - 1.6-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- /run files are created at package install now
 * Mon Feb 29 2016 - 1.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Wed Nov 25 2015 - 1.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>

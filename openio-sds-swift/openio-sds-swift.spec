@@ -4,14 +4,15 @@ Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        0.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 %define         tarname oioswift
 %define         tarversion %{version}
 Source0:        https://pypi.python.org/packages/source/o/oioswift/oioswift-%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
-Version:        test%{date}.%{tag}
+%global         shortcommit %(c=%{tag}; echo ${c:0:7})
+Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarname oio-swift
 %define         tarversion %{tag}
@@ -25,8 +26,9 @@ URL:            http://www.openio.io/
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
-Requires:       python-oiopy >= 0.5.2
+Requires:       openio-sds-common
 Requires:       openstack-swift-proxy
+Requires:       python-lxml
 
 
 %description
@@ -48,7 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Tue Dec 01 2015 - 0.6.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri May 13 2016 - 0.5.0-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- Add python-lxml require
+* Tue Dec 01 2015 - 0.5.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release 0.6.0 for the 15.12 release
 * Mon Sep 14 2015 - 0.4.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release

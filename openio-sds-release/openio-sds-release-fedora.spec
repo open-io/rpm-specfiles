@@ -1,7 +1,7 @@
 %define dist_sn       fc
 %define dist_ln       Fedora
 
-%define oiorelease    15.12
+%define oiorelease    16.04
 
 %define host          http://mirror.openio.io
 %define basedir       /pub/repo/openio/sds/%{oiorelease}
@@ -68,5 +68,7 @@ EOF
 
 
 %changelog
-* Fri Dec 04 2015 <romain.acciari@openio.io> - 15.12-1.%{dist_sn}
+* Fri Apr 15 2016 <romain.acciari@openio.io> - 16.04-1
+- Initial release
+* Fri Dec 04 2015 <romain.acciari@openio.io> - 15.12-1
 - Initial release

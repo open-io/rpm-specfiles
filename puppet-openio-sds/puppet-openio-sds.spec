@@ -1,12 +1,26 @@
 Name:           puppet-openio-sds
-Version:        1.1.38
-Release:        1%{?dist}
 Summary:        Puppet module for OpenIO SDS solution
 
 License:        Apache 2.0
 URL:            http://www.openio.io/
-Source0:        https://github.com/open-io/puppet-openiosds/archive/%{version}.tar.gz
 BuildArch:      noarch
+%if %{?_with_test:0}%{!?_with_test:1}
+Version:        1.1.43
+Release:        1%{?dist}
+%define         tarversion %{version}
+Source0:        https://github.com/open-io/puppet-openiosds/archive/%{tarversion}.tar.gz
+%else
+# Testing purpose only. Do not modify.
+%define         date %(date +"%Y%m%d%H%M")
+%global         shortcommit %(c=%{tag}; echo ${c:0:7})
+Version:        test%{date}.git%{shortcommit}
+Release:        0%{?dist}
+%define         tarversion %{tag}
+Source0:        https://github.com/racciari/puppet-openiosds/archive/%{tarversion}.tar.gz
+Epoch:          1
+%endif
+
+
 
 #BuildRequires:
 Requires:       puppet            >= 3.6
@@ -19,7 +33,7 @@ Puppet module to install OpenIO SDS solution.
 
 
 %prep
-%setup -q -n puppet-openiosds-%{version}
+%setup -q -n puppet-openiosds-%{tarversion}
 
 
 %build
@@ -37,6 +51,14 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Fri Jul 15 2016 - 1.1.43-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Mon May 23 2016 - 1.1.42-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Fri May 13 2016 - 1.1.41-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Tue Apr 26 2016 - 1.1.39-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Fri Apr 15 2016 - 1.1.38-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Mar 25 2016 - 1.1.26-1%{?dist} - Romain Acciari <romain.acciari@openio.io>

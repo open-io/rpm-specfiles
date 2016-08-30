@@ -5,7 +5,7 @@ Name:           python-oiopy
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        0.7.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 %define         tarversion %{version}
 Source0:        https://pypi.python.org/packages/source/o/oiopy/oiopy-%{tarversion}.tar.gz
 %else
@@ -13,7 +13,7 @@ Source0:        https://pypi.python.org/packages/source/o/oiopy/oiopy-%{tarversi
 %define         date %(date +"%Y%m%d%H%M")
 Version:        test%{date}.%{tag}
 Release:        0%{?dist}
-%define         tarversion %{tag}
+#define         tarversion %{tag}
 Source0:        https://github.com/open-io/oiopy/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
@@ -30,6 +30,7 @@ Requires:       python-requests
 Requires:       python-cliff-tablib
 Requires:       python-cliff >= 1.13
 Requires:	python-tablib
+Requires:       python-pyeclib >= 1.2.0
 
 Obsoletes:	python-openio-sds-client
 
@@ -48,7 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{?_with_test:0}%{!?_with_test:1}
 %{__python} setup.py install --root $RPM_BUILD_ROOT
 %else
-PBR_VERSION=0.6.0 %{__python} setup.py install --root $RPM_BUILD_ROOT
+PBR_VERSION=0.7.1 %{__python} setup.py install --root $RPM_BUILD_ROOT
 %endif
 
 %files
@@ -57,6 +58,8 @@ PBR_VERSION=0.6.0 %{__python} setup.py install --root $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu May 26 2016 Romain Acciari <romain.acciari@openio.io> - 0.7.1-2%{?dist}
+- Fix PBR_RELEASE
 * Thu Mar 03 2016 Romain Acciari <romain.acciari@openio.io> - 0.7.1-1%{?dist}
 - New release
 * Fri Feb 26 2016 Romain Acciari <romain.acciari@openio.io> - 0.7.0-1%{?dist}
