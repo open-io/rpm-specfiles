@@ -1,16 +1,20 @@
+%define nanopb_version 0.3.6
+
 Name:           grpc
-Version:        0.13.0
+Version:        1.0.0
 Release:        1%{?dist}
 Summary:        Implementation of the gRPC protocol
 
 License:        BSD
 URL:            http://www.grpc.io/
-#Source0:        https://github.com/grpc/grpc/archive/release-%(tr "." "_" <<<%{version}).tar.gz
-Source0:        %{name}-%{version}.tar.gz
+Source0:        https://github.com/grpc/grpc/archive/v%{version}.tar.gz
+Source1:        https://github.com/nanopb/nanopb/archive/nanopb-%{nanopb_version}.tar.gz
 
 BuildRequires:  libtool
-BuildRequires:  protobuf-devel = 3.0.0_beta_2
-Requires:       protobuf = 3.0.0_beta_2
+BuildRequires:  protobuf-devel >= 3.0.0
+BuildRequires:  gperftools-devel
+BuildRequires:  openssl-devel
+Requires:       protobuf >= 3.0.0
 
 %description
 Remote Procedure Calls (RPCs) provide a useful abstraction for
@@ -31,6 +35,10 @@ This package contains gRPC headers
 
 %prep
 %setup -q
+tar xf %{SOURCE1} -C third_party
+rm -rf third_party/nanopb
+mv third_party/nanopb-nanopb-%{nanopb_version} third_party/nanopb
+sed -r 's|^PROTOBUF_CHECK_CMD = \$\(PKG_CONFIG\) --atleast-version=[^[:space:]]+ protobuf|PROTOBUF_CHECK_CMD = $(PKG_CONFIG) --atleast-version=3.0.0 protobuf|' -i Makefile
 
 
 %build
@@ -56,6 +64,8 @@ make install prefix=%{buildroot}%{_prefix} libdir=%{buildroot}%{_libdir}
 
 
 %changelog
+* Wed Sep 07 2016 Romain Acciari <romain.acciari@openio.io> - 1.0.0-1%{?dist}
+- Updated to 1.0.0
 * Wed Feb 24 2016 Romain Acciari <romain.acciari@openio.io> - 0.13.0-1%{?dist}
 - New release
 - Fix pkgconfig
