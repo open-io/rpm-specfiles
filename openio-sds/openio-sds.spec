@@ -6,8 +6,8 @@ Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        3.0.0
-Release:        0.2.beta1%{?dist}
-%define         tarversion 3.0.0.b1
+Release:        0.4.beta3%{?dist}
+%define         tarversion 3.0.0.b3
 #define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
@@ -49,7 +49,6 @@ BuildRequires:  httpd-devel              >= 2.2
 BuildRequires:  lzo-devel                >= 2.0
 BuildRequires:  openio-asn1c             >= 0.9.27
 BuildRequires:  cmake,bison,flex
-BuildRequires:  librain-devel
 BuildRequires:  libdb-devel
 BuildRequires:  json-c                   >= 0.12
 BuildRequires:  json-c-devel             >= 0.12
@@ -114,6 +113,7 @@ Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
 # Python oiopy dependencies
 Requires:       python-eventlet >= 0.15.2, python-requests >= 2.6.0, python-cliff-tablib, python-cliff >= 1.13, python-tablib, python-pyeclib >= 1.2.0
+Obsoletes:      python-oiopy
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -325,6 +325,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Thu Sep 15 2016 - 3.0.0-0.4.beta3%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- Update to 3.0.0.b3
 * Fri Jun 17 2016 - 2.1.0.XX-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Python API (python-oiopy) is now part of the core
 * Tue May 17 2016 - 2.1.0.c0-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
