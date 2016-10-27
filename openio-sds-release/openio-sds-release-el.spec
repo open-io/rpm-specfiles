@@ -1,7 +1,7 @@
 %define dist_sn       el
 %define dist_ln       Entreprise Linux
 
-%define oiorelease    16.04
+%define oiorelease    16.10
 
 %define host          http://mirror.openio.io
 %define basedir       /pub/repo/openio/sds/%{oiorelease}
@@ -68,6 +68,8 @@ EOF
 
 
 %changelog
+* Thu Oct 20 2016 <romain.acciari@openio.io> - 16.10-1
+- New release
 * Fri Apr 15 2016 <romain.acciari@openio.io> - 16.04-1
 - New release
 * Fri Dec 04 2015 <romain.acciari@openio.io> - 15.12-1
