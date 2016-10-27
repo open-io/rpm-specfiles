@@ -15,11 +15,11 @@
 
 Summary:        Protocol Buffers - Google's data interchange format
 Name:           protobuf
-Version:        3.0.0
+Version:        3.0.2
 Release:        1%{?dist}
 License:        BSD
 Group:          Development/Libraries
-Source0:        https://github.com/google/protobuf/archive/v3.0.0.tar.gz
+Source0:        https://github.com/google/protobuf/archive/v%{version}.tar.gz
 Source1:        ftdetect-proto.vim
 Source2:        protobuf-init.el
 Patch0:         protobuf-2.5.0-emacs-24.4.patch
@@ -328,6 +328,9 @@ install -p -m 0644 %{SOURCE2} $RPM_BUILD_ROOT%{emacs_startdir}
 %endif
 
 %changelog
+* Thu Oct 20 2016 Romain Acciari <romain.acciari@openio.io> - 3.0.2-1
+- Update to 3.0.2 stable release
+
 * Tue Sep 06 2016 Romain Acciari <romain.acciari@openio.io> - 3.0.0-1
 - Update to 3.0.0 stable release
 
