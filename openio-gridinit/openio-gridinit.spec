@@ -3,7 +3,7 @@
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        1.6
-Release:        2%{?dist}
+Release:        3%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
 %else
@@ -147,9 +147,12 @@ if [ $1 -eq 1 ] ; then
   # Initial installation 
   /usr/bin/systemctl preset gridinit.service >/dev/null 2>&1 || : 
 else
-   /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : 
+  /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : 
 fi
 /usr/bin/systemctl reload-or-restart rsyslog.service || : 
+%if 0%{?suse_version}
+  %tmpfiles_create %_tmpfilesdir/gridinit.conf
+%endif
 %preun
 if [ $1 -eq 0 ] ; then 
   # Package removal, not upgrade 
@@ -171,34 +174,36 @@ fi
 
 
 %changelog
-* Sun Apr 17 2016 - 1.6-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Oct 27 2016 - 1.6-3 - Romain Acciari <romain.acciari@openio.io>
+- Add tmpfiles_create at %post for OpenSuSe
+* Sun Apr 17 2016 - 1.6-2 - Romain Acciari <romain.acciari@openio.io>
 - /run files are created at package install now
-* Mon Feb 29 2016 - 1.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Feb 29 2016 - 1.6-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Wed Nov 25 2015 - 1.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Nov 25 2015 - 1.5-1 - Romain Acciari <romain.acciari@openio.io>
 - Fix GCC version detection
 - Fix default socket path
-* Thu Jun 04 2015 - 1.4-3%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Jun 04 2015 - 1.4-3 - Romain Acciari <romain.acciari@openio.io>
 - Fix tmpfiles
-* Thu Apr 09 2015 - 1.4-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Apr 09 2015 - 1.4-1 - Romain Acciari <romain.acciari@openio.io>
 - New release to come with OpenIO SDS 0.3
-* Thu Mar 19 2015 - 1.3.1-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 1.3.1-2 - Romain Acciari <romain.acciari@openio.io>
 - Fix systemd reload on update
-* Thu Mar 19 2015 - 1.3.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 1.3.1-1 - Romain Acciari <romain.acciari@openio.io>
 - Fix PREFIX in spec file
 - Fix socket path
 - Add rsyslog support
 - Add logrotate rule
-* Wed Mar 18 2015 - 20150310-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Mar 18 2015 - 20150310-2 - Romain Acciari <romain.acciari@openio.io>
 - Add tmpfiles
 - Cleaned spec file
 - Moved from /run to /run/gridinit
-* Tue Mar 10 2015 - 20150310-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Mar 10 2015 - 20150310-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Mar 06 2015 - 20150309-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 06 2015 - 20150309-1 - Romain Acciari <romain.acciari@openio.io>
 - Fix socket path
 - Remove runstatedir (using /run)
-* Fri Mar 06 2015 - 20150203-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 06 2015 - 20150203-2 - Romain Acciari <romain.acciari@openio.io>
 - Fix for systemd
-* Tue Feb 03 2015 - 20150203-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Feb 03 2015 - 20150203-1 - Romain Acciari <romain.acciari@openio.io>
 - Inital release
