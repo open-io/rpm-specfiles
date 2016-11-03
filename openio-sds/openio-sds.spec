@@ -5,9 +5,9 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        3.0.0
-Release:        0.4.beta3%{?dist}
-%define         tarversion 3.0.0.b3
+Version:        3.1.0
+Release:        0.beta0%{?dist}
+%define         tarversion 3.1.0.b0
 #define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
@@ -191,14 +191,14 @@ cmake \
 make %{?_smp_mflags}
 
 # Build python
-PBR_VERSION=3.0.0 %{__python} setup.py build
+PBR_VERSION=3.1.0 %{__python} setup.py build
 
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-PBR_VERSION=3.0.0 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+PBR_VERSION=3.1.0 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 
 # Install OpenIO SDS directories
@@ -325,6 +325,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Thu Nov 01 2016 - 3.1.0-0.beta0%{?dist} - Sebastien Lapierre <sebastien.lapierre@openio.io>
+- Update to 3.1.0.b0 
 * Thu Sep 15 2016 - 3.0.0-0.4.beta3%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - Update to 3.0.0.b3
 * Fri Jun 17 2016 - 2.1.0.XX-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
