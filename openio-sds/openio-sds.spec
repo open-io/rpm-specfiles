@@ -301,6 +301,9 @@ PBR_VERSION=3.1.0 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BU
 %{_bindir}/%{cli_name}-wait-scored.sh
 %{_bindir}/%{cli_name}-test-config.py
 %{_bindir}/%{cli_name}-flush-all.sh
+%{_bindir}/%{cli_name}-election-dump.py
+%{_bindir}/%{cli_name}-election-reset.py
+%{_bindir}/%{cli_name}-election-smudge.py
 
 
 %pre common
