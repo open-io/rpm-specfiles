@@ -3,10 +3,10 @@
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.6.1
-Release:        1%{?dist}
+Version:        0.7.0
+Release:        0.beta3%{?dist}
 %define         tarname oioswift
-%define         tarversion %{version}
+%define         tarversion %{version}.b0
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
