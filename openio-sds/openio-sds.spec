@@ -5,10 +5,9 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        3.1.0
-Release:        0.beta0%{?dist}
-%define         tarversion 3.1.0.b0
-#define         tarversion %{version}
+Version:        3.1.2
+Release:        1%{?dist}
+%define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
@@ -26,6 +25,7 @@ License:        AGPL
 URL:            http://www.openio.io/
 Source1:        openio-sds.tmpfiles
 
+Obsoletes:      openio-sds-client,openio-sds-client-devel
 
 BuildRequires:  glib2-devel              >= 2.28.8
 %if %{?fedora}0
@@ -328,81 +328,89 @@ fi
 /sbin/ldconfig
 
 %changelog
-* Thu Nov 01 2016 - 3.1.0-0.beta0%{?dist} - Sebastien Lapierre <sebastien.lapierre@openio.io>
+* Fri Dec 23 2016 - 3.1.2-1 - Romain Acciari <romain.acciari@openio.io>
+- Update to 3.1.2 (Kraken released)
+* Tue Nov 01 2016 - 3.1.0-0.beta0 - Sebastien Lapierre <sebastien.lapierre@openio.io>
 - Update to 3.1.0.b0 
-* Thu Sep 15 2016 - 3.0.0-0.4.beta3%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Update to 3.0.0.b3
-* Fri Jun 17 2016 - 2.1.0.XX-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Python API (python-oiopy) is now part of the core
-* Tue May 17 2016 - 2.1.0.c0-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Recompile with CMAKE_BUILD_TYPE="RelWithDebInfo"
-* Mon May 09 2016 - 2.1.0.c0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
-- Testing new release 2.1.0.c0
-* Tue Apr 19 2016 - 2.0.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Oct 31 2016 - 3.0.1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Apr 15 2016 - 2.0.0.c3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Oct 21 2016 - 3.0.0-2 - Romain Acciari <romain.acciari@openio.io>
+- Add obsoletes to remove old packages
+* Thu Oct 20 2016 - 3.0.0-1 - Romain Acciari <romain.acciari@openio.io>
+- Update to 3.0.0
+* Thu Sep 15 2016 - 3.0.0-0.4 - Romain Acciari <romain.acciari@openio.io>
+- Update to 3.0.0.b3
+* Fri Jun 17 2016 - 2.1.0.-1 - Romain Acciari <romain.acciari@openio.io>
+- Python API (python-oiopy) is now part of the core
+* Tue May 17 2016 - 2.1.0.c0-2 - Romain Acciari <romain.acciari@openio.io>
+- Recompile with CMAKE_BUILD_TYPE="RelWithDebInfo"
+* Mon May 09 2016 - 2.1.0.c0-1 - Romain Acciari <romain.acciari@openio.io>
+- Testing new release 2.1.0.c0
+* Tue Apr 19 2016 - 2.0.0-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Fri Apr 15 2016 - 2.0.0.c3-1 - Romain Acciari <romain.acciari@openio.io>
 - New release candidate
-* Wed Mar 16 2016 - 2.0.0.c2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Mar 16 2016 - 2.0.0.c2-1 - Romain Acciari <romain.acciari@openio.io>
 - New release candidate
 - Fix %defattr warnings
 - Add files
-* Thu Mar 03 2016 - 2.0.0.c1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 03 2016 - 2.0.0.c1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release candidate (change major version)
-* Thu Feb 25 2016 - 1.1.rc0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Feb 25 2016 - 1.1.rc0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release cadidate
-* Mon Dec 14 2015 - 1.0.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Dec 14 2015 - 1.0.1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Renamed package client-devel to common-devel
-* Tue Dec 01 2015 - 1.0.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Dec 01 2015 - 1.0.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release 1.0.0
-* Wed Sep 16 2015 - 0.8.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Sep 16 2015 - 0.8.3-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Mon Sep 14 2015 - 0.8.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Sep 14 2015 - 0.8.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Thu Sep 10 2015 - 0.8.1-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Sep 10 2015 - 0.8.1-2 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Wed Sep 02 2015 - 0.8.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Sep 02 2015 - 0.8.1-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Fri Aug 28 2015 - 0.8.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Aug 28 2015 - 0.8.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Remove Net-SNMP package
-* Fri Jul 03 2015 - 0.7.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Jul 03 2015 - 0.7.6-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Tue Jun 30 2015 - 0.7.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Jun 30 2015 - 0.7.5-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Tue Jun 30 2015 - 0.7.4-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Jun 30 2015 - 0.7.4-2 - Romain Acciari <romain.acciari@openio.io>
 - Remove integrityloop package
-* Mon Jun 29 2015 - 0.7.4-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Jun 29 2015 - 0.7.4-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Mon Jun 22 2015 - 0.7.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Jun 22 2015 - 0.7.3-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Wed Jun 17 2015 - 0.7.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Jun 17 2015 - 0.7.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Wed Jun 17 2015 - 0.7.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Jun 17 2015 - 0.7.1-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Tue Jun 09 2015 - 0.7-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Jun 09 2015 - 0.7-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Removed useless BuildRequires
 - Add python dependencies in server
-* Thu May 28 2015 - 0.6.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu May 28 2015 - 0.6.6-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Tue May 26 2015 - 0.6.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue May 26 2015 - 0.6.5-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Sun May 17 2015 - 0.6.4-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Sun May 17 2015 - 0.6.4-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Fri May 15 2015 - 0.6.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri May 15 2015 - 0.6.3-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Wed May 13 2015 - 0.6.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed May 13 2015 - 0.6.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Tue May 12 2015 - 0.6.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue May 12 2015 - 0.6.1-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Mon May 11 2015 - 0.6-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon May 11 2015 - 0.6-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Apr 24 2015 - 0.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Apr 24 2015 - 0.5-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Thu Apr 09 2015 - 0.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Apr 09 2015 - 0.3-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Wed Mar 25 2015 - 0.2.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Mar 25 2015 - 0.2.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Bugfix release
-* Thu Mar 19 2015 - 0.2.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 0.2.1-1 - Romain Acciari <romain.acciari@openio.io>
 - Initial release
