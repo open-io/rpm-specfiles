@@ -35,6 +35,8 @@ OpenIO profile using Puppet for Docker.
 
 
 %changelog
+* Fri Oct 28 2016 - 20161028-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Wed May 25 2016 - 20160525-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Wed Sep 02 2015 - 20150902-1 - Romain Acciari <romain.acciari@openio.io>
