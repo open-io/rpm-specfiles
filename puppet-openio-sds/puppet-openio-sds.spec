@@ -5,7 +5,7 @@ License:        Apache 2.0
 URL:            http://www.openio.io/
 BuildArch:      noarch
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.1.47
+Version:        1.1.49
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/puppet-openiosds/archive/%{tarversion}.tar.gz
@@ -51,50 +51,54 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
-* Wed Oct 26 2016 - 1.1.47-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Dec 23 2016 - 1.1.49-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Thu Oct 20 2016 - 1.1.46-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Dec 12 2016 - 1.1.48-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Jul 15 2016 - 1.1.43-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Oct 26 2016 - 1.1.47-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Mon May 23 2016 - 1.1.42-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Oct 20 2016 - 1.1.46-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri May 13 2016 - 1.1.41-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Jul 15 2016 - 1.1.43-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Tue Apr 26 2016 - 1.1.39-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon May 23 2016 - 1.1.42-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Apr 15 2016 - 1.1.38-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri May 13 2016 - 1.1.41-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Mar 25 2016 - 1.1.26-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Apr 26 2016 - 1.1.39-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Mon Mar 21 2016 - 1.1.26-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Apr 15 2016 - 1.1.38-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Tue Mar 08 2016 - 1.1.24-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 25 2016 - 1.1.26-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Mon Mar 07 2016 - 1.1.22-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Mar 21 2016 - 1.1.26-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Mar 04 2016 - 1.1.21-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Mar 08 2016 - 1.1.24-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Mon Feb 29 2016 - 1.1.20-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Mar 07 2016 - 1.1.22-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Tue Feb 23 2016 - 1.1.19-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 04 2016 - 1.1.21-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Mon Feb 22 2016 - 1.1.17-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Feb 29 2016 - 1.1.20-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Mon Feb 15 2016 - 1.1.11-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Feb 23 2016 - 1.1.19-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Thu Feb 11 2016 - 1.1.10-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Feb 22 2016 - 1.1.17-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Mon Feb 08 2016 - 1.1.9-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Feb 15 2016 - 1.1.11-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Jan 29 2016 - 1.1.8-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Feb 11 2016 - 1.1.10-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Jan 22 2016 - 1.1.4-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Feb 08 2016 - 1.1.9-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Wed Dec 16 2015 - 1.1.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Jan 29 2016 - 1.1.8-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Wed Dec 02 2015 - 1.1.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Jan 22 2016 - 1.1.4-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Wed Dec 16 2015 - 1.1.2-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Wed Dec 02 2015 - 1.1.1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release 1.1.1
 - Update puppetlabs-stdlib dependency
-* Wed Dec 02 2015 - 1.1.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Dec 02 2015 - 1.1.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release 1.1.0
