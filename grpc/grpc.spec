@@ -64,10 +64,10 @@ make install prefix=%{buildroot}%{_prefix} libdir=%{buildroot}%{_libdir}
 
 
 %changelog
-* Wed Sep 07 2016 Romain Acciari <romain.acciari@openio.io> - 1.0.0-1%{?dist}
+* Wed Sep 07 2016 Romain Acciari <romain.acciari@openio.io> - 1.0.0-1
 - Updated to 1.0.0
-* Wed Feb 24 2016 Romain Acciari <romain.acciari@openio.io> - 0.13.0-1%{?dist}
+* Wed Feb 24 2016 Romain Acciari <romain.acciari@openio.io> - 0.13.0-1
 - New release
 - Fix pkgconfig
-* Fri Dec 18 2015 Romain Acciari <romain.acciari@openio.io> - 0.11.1-1%{?dist}
+* Fri Dec 18 2015 Romain Acciari <romain.acciari@openio.io> - 0.11.1-1
 - Initial release
