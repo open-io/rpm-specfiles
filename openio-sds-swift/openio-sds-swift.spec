@@ -4,9 +4,9 @@ Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        0.7.0
-Release:        0.beta3%{?dist}
+Release:        1%{?dist}
 %define         tarname oioswift
-%define         tarversion %{version}.b0
+%define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
@@ -50,26 +50,28 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Thu Oct 20 2016 - 0.6.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Jan 05 2017 - 0.7.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Tue Sep 20 2016 - 0.6.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Oct 20 2016 - 0.6.1-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Tue Sep 20 2016 - 0.6.0-1 - Romain Acciari <romain.acciari@openio.io>
 - Update
-* Fri May 13 2016 - 0.5.0-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri May 13 2016 - 0.5.0-2 - Romain Acciari <romain.acciari@openio.io>
 - Add python-lxml require
-* Tue Dec 01 2015 - 0.5.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Dec 01 2015 - 0.5.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release 0.6.0 for the 15.12 release
-* Mon Sep 14 2015 - 0.4.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Sep 14 2015 - 0.4.1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Sep 04 2015 - 0.4.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Sep 04 2015 - 0.4.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Update requires
-* Mon Jun 29 2015 - 0.3.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Jun 29 2015 - 0.3.0-1 - Romain Acciari <romain.acciari@openio.io>
 - account autocreate on account POST
-* Mon Jun 29 2015 - 0.3.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Jun 29 2015 - 0.3.0-1 - Romain Acciari <romain.acciari@openio.io>
 - Account support
-* Thu Apr 23 2015 - 0.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Apr 23 2015 - 0.2-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - OpenStack Swift dependency
 - License changed to Apache License v2
-* Fri Mar 13 2015 - 0.1-1%{?dist} - Julien Kasarherou <julien.kasarherou@openio.io>
+* Fri Mar 13 2015 - 0.1-1 - Julien Kasarherou <julien.kasarherou@openio.io>
 - Initial release
