@@ -277,6 +277,7 @@ PBR_VERSION=3.1.0 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BU
 %{_bindir}/%{cli_name}-sqlx-server
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
+%{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/zk-bootstrap.py*
 %{_bindir}/openio
 %defattr(644,root,root,755)
