@@ -5,7 +5,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        3.1.2
+Version:        3.2.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -108,7 +108,7 @@ Requires:       leveldb
 Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
-Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests >= 2.6.0,python-plyvel,PyYAML
+Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests >= 2.6.0,python-plyvel,PyYAML,python-futures
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
 # Python oiopy dependencies
@@ -191,14 +191,14 @@ cmake \
 make %{?_smp_mflags}
 
 # Build python
-PBR_VERSION=3.1.0 %{__python} setup.py build
+PBR_VERSION=%{version} %{__python} setup.py build
 
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-PBR_VERSION=3.1.0 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+PBR_VERSION=%{version} %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 
 
 # Install OpenIO SDS directories
@@ -305,6 +305,7 @@ PBR_VERSION=3.1.0 %{__python} ./setup.py install -O1 --skip-build --root $RPM_BU
 %{_bindir}/%{cli_name}-election-dump.py
 %{_bindir}/%{cli_name}-election-reset.py
 %{_bindir}/%{cli_name}-election-smudge.py
+%{_bindir}/%{cli_name}-crawler-integrity
 
 
 %pre common
@@ -329,6 +330,13 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Tue Feb 21 2017 - 3.2.0-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Fri Feb 10 2017 - 3.2.0-0.c0 - Romain Acciari <romain.acciari@openio.io>
+- Release Candidate 3.2.0.c0
+* Fri Feb 03 2017 - 3.1.3-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+- Add python-futures
 * Fri Dec 23 2016 - 3.1.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Update to 3.1.2 (Kraken released)
 * Tue Nov 01 2016 - 3.1.0-0.beta0 - Sebastien Lapierre <sebastien.lapierre@openio.io>
