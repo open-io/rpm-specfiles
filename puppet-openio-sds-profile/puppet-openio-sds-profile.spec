@@ -11,10 +11,11 @@ BuildArch:	noarch
 
 #BuildRequires:	
 Requires:	puppet-openio-sds
+Obsoletes:      puppet-openio-sds-profile-docker
 
 
 %description
-Puppet manifests to install OpenIO SDS solution using Vagrant.
+Puppet manifests to install OpenIO SDS solution.
 
 
 %prep
@@ -35,6 +36,12 @@ Puppet manifests to install OpenIO SDS solution using Vagrant.
 
 
 %changelog
+* Mon Feb 20 2017 - 20170221-1 - Romain Acciari <romain.acciari@openio.io>
+- New release (remove vagrant)
+* Mon Feb 20 2017 - 20170220-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Sun Feb 19 2017 - 20170219-1 - Romain Acciari <romain.acciari@openio.io>
+- Now integrates vagrant and docker profiles
 * Sun Apr 17 2016 - 20160417-1 - Romain Acciari <romain.acciari@openio.io>
 - Prepare for 16.04 release
 * Tue Dec 08 2015 - 20151208-1 - Romain Acciari <romain.acciari@openio.io>
