@@ -2,7 +2,7 @@ diff -ur tsg--liberasurecode-4e1290ea61e5/doc/Makefile.am tsg--liberasurecode-4e
 --- tsg--liberasurecode-4e1290ea61e5/doc/Makefile.am	2015-03-13 01:47:05.000000000 -0600
 +++ tsg--liberasurecode-4e1290ea61e5-p3/doc/Makefile.am	2015-03-30 21:49:20.078340707 -0600
 @@ -1,6 +1,6 @@
- DOC_MODULE="liberasurecode"
+ DOC_MODULE=@PACKAGE@
 -HTML_DIR=$(datadir)/$(DOC_MODULE)/html
 -TARGET_DIR=$(HTML_DIR)/$(DOC_MODULE)
 +HTML_DIR=$(datadir)/doc/$(DOC_MODULE)/html
