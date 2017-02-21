@@ -1,15 +1,16 @@
 Name:           liberasurecode
-Version:        1.1.0
+Version:        1.4.0
 Release:        2%{?dist}
 Summary:        Erasure Code API library written in C with pluggable backends
 
 # Main license is a 2-clause BSD with clause numbers removed for some reason.
 License:        BSD and CRC32
 URL:            https://bitbucket.org/tsg-/liberasurecode/
-# Bitbucket's web export naming is like the old github (== awful), so we pull
-# the tag using git CLI. Save the current command for Source0 below.
-#  git archive -o ../liberasurecode-1.1.0.tar.gz --prefix=liberasurecode-1.1.0/ v1.1.0
-Source0:        %{name}-%{version}.tar.gz
+# We pull the tag using git CLI. Save the current command for Source0 below.
+#  git archive -o ../liberasurecode-1.4.0.tar.gz --prefix=liberasurecode-1.4.0/ 1.4.0
+# Note that as of 1.2.0, liberasurecode migrated to github.com/openstack
+# and switched to tags without the 'v' prefix.
+Source0:        https://github.com/openstack/%{name}/archive/%{version}.tar.gz
 Patch2:         liberasurecode-1.0.5-docs.patch
 
 BuildRequires:  autoconf
@@ -65,21 +66,39 @@ find $RPM_BUILD_ROOT%{_datadir}/doc -type f -exec chmod a-x {} ';'
 %postun -p /sbin/ldconfig
 
 
+# N.B. We place .so to the main package because PyECLib insists on it.
 %files
 %license COPYING
 %doc AUTHORS ChangeLog README.md
-%{_libdir}/*.so*
+%{_libdir}/*.so
+%{_libdir}/*.so.*
 
 %files doc
 %{_datadir}/doc/liberasurecode/html/*
 
 %files devel
 %{_includedir}/*
+%{_libdir}/pkgconfig/erasurecode-1.pc
 
 
 %changelog
-* Tue Jul 12 2016 Romain Acciari <romain.acciari@openio.io> 1.1.0-2
-- Move .so files into main package
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Thu Dec 08 2016 Pete Zaitcev <zaitcev@redhat.com> 1.4.0-1
+- Upstream 1.4.0: add isa_l_rs_cauchy
+
+* Thu Oct 20 2016 Pete Zaitcev <zaitcev@redhat.com> 1.2.0-2
+- Relocate the .so from -devel to the main package, sigh (#1331977)
+
+* Wed Oct 19 2016 Pete Zaitcev <zaitcev@redhat.com> 1.2.0-1
+- Upstream 1.2.0: compatible with PyECLib 1.3.1
+
+* Thu Mar 03 2016 Pete Zaitcev <zaitcev@redhat.com> 1.1.1-1
+- Upstream 1.1.1: bugfixes for header locations and a segfault
+
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
 * Fri Oct 23 2015 Pete Zaitcev <zaitcev@redhat.com> 1.1.0-1
 - Upstream 1.1.0: better built-in reference implementation
