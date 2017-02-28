@@ -1,11 +1,11 @@
 Name:		puppet-stdlib
-Version:	4.9.0
+Version:	4.15.0
 Release:	1%{?dist}
 Summary:	Puppet module for PuppetLabs stdlib
 
 License:	Apache 2.0
 URL:		http://www.puppetlabs.com/
-Source0:	https://forgeapi.puppetlabs.com/v3/files/puppetlabs-stdlib-%{version}.tar.gz
+Source0:	https://github.com/puppetlabs/puppetlabs-stdlib/archive/%{version}.tar.gz
 BuildArch:	noarch
 
 #BuildRequires:	
@@ -45,6 +45,8 @@ The stdlib module adds the following resources to Puppet:
 
 
 %changelog
+* Tue Feb 21 2017 - 4.15.0-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Sat Dec 05 2015 - 4.9.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Add provides puppetlabs-stdlib
