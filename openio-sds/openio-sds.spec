@@ -2,10 +2,14 @@
 %define cli_name oio
 %define tarname  oio-sds
 
+%if %{?suse_version}0
+%define _sharedstatedir /var/lib
+%endif
+
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        3.2.0
+Version:        3.2.1
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -28,16 +32,32 @@ Source1:        openio-sds.tmpfiles
 Obsoletes:      openio-sds-client,openio-sds-client-devel
 
 BuildRequires:  glib2-devel              >= 2.28.8
-%if %{?fedora}0
+%if %{?fedora}%{?suse_version}0
+BuildRequires:  python2-pbr
 BuildRequires:  zookeeper-devel          >= 3.3.4
 %else
 BuildRequires:  zookeeper-lib-devel      >= 3.3.4
 %endif
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
-BuildRequires:  zeromq3-devel
 BuildRequires:  libcurl-devel
+%if %{?suse_version}0
+BuildRequires:  libapr1-devel            >= 1.2
+BuildRequires:  apache2-devel            >= 2.2
+BuildRequires:  libjson-c2               >= 0.12
+BuildRequires:  libjson-c-devel          >= 0.12
+BuildRequires:  libdb-6_0-devel
+BuildRequires:  zeromq-devel
+
+BuildRequires:  fdupes
+%else
 BuildRequires:  apr-devel                >= 1.2
+BuildRequires:  httpd-devel              >= 2.2
+BuildRequires:  json-c                   >= 0.12
+BuildRequires:  json-c-devel             >= 0.12
+BuildRequires:  libdb-devel
+BuildRequires:  zeromq3-devel
+%endif
 BuildRequires:  sqlite-devel             >= 3.7.11
 BuildRequires:  libattr-devel            >= 2.4.32
 %if %{?el6}0
@@ -45,13 +65,10 @@ BuildRequires:  compat-libevent-20-devel >= 2.0
 %else
 BuildRequires:  libevent-devel           >= 2.0
 %endif
-BuildRequires:  httpd-devel              >= 2.2
 BuildRequires:  lzo-devel                >= 2.0
+BuildRequires:  zlib-devel
 BuildRequires:  openio-asn1c             >= 0.9.27
 BuildRequires:  cmake,bison,flex
-BuildRequires:  libdb-devel
-BuildRequires:  json-c                   >= 0.12
-BuildRequires:  json-c-devel             >= 0.12
 
 
 %description
@@ -62,13 +79,17 @@ OpenIO is a fork of Redcurrant, from Worldline by Atos.
 
 
 %package common
-Summary: common files for OpenIO Cloud Storage Solution
+Summary: Common files for OpenIO Cloud Storage Solution
 Requires:       expat
 Requires:       glib2         >= 2.28
 Requires:       openio-asn1c  >= 0.9.27
 Requires:       zlib
+%if %{?suse_version}0
+Requires:       libjson-c2    >= 0.12
+%else
 Requires:       json-c        >= 0.12
-%if %{?fedora}0
+%endif
+%if %{?fedora}%{?suse_version}0
 BuildRequires:  zookeeper     >= 3.3.4
 %else
 BuildRequires:  zookeeper-lib >= 3.3.4
@@ -88,7 +109,7 @@ Requires:       %{name}-common = %{version}
 %else
 Requires:       %{name}-common = 1:%{version}
 %endif
-%if %{?fedora}0
+%if %{?fedora}%{?suse_version}0
 BuildRequires:  zookeeper          >= 3.3.4
 Requires:       python-zookeeper
 %else
@@ -96,7 +117,11 @@ BuildRequires:  zookeeper-lib      >= 3.3.4
 Requires:       python-ZooKeeper
 %endif
 Requires:       python             >= 2.7
+%if %{?suse_version}0
+Requires:       libapr1            >= 1.2
+%else
 Requires:       apr                >= 1.2
+%endif
 Requires:       sqlite             >= 3.7.11
 Requires:       libattr            >= 2.4.32
 %if %{?el6}0
@@ -145,8 +170,13 @@ Requires:       %{name}-server  = %{version}
 %else
 Requires:       %{name}-server  = 1:%{version}
 %endif
+%if %{?suse_version}0
+Requires:       apache2        >= 2.2
+Requires:       libdb-6_0
+%else
 Requires:       httpd          >= 2.2
 Requires:       libdb
+%endif
 %description mod-httpd
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -185,6 +215,11 @@ cmake \
   -DLZO_INCDIR="%{_includedir}/lzo" \
   -DSOCKET_OPTIMIZED=1 \
   -DOIOSDS_RELEASE=%{version} \
+%if %{?suse_version}0
+  -DAPACHE2_INCDIR="%{_includedir}/apache2" \
+  -DAPACHE2_LIBDIR="%{_libdir}/apache2" \
+  -DAPACHE2_MODDIR="%{_libdir}/apache2" \
+%endif
   "-DGCLUSTER_AGENT_SOCK_PATH=\"/run/oio/sds/sds-agent-0.sock\"" \
   .
 
@@ -199,7 +234,9 @@ make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
 PBR_VERSION=%{version} %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-
+%if %{?suse_version}0
+%fdupes %{buildroot}%{python_sitelib}
+%endif
 
 # Install OpenIO SDS directories
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_localstatedir}/log/oio/sds \
@@ -237,11 +274,12 @@ PBR_VERSION=%{version} %{__python} ./setup.py install -O1 --skip-build --root $R
 %{_localstatedir}/log/oio
 %defattr(0640,openio,openio,0750)
 %{_sharedstatedir}/oio
-/run/oio
+%ghost /run/oio
 %dir %{_datarootdir}/%{name}-%{version}
 
 %files server
 %defattr(755,root,root,755)
+%dir %{_libdir}/grid
 %{_libdir}/grid/msg_conscience.so*
 %{_libdir}/grid/msg_fallback.so*
 %{_libdir}/grid/msg_ping.so*
@@ -249,11 +287,7 @@ PBR_VERSION=%{version} %{__python} ./setup.py install -O1 --skip-build --root $R
 %{_libdir}/libmeta0v2.so*
 %{_libdir}/libmeta1v2.so*
 %{_libdir}/libmeta2v2.so*
-%{_libdir}/libmeta2v2utils.so*
 %{_libdir}/librawx.so*
-%{_libdir}/libserver.so*
-%{_libdir}/libsqliterepo.so*
-%{_libdir}/libsqliteutils.so*
 %{_bindir}/%{cli_name}-account-server
 %{_bindir}/%{cli_name}-blob-auditor
 %{_bindir}/%{cli_name}-blob-indexer
@@ -277,7 +311,6 @@ PBR_VERSION=%{version} %{__python} ./setup.py install -O1 --skip-build --root $R
 %{_bindir}/%{cli_name}-sqlx-server
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
-%{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/zk-bootstrap.py*
 %{_bindir}/openio
 %defattr(644,root,root,755)
@@ -291,7 +324,11 @@ PBR_VERSION=%{version} %{__python} ./setup.py install -O1 --skip-build --root $R
 
 %files mod-httpd
 %defattr(755,root,root,755)
+%if %{?suse_version}0
+%{_libdir}/apache2/mod_dav_rawx.so*
+%else
 %{_libdir}/httpd/modules/mod_dav_rawx.so*
+%endif
 
 %files tools
 %defattr(755,root,root,755)
@@ -330,6 +367,9 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Tue Mar 28 2017 - 3.2.1-1 - Florent Vennetier <florent@fridu.net>
+- Update to 3.2.1
+- Fix compilation on opensuse
 * Tue Feb 21 2017 - 3.2.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Feb 10 2017 - 3.2.0-0.c0 - Romain Acciari <romain.acciari@openio.io>
@@ -361,7 +401,7 @@ fi
 - New release candidate
 * Wed Mar 16 2016 - 2.0.0.c2-1 - Romain Acciari <romain.acciari@openio.io>
 - New release candidate
-- Fix %defattr warnings
+- Fix %%defattr warnings
 - Add files
 * Thu Mar 03 2016 - 2.0.0.c1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release candidate (change major version)
