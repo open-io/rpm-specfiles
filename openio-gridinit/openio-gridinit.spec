@@ -128,7 +128,7 @@ make DESTDIR=%{buildroot} install
 %dir %{_sysconfdir}/%{realname}
 %config(noreplace) %{_sysconfdir}/%{realname}/*
 %{_prefix}/lib/tmpfiles.d/*
-/run/%{realname}
+%ghost /run/%{realname}
 %config %{_sysconfdir}/rsyslog.d/*
 %config %{_sysconfdir}/logrotate.d/*
 
