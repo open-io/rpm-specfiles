@@ -1,5 +1,5 @@
 Name:		puppet-gridinit
-Version:	1.1.5
+Version:	1.1.8
 Release:	1%{?dist}
 Summary:	Puppet module for gridinit from OpenIO
 
@@ -35,6 +35,8 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Mon Apr 10 2017 - 1.1.8-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Fri Apr 15 2016 - 1.1.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Mar 25 2016 - 1.1.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>

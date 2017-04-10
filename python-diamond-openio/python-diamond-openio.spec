@@ -1,7 +1,7 @@
 Name:           python-diamond-openio
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.0.0
+Version:        1.0.1
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/python-diamond-openio/archive/%{version}.tar.gz
@@ -48,6 +48,8 @@ Diamond collector for OpenIO SDS object storage solution.
 
 
 %changelog
+* Thu Mar 09 2017 Romain Acciari <romain.acciari@openio.io> - 1.0.1-1
+- New release
 * Tue Feb 21 2017 Romain Acciari <romain.acciari@openio.io> - 1.0.0-1
 - New release
 * Tue Aug 30 2016 Romain Acciari <romain.acciari@openio.io> - 16.04.1-1
