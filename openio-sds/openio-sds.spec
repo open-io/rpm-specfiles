@@ -5,9 +5,10 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        3.2.0
-Release:        1%{?dist}
-%define         tarversion %{version}
+Version:        3.3.0
+#Release:        0%{?dist}
+Release:        0.b0%{?dist}
+%define         tarversion %{version}.b0
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
@@ -16,6 +17,7 @@ Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
+%define         targetversion 3.3.0
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
@@ -191,14 +193,22 @@ cmake \
 make %{?_smp_mflags}
 
 # Build python
+%if %{?_with_test:0}%{!?_with_test:1}
 PBR_VERSION=%{version} %{__python} setup.py build
+%else
+PBR_VERSION=%{targetversion} %{__python} setup.py build
+%endif
 
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-PBR_VERSION=%{version} %{__python} ./setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%if %{?_with_test:0}%{!?_with_test:1}
+PBR_VERSION=%{version} %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%else
+PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%endif
 
 
 # Install OpenIO SDS directories
