@@ -9,8 +9,6 @@ License:	GPL v3
 Source0:	oio-meta1-rebuilder.sh
 Source1:	oio-meta2-rebuilder.sh
 
-Requires:	logrotate
-
 %description
 This package contains rebuilder scripts for meta1 and meta2 databases.
 
