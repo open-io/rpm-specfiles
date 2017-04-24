@@ -9,10 +9,9 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        3.3.0
-#Release:        0%{?dist}
-Release:        0.b0%{?dist}
-%define         tarversion %{version}.b0
+Version:        3.2.2
+Release:        1%{?dist}
+%define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
@@ -353,6 +352,7 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_bindir}/%{cli_name}-election-reset.py
 %{_bindir}/%{cli_name}-election-smudge.py
 %{_bindir}/%{cli_name}-crawler-integrity
+%{_bindir}/%{cli_name}-wrap.sh
 
 
 %pre common
@@ -377,6 +377,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Thu Apr 20 2017 - 3.2.2-1 - <romain.acciari@openio.io>
+- New release
 * Tue Mar 28 2017 - 3.2.1-1 - Florent Vennetier <florent@fridu.net>
 - Update to 3.2.1
 - Fix compilation on opensuse
