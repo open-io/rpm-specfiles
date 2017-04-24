@@ -23,7 +23,7 @@ This package contains rebuilder scripts for meta1 and meta2 databases.
 #%{__mkdir_p} %{buildroot}%{_sysconfdir}/logrotate.d
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_sharedstatedir}/oio/sds
 %{__install} -m744 %SOURCE0 %{buildroot}%{_sharedstatedir}/oio/sds/oio-meta1-rebuilder.sh
-%{__install} -m744 %SOURCE1 %{buildroot}%{_sharedstatedir}/oio/sds/oio-meta1-rebuilder.sh
+%{__install} -m744 %SOURCE1 %{buildroot}%{_sharedstatedir}/oio/sds/oio-meta2-rebuilder.sh
 
 
 
