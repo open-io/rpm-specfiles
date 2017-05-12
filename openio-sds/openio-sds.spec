@@ -33,6 +33,7 @@ Source1:        openio-sds.tmpfiles
 Obsoletes:      openio-sds-client,openio-sds-client-devel
 
 BuildRequires:  glib2-devel              >= 2.28.8
+BuildRequires:  leveldb-devel
 %if %{?fedora}%{?suse_version}0
 BuildRequires:  python2-pbr
 BuildRequires:  zookeeper-devel          >= 3.3.4
@@ -131,6 +132,7 @@ Requires:       compat-libevent-20 >= 2.0
 BuildRequires:  libevent           >= 2.0
 %endif
 Requires:       leveldb
+Requires:       leveldb-devel
 Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
@@ -353,6 +355,7 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_bindir}/%{cli_name}-election-smudge.py
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-wrap.sh
+%{_bindir}/%{cli_name}-blob-registrator
 
 
 %pre common
