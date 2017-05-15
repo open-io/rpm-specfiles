@@ -9,7 +9,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        3.2.3
+Version:        3.3.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -33,6 +33,7 @@ Source1:        openio-sds.tmpfiles
 Obsoletes:      openio-sds-client,openio-sds-client-devel
 
 BuildRequires:  glib2-devel              >= 2.28.8
+BuildRequires:  leveldb-devel
 %if %{?fedora}%{?suse_version}0
 BuildRequires:  python2-pbr
 BuildRequires:  zookeeper-devel          >= 3.3.4
@@ -131,6 +132,7 @@ Requires:       compat-libevent-20 >= 2.0
 BuildRequires:  libevent           >= 2.0
 %endif
 Requires:       leveldb
+Requires:       leveldb-devel
 Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
@@ -378,6 +380,9 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Fri May 12 2017 - 3.3.0-1 - Sebastien Lapierre <sebastien.lapierre@openio.io>
+- New realease
+- Rdir from python to C
 * Tue May 09 2017 - 3.2.3-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Apr 20 2017 - 3.2.2-1 - Romain Acciari <romain.acciari@openio.io>
