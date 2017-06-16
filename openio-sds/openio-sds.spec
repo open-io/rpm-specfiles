@@ -9,7 +9,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        3.3.0
+Version:        3.2.4
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -380,9 +380,8 @@ fi
 /sbin/ldconfig
 
 %changelog
-* Fri May 12 2017 - 3.3.0-1 - Sebastien Lapierre <sebastien.lapierre@openio.io>
-- New realease
-- Rdir from python to C
+* Fri Jun 16 2017 - 3.2.4-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Tue May 09 2017 - 3.2.3-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Apr 20 2017 - 3.2.2-1 - Romain Acciari <romain.acciari@openio.io>
