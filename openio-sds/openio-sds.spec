@@ -196,7 +196,7 @@ Requires:       %{name}-server = %{version}
 Requires:       %{name}-server = 1:%{version}
 %endif
 %description tools
-penIO software storage solution is designed to handle PETA-bytes of
+OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
 and any other personal unstructured data.
 OpenIO is a fork of Redcurrant, from Worldline by Atos.
