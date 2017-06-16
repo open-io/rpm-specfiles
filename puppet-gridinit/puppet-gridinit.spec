@@ -1,5 +1,5 @@
 Name:		puppet-gridinit
-Version:	1.1.8
+Version:	1.1.9
 Release:	1%{?dist}
 Summary:	Puppet module for gridinit from OpenIO
 
@@ -35,32 +35,34 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
-* Mon Apr 10 2017 - 1.1.8-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri May 19 2017 - 1.1.9-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Apr 15 2016 - 1.1.5-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Apr 10 2017 - 1.1.8-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Fri Mar 25 2016 - 1.1.3-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Apr 15 2016 - 1.1.5-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Tue Feb 23 2016 - 1.1.2-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 25 2016 - 1.1.3-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Mon Dec 07 2015 - 1.1.1-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Tue Feb 23 2016 - 1.1.2-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Mon Dec 07 2015 - 1.1.1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Update puppetlabs-stdlib dependency
-* Wed Dec 02 2015 - 1.1.0-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Dec 02 2015 - 1.1.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
-* Thu Jul 09 2015 - 20150709-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Jul 09 2015 - 20150709-1 - Romain Acciari <romain.acciari@openio.io>
 - Require package before service
-* Thu Jun 18 2015 - 20150618-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Jun 18 2015 - 20150618-1 - Romain Acciari <romain.acciari@openio.io>
 - Add no_exec option
-* Thu Mar 19 2015 - 20150319-2%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 20150319-2 - Romain Acciari <romain.acciari@openio.io>
 - start_at_boot is enabled by default
-* Thu Mar 19 2015 - 20150319-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Thu Mar 19 2015 - 20150319-1 - Romain Acciari <romain.acciari@openio.io>
 - Remove log4c
-* Wed Mar 18 2015 - 20150318-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Wed Mar 18 2015 - 20150318-1 - Romain Acciari <romain.acciari@openio.io>
 - Wait 1 second before reloading to let the daemon create the socket
 - Fix root user
 - Fix runstatedir to /run/gridinit
-* Mon Mar 09 2015 - 20150309-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Mon Mar 09 2015 - 20150309-1 - Romain Acciari <romain.acciari@openio.io>
 - Fix runstatedir to /run
-* Fri Mar 06 2015 - 20150306-1%{?dist} - Romain Acciari <romain.acciari@openio.io>
+* Fri Mar 06 2015 - 20150306-1 - Romain Acciari <romain.acciari@openio.io>
 - Initial release
