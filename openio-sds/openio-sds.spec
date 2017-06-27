@@ -20,7 +20,7 @@ Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-%define         targetversion 3.3.0
+%define         targetversion 4.0.0
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
@@ -269,7 +269,6 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_libdir}/libmetautils.so*
 %{_libdir}/libmeta0remote.so*
 %{_libdir}/libmeta1remote.so*
-%{_libdir}/libmeta2v2remote.so*
 %{_libdir}/liboio*
 # TODO find why libserver is necessary in common
 %{_libdir}/libserver.so*
@@ -356,6 +355,7 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-wrap.sh
 %{_bindir}/%{cli_name}-blob-registrator
+%{_bindir}/%{cli_name}-election-stat.py
 
 
 %pre common
