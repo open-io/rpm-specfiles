@@ -3,8 +3,8 @@
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.8.2
-Release:        1%{?dist}
+Version:        1.0.0.b3
+Release:        0%{?dist}
 %define         tarname oioswift
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
@@ -20,7 +20,7 @@ Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.g
 Epoch:          1
 %endif
 
-Summary:        Swift Gateway for OpenIO SDS
+Summary:        Swift proxy for OpenIO SDS
 License:        Apache License v2
 URL:            http://www.openio.io/
 
@@ -32,7 +32,7 @@ Requires:       python-lxml
 
 
 %description
-Swift Gateway for OpenIO SDS.
+Swift proxy for OpenIO SDS.
 
 %prep
 %setup -q -n oio-swift-%{tarversion}
