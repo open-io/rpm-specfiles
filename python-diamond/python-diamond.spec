@@ -3,7 +3,7 @@
 
 Name:           python-%{realname}
 Version:        4.0.515
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Smart data producer for graphite graphing package
 
 License:        MIT
@@ -12,6 +12,7 @@ Source0:        https://github.com/python-diamond/Diamond/archive/v%{version}.ta
 
 BuildRequires:  python >= 2.7
 Requires:       python >= 2.7
+Requires:       python-configobj
 
 %description
 Diamond is a python daemon that collects system metrics and publishes
@@ -79,6 +80,8 @@ fi
 
 
 %changelog
+* Tue Jul 04 2017 - 4.0.515-2 - Romain Acciari <romain.acciari@openio.io>
+- Add python-configobj dependency
 * Tue Feb 28 2017 - 4.0.515-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Tue Jan 05 2016 - 20160105.git41a3cf0-1 - Romain Acciari <romain.acciari@openio.io>
