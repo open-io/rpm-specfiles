@@ -3,10 +3,10 @@
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.0.0.b3
-Release:        0%{?dist}
+Version:        1.0.0
+Release:        0.b4%{?dist}
 %define         tarname oioswift
-%define         tarversion %{version}
+%define         tarversion %{version}.b4
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
@@ -50,6 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jul 21 2017 - 1.0.0-0.b4 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Thu Apr 20 2017 - 0.8.2-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Mar 09 2017 - 0.8.0-1 - Romain Acciari <romain.acciari@openio.io>
