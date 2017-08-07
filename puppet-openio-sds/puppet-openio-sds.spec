@@ -5,7 +5,7 @@ License:        Apache 2.0
 URL:            http://www.openio.io/
 BuildArch:      noarch
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.0.7
+Version:        4.0.8
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/puppet-openiosds/archive/%{tarversion}.tar.gz
@@ -49,6 +49,8 @@ Puppet module to install OpenIO SDS solution.
 
 
 %changelog
+* Thu Aug 7 2017 - 4.0.8-1 - Sebastien Lapierre <sebastien.lapierre@openio.io>
+- New release
 * Thu Jul 20 2017 - 4.0.7-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Jul 20 2017 - 4.0.6-1 - Romain Acciari <romain.acciari@openio.io>
