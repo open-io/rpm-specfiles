@@ -36,6 +36,8 @@ Puppet manifests to install OpenIO SDS solution.
 
 
 %changelog
+* Fri Aug 18 2017 - 20170818-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Tue Mar 07 2017 - 20170307-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Tue Feb 28 2017 - 20170228-1 - Romain Acciari <romain.acciari@openio.io>
