@@ -1,14 +1,14 @@
 Name:           mock-config-openio
-Version:        16.10.0
+Version:        17.04.0
 Release:        1%{?dist}
 Summary:        Mock configuration file for building OpenIO packages
 
 License:        Apache v2.0
 URL:            http://openio.io
 BuildArch:      noarch
-Source0:        epel-7-x86_64-openio.cfg       
+Source0:        https://github.com/open-io/mock-config/archive/%{version}.tar.gz
 
-#BuildRequires: 
+#BuildRequires:
 Requires:       mock
 
 %description
@@ -33,11 +33,14 @@ RHEL/CentOS distributions.
 
 
 %changelog
-* Fri Jun 16 2017 Romain Acciari <romain.acciari@openio.io> - 16.10.0-1%{?dist}
+* Wed Aug 23 2017 Romain Acciari <romain.acciari@openio.io> - 17.04.0-1
+- New release
+- Adding all supported release
+* Fri Jun 16 2017 Romain Acciari <romain.acciari@openio.io> - 16.10.0-1
 - Updated to 16.10
-* Tue Dec 29 2015 Romain Acciari <romain.acciari@openio.io> - 15.12.0-1%{?dist}
+* Tue Dec 29 2015 Romain Acciari <romain.acciari@openio.io> - 15.12.0-1
 - Update to 15.12
-* Wed Dec 02 2015 Romain Acciari <romain.acciari@openio.io> - 1.1-1%{?dist}
+* Wed Dec 02 2015 Romain Acciari <romain.acciari@openio.io> - 1.1-1
 - Add Fedora 23 support
-* Fri Nov 20 2015 Romain Acciari <romain.acciari@openio.io> - 1.0-1%{?dist}
+* Fri Nov 20 2015 Romain Acciari <romain.acciari@openio.io> - 1.0-1
 - Initial Release
