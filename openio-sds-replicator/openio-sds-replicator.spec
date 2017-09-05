@@ -1,11 +1,13 @@
 Name:           openio-sds-replicator
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.2.1
-Release:        2%{?dist}
+Version:        0.4.1
+Release:        1%{?dist}
 %define         tarversion %{version}
 %define         jarversion %{version}
 Source0:        oio-replicator-%{version}.tar.gz
+#curl -u 'openio-private:$TOKEN' -i https://api.github.com/repos/openio-private/oio-replicator/tags
+#curl -L https://api.github.com/repos/openio-private/oio-replicator/tarball/%{version}?access_token=$TOKEN >%{version}.tar.gz
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -25,18 +27,18 @@ License:        OpenIO Copyright
 URL:            http://gitlab.openio.io/openio/oio-replicator/
 
 BuildRequires:  java-1.8.0-openjdk-devel
-#Requires:       
+Requires:       java = 1:1.8.0
 
 %description
 OpenIO SDS replicator service.
 
 
 %prep
-#%setup -q -n oio-replicator.git
-%setup -q -n oio-replicator-%{version}-05ba394e23c3f37bf036051c1ee6624adbc58b16
+%setup -q -n oio-replicator-%{version}
 
 
 %build
+#OPENIO_API_VERSION=0.6.3 ./gradlew assemble
 ./gradlew assemble
 
 
@@ -54,6 +56,8 @@ popd
 
 
 %changelog
+* Mon Aug 28 2017 Romain Acciari <romain.acciari@openio.io> 0.4.1-2
+- New release
 * Fri Dec 23 2016 Romain Acciari <romain.acciari@openio.io> 0.2.1-2
 - Add a symlink to current version
 * Fri Dec 23 2016 Romain Acciari <romain.acciari@openio.io> 0.2.1-1
