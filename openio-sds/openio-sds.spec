@@ -284,8 +284,8 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_localstatedir}/log/oio
 %defattr(0640,openio,openio,0750)
 %{_sharedstatedir}/oio
-%ghost /run/oio
 %dir %{_datarootdir}/%{name}-%{version}
+/run/oio
 
 %files server
 %defattr(755,root,root,755)
