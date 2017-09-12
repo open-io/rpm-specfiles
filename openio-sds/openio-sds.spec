@@ -9,8 +9,9 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.0.0
+Version:        4.1.0
 Release:        1%{?dist}
+#%%define         tarversion %{version}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
@@ -306,9 +307,7 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_bindir}/%{cli_name}-conscience-agent
 %{_bindir}/%{cli_name}-cluster
 %{_bindir}/%{cli_name}-crawler-storage-tierer
-%{_bindir}/%{cli_name}-echo-server
 %{_bindir}/%{cli_name}-event-agent
-%{_bindir}/%{cli_name}-meta0-init
 %{_bindir}/%{cli_name}-meta0-client
 %{_bindir}/%{cli_name}-meta0-server
 %{_bindir}/%{cli_name}-meta1-server
@@ -353,7 +352,6 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_bindir}/%{cli_name}-election-reset.py
 %{_bindir}/%{cli_name}-election-smudge.py
 %{_bindir}/%{cli_name}-crawler-integrity
-%{_bindir}/%{cli_name}-wrap.sh
 %{_bindir}/%{cli_name}-blob-registrator
 %{_bindir}/%{cli_name}-election-stat.py
 
@@ -380,6 +378,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Mon Sep 11 2017 - 4.1.0-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Fri Jun 30 2017 - 4.0.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Jun 16 2017 - 3.3.1-1 - Romain Acciari <romain.acciari@openio.io>
@@ -387,8 +387,6 @@ fi
 * Fri May 12 2017 - 3.3.0-1 - Sebastien Lapierre <sebastien.lapierre@openio.io>
 - New realease
 - Rdir from python to C
-* Fri Jun 16 2017 - 3.2.4-1 - Romain Acciari <romain.acciari@openio.io>
-- New release
 * Tue May 09 2017 - 3.2.3-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Apr 20 2017 - 3.2.2-1 - Romain Acciari <romain.acciari@openio.io>
