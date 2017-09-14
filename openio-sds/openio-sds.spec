@@ -10,7 +10,7 @@ Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        4.1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 #%%define         tarversion %{version}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -142,6 +142,7 @@ Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
 # Python oiopy dependencies
 Requires:       python-eventlet >= 0.15.2, python-requests >= 2.6.0, python-cliff-tablib, python-cliff >= 1.13, python-tablib, python-pyeclib >= 1.2.0
+Requires:       python-urllib3 >= 1.12
 Obsoletes:      python-oiopy
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
@@ -378,6 +379,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Tue Sep 12 2017 - 4.1.0-2 - Romain Acciari <romain.acciari@openio.io>
+- Update python-urllib3 requirement
 * Mon Sep 11 2017 - 4.1.0-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Jun 30 2017 - 4.0.0-1 - Romain Acciari <romain.acciari@openio.io>
