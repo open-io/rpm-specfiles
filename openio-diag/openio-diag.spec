@@ -4,7 +4,7 @@
 Name:           openio-diag
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.0.0b1
+Version:        1.0.0.b1
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-diag/archive/%{tarversion}.tar.gz
