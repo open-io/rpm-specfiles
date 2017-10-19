@@ -1,6 +1,6 @@
 Name:           mock-config-openio
 Version:        17.04.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Mock configuration file for building OpenIO packages
 
 License:        Apache v2.0
@@ -24,16 +24,22 @@ RHEL/CentOS distributions.
 
 
 %install
+%{__mkdir_p} -v %{buildroot}/usr/share/mock-config-openio
+%{__install} -m 0644 LICENSE README.md \
+  %{buildroot}/usr/share/mock-config-openio/
 %{__mkdir_p} -v %{buildroot}/etc/mock
-%{__install} * \
+%{__install} -m 0644 *-openio-sds-*.cfg \
   %{buildroot}/etc/mock/
 
 
 %files
-/etc/mock/*
-
+/etc/mock/*-openio-sds-*.cfg
+/usr/share/mock-config-openio/LICENSE
+/usr/share/mock-config-openio/README.md
 
 %changelog
+* Thu Oct 19 2017 Vincent Legoll <vincent.legoll@openio.io> - 17.04.0-3
+- Move license & readme to /usr/share, better files globbing
 * Thu Oct 19 2017 Romain Acciari <romain.acciari@openio.io> - 17.04.0-2
 - Fix the RPM
 * Wed Aug 23 2017 Romain Acciari <romain.acciari@openio.io> - 17.04.0-1
