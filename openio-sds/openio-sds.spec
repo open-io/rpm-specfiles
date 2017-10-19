@@ -9,8 +9,8 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.1.0
-Release:        2%{?dist}
+Version:        4.1.4
+Release:        1%{?dist}
 #%%define         tarversion %{version}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -379,6 +379,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Wed Oct 04 2017 - 4.1.4-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Tue Sep 12 2017 - 4.1.0-2 - Romain Acciari <romain.acciari@openio.io>
 - Update python-urllib3 requirement
 * Mon Sep 11 2017 - 4.1.0-1 - Romain Acciari <romain.acciari@openio.io>
