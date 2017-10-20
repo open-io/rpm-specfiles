@@ -18,8 +18,8 @@ Epoch:          1
 Summary:        OpenIO gridinit daemon
 License:        AGPL-3.0+
 #URL:
-Source1:        %{realname}.systemd
-Source2:        %{name}.tmpfiles
+Source1:        %{name}-systemd.service
+Source2:        %{name}-tmpfiles.conf
 Source3:        %{name}-rsyslog.conf
 Source4:        %{name}-logrotate.conf
 %if 0%{?suse_version}
