@@ -104,7 +104,6 @@ make DESTDIR=%{buildroot} install
 # Install tmpfiles
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d
 %{__install} -m 644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d/gridinit.conf
-%{__mkdir_p} -v %{buildroot}/run/%{realname}
 
 # Install rsyslog configuration
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}/etc/rsyslog.d
