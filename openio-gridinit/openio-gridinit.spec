@@ -98,23 +98,23 @@ make DESTDIR=%{buildroot} install
 %{__install} -m644 gridinit.conf.default %{buildroot}%{_sysconfdir}/%{realname}/gridinit.conf
 
 # Install init script
-%{__mkdir_p} %{buildroot}/usr/lib/systemd/system
+%{__mkdir_p} -m755 %{buildroot}/usr/lib/systemd/system
 %{__install} -m644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/gridinit.service
 
 # Install tmpfiles
-%{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d
+%{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d
 %{__install} -m644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d/gridinit.conf
 
 # Install rsyslog configuration
-%{__mkdir_p} -v ${RPM_BUILD_ROOT}/etc/rsyslog.d
+%{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}/etc/rsyslog.d
 %{__install} -m644 %{SOURCE3} ${RPM_BUILD_ROOT}/etc/rsyslog.d/gridinit.conf
 
 # Install logrotate configuration
-%{__mkdir_p} -v ${RPM_BUILD_ROOT}/etc/logrotate.d
+%{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}/etc/logrotate.d
 %{__install} -m644 %{SOURCE4} ${RPM_BUILD_ROOT}/etc/logrotate.d/gridinit.conf
 
 # Install /run directory
-%{__mkdir_p} -v %{buildroot}/run/%{realname}
+%{__mkdir_p} -m755 -v %{buildroot}/run/%{realname}
 
 # Remove dirty .la
 %{__rm} -vf %{buildroot}%{_libdir}/gridinit/*.la
