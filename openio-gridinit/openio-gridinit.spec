@@ -50,7 +50,7 @@ Requires:  systemd
 
 
 %description
-Init program used by the  OpenIO Open Source Project. It forks processes
+Init program used by the OpenIO Open Source Project. It forks processes
 and respawns them as soon as they die. It also provides a simple management
 interface through a UNIX socket. Services can be started/stopped/monitored.
 OpenIO gridinit is a fork of Redcurrant gridinit, from Worldline by Atos.
@@ -60,7 +60,7 @@ OpenIO gridinit is a fork of Redcurrant gridinit, from Worldline by Atos.
 Summary:        Grid Init utilities libraries
 License:        AGPL-3.0+
 Requires:       glib2 >= 2.28.8
-%description	utils
+%description    utils
 C code library with children processes management features. This library is
 internally used by the gridinit process.
 
@@ -103,7 +103,7 @@ make DESTDIR=%{buildroot} install
 
 # Install tmpfiles
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d
-%{__install} -m 644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d/gridinit.conf
+%{__install} -m644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d/gridinit.conf
 
 # Install rsyslog configuration
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}/etc/rsyslog.d
