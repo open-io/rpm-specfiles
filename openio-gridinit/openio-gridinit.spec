@@ -102,8 +102,8 @@ make DESTDIR=%{buildroot} install
 %{__install} -m644 %{SOURCE1} %{buildroot}%{_libdir}/systemd/system/gridinit.service
 
 # Install tmpfiles
-%{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d
-%{__install} -m644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d/gridinit.conf
+%{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}%{_prefix}%{_lib}/tmpfiles.d
+%{__install} -m644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_prefix}%{_lib}/tmpfiles.d/gridinit.conf
 
 # Install rsyslog configuration
 %{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}/etc/rsyslog.d
@@ -126,7 +126,7 @@ make DESTDIR=%{buildroot} install
 %{_bindir}/*
 %dir %{_sysconfdir}/%{realname}
 %config(noreplace) %{_sysconfdir}/%{realname}/*
-%{_prefix}/lib/tmpfiles.d/*
+%{_prefix}%{_lib}/tmpfiles.d/*
 %ghost /run/%{realname}
 %config %{_sysconfdir}/rsyslog.d/*
 %config %{_sysconfdir}/logrotate.d/*
