@@ -98,8 +98,8 @@ make DESTDIR=%{buildroot} install
 %{__install} -m644 gridinit.conf.default %{buildroot}%{_sysconfdir}/%{realname}/gridinit.conf
 
 # Install init script
-%{__mkdir_p} -m755 %{buildroot}/usr/lib/systemd/system
-%{__install} -m644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/gridinit.service
+%{__mkdir_p} -m755 %{buildroot}%{_libdir}/systemd/system
+%{__install} -m644 %{SOURCE1} %{buildroot}%{_libdir}/systemd/system/gridinit.service
 
 # Install tmpfiles
 %{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}%{_prefix}/lib/tmpfiles.d
@@ -122,7 +122,7 @@ make DESTDIR=%{buildroot} install
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/systemd/system/gridinit.service
+%{_libdir}/systemd/system/gridinit.service
 %{_bindir}/*
 %dir %{_sysconfdir}/%{realname}
 %config(noreplace) %{_sysconfdir}/%{realname}/*
