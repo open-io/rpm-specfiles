@@ -174,7 +174,7 @@ fi
 
 %changelog
 * Thu Oct 27 2016 - 1.6-3 - Romain Acciari <romain.acciari@openio.io>
-- Add tmpfiles_create at %post for OpenSuSe
+- Add tmpfiles_create at %%post for OpenSuSe
 * Sun Apr 17 2016 - 1.6-2 - Romain Acciari <romain.acciari@openio.io>
 - /run files are created at package install now
 * Mon Feb 29 2016 - 1.6-1 - Romain Acciari <romain.acciari@openio.io>
