@@ -1,12 +1,13 @@
 Name:           mock-config-openio
 Version:        17.04.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Mock configuration file for building OpenIO packages
 
 License:        Apache v2.0
 URL:            http://openio.io
 BuildArch:      noarch
-Source0:        https://github.com/open-io/mock-config/archive/mock-config-openio-%{version}.tar.gz
+Source0:        https://github.com/open-io/mock-config-openio/archive/%{version}.tar.gz
+Source1:        http://mirror.openio.io/pub/repo/openio/RPM-GPG-KEY-OPENIO-0
 
 #BuildRequires:
 Requires:       mock
@@ -17,27 +18,32 @@ RHEL/CentOS distributions.
 
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}
 
 
 %build
 
 
 %install
-%{__mkdir_p} -v %{buildroot}/usr/share/mock-config-openio
+%{__mkdir_p} -v %{buildroot}/etc/mock \
+                %{buildroot}/usr/share/mock-config-openio \
+                %{buildroot}/etc/pki/mock
 %{__install} -m 0644 LICENSE README.md \
   %{buildroot}/usr/share/mock-config-openio/
-%{__mkdir_p} -v %{buildroot}/etc/mock
-%{__install} -m 0644 *-openio-sds-*.cfg \
+%{__install} -m 0644 *.cfg \
   %{buildroot}/etc/mock/
+%{__install} -m 0644 %{SOURCE1} \
+  %{buildroot}/etc/pki/mock/
 
 
 %files
-/etc/mock/*-openio-sds-*.cfg
-/usr/share/mock-config-openio/LICENSE
-/usr/share/mock-config-openio/README.md
+/etc/mock/*
+/usr/share/mock-config-openio/*
+/etc/pki/mock/*
 
 %changelog
+* Fri Oct 20 2017 Romain Acciari <romain.acciari@openio.io> - 17.04.0-4
+- Add OpenIO key to mock directory
 * Thu Oct 19 2017 Vincent Legoll <vincent.legoll@openio.io> - 17.04.0-3
 - Move license & readme to /usr/share, better files globbing
 * Thu Oct 19 2017 Romain Acciari <romain.acciari@openio.io> - 17.04.0-2
