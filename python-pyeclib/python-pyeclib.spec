@@ -3,24 +3,22 @@
 %endif
 
 Name:           python-pyeclib
-Version:        1.4.0
-Release:        3%{?dist}
+Version:        1.5.0
+Release:        1%{?dist}
 Summary:        Python interface to erasure codes
 
 License:        BSD
 URL:            https://bitbucket.org/kmgreen2/pyeclib/
-# We pull the tag using git CLI. Save the current command for Source0 below.
-#  git archive -o ../pyeclib-1.4.0.tar.gz --prefix=pyeclib-1.4.0/ 1.4.0
-Source0:        pyeclib-%{version}.tar.gz
+Source0:        https://github.com/openstack/pyeclib/archive/%{version}.tar.gz
 
 BuildRequires:  python2-devel
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
 %endif
 BuildRequires:  python-setuptools
-BuildRequires:  liberasurecode-devel >= 1.4.0
+BuildRequires:  liberasurecode-devel >= 1.5.0
 
-Requires:       liberasurecode >= 1.4.0
+Requires:       liberasurecode >= 1.5.0
 
 %description
 This library provides a simple Python interface for implementing erasure
@@ -82,6 +80,12 @@ popd
 %endif
 
 %changelog
+* Thu Jul 27 2017 Pete Zaitcev <zaitcev@redhat.com> 1.5.0-1
+- Upstream 1.5.0, companion with liberasurecode 1.5.0
+
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
