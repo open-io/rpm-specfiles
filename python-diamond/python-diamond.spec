@@ -39,8 +39,8 @@ any source.
 %{__install} -v -m644 conf/diamond.conf.example $RPM_BUILD_ROOT/etc/diamond/diamond.conf
 
 # Install systemctl configuration file
-%{__mkdir_p} -v $RPM_BUILD_ROOT/usr/lib/systemd/system
-%{__install} -v -m644 rpm/systemd/diamond.service $RPM_BUILD_ROOT/usr/lib/systemd/system/diamond.service
+%{__mkdir_p} -v $RPM_BUILD_ROOT%{_libdir}/systemd/system
+%{__install} -v -m644 rpm/systemd/diamond.service $RPM_BUILD_ROOT%{_libdir}/systemd/system/diamond.service
 
 # Remove useless init.d configuration file
 %{__rm} -vrf $RPM_BUILD_ROOT/etc/init.d
@@ -74,7 +74,7 @@ fi
 %config(noreplace) %{_sysconfdir}/*
 %{_bindir}/*
 %{_datarootdir}/*
-/usr/lib/systemd/system/*
+%{_libdir}/systemd/system/*
 %{python_sitelib}/*
 %{_localstatedir}/log/*
 
