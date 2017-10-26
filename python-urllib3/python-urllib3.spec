@@ -49,7 +49,7 @@ Requires:       python-pysocks
 
 # See comment-block in the %%install section.
 # https://bugzilla.redhat.com/show_bug.cgi?id=1231381
-%if (0%{?fedora} && 0%{?fedora} <= 21) || 0%{rhel}
+%if (0%{?fedora} && 0%{?fedora} <= 21) || 0%{?rhel}
 Requires:       python-backports-ssl_match_hostname
 BuildRequires:  python-backports-ssl_match_hostname
 %endif
