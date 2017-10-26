@@ -6,7 +6,7 @@ Summary:        A Comprehensive Open Source Library for Galois Field Arithmetic
 Group:          Librairies
 License:        BSD
 URL:            http://lab.jerasure.org/jerasure/gf-complete/
-Source0:        gf-complete-363da207236617b1d50f04bb191a14f0de364303.tar.gz
+Source0:        http://lab.jerasure.org/jerasure/gf-complete/repository/archive.tar.gz?ref=363da207236617b1d50f04bb191a14f0de364303
 Patch0:         do-not-use-sse-ac-ext.patch
 
 BuildRequires:  autoconf,automake,libtool
@@ -16,7 +16,7 @@ BuildRequires:  autoconf,automake,libtool
 A Comprehensive Open Source Library for Galois Field Arithmetic.
 
 
-%package	tools
+%package        tools
 Summary:        A Comprehensive Open Source Library for Galois Field Arithmetic
 Group:          Tools
 Requires:       gf-complete = %{version}
