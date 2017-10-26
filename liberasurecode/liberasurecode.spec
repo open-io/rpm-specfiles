@@ -1,17 +1,14 @@
 Name:           liberasurecode
-Version:        1.4.0
-Release:        2%{?dist}
+Version:        1.5.0
+Release:        1%{?dist}
 Summary:        Erasure Code API library written in C with pluggable backends
 
 # Main license is a 2-clause BSD with clause numbers removed for some reason.
 License:        BSD and CRC32
 URL:            https://bitbucket.org/tsg-/liberasurecode/
-# We pull the tag using git CLI. Save the current command for Source0 below.
-#  git archive -o ../liberasurecode-1.4.0.tar.gz --prefix=liberasurecode-1.4.0/ 1.4.0
-# Note that as of 1.2.0, liberasurecode migrated to github.com/openstack
-# and switched to tags without the 'v' prefix.
-Source0:        https://github.com/openstack/%{name}/archive/%{version}.tar.gz
+Source0:        https://github.com/openstack/liberasurecode/archive/%{version}.tar.gz
 Patch2:         liberasurecode-1.0.5-docs.patch
+Patch3:         liberasurecode-1.5.0-ldtest.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -45,10 +42,11 @@ developing applications that use %{name}.
 %prep
 %setup -q
 %patch2 -p1
+%patch3 -p1
 
 %build
 autoreconf -i -v
-%configure --disable-static
+%configure --disable-static --disable-mmi
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 make V=1 %{?_smp_mflags}
@@ -82,6 +80,12 @@ find $RPM_BUILD_ROOT%{_datadir}/doc -type f -exec chmod a-x {} ';'
 
 
 %changelog
+* Wed Jul 05 2017 Pete Zaitcev <zaitcev@redhat.com> 1.5.0-1
+- Upstream 1.5.0: --disable-mmi is included upstream
+
+* Thu May 25 2017 Pete Zaitcev <zaitcev@redhat.com> 1.4.0-3
+- Disable unportable optimizations, avoid crash with SIGILL (#1454543)
+
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.4.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
