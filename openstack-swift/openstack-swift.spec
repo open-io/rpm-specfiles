@@ -22,6 +22,8 @@ License:          ASL 2.0
 URL:              http://launchpad.net/swift
 Source0:          https://tarballs.openstack.org/swift/swift-%{upstream_version}.tar.gz
 
+Patch0:           pike-s3-account-substitution.patch
+
 Source2:          %{name}-account.service
 Source21:         %{name}-account@.service
 Source22:         account-server.conf
