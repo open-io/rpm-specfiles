@@ -1,0 +1,28 @@
+commit 84a14d8ac38f75c10c9fabbba56541a1ecdae53f
+Author: Florent Vennetier (OpenIO) <florent@fridu.net>
+Date:   Fri Oct 27 15:31:15 2017 +0200
+
+    tempauth: fix s3 access key replacement by account
+    
+    When the access key has already been replaced by the actual account name
+    in the URL, and the object object name contains the access key, it gets
+    replaced by the account name. This commit splits the URL before doing
+    the replacement, to be sure the replace the appropriate part.
+    
+    Change-Id: I4febff29024b30af1810023d5ac0e26126b3117c
+    (cherry picked from commit 740155376d85315358d40cd2fe64aa8aaec19d9f)
+
+diff --git a/swift/common/middleware/tempauth.py b/swift/common/middleware/tempauth.py
+index 9e9621b5..e3101971 100644
+--- a/swift/common/middleware/tempauth.py
++++ b/swift/common/middleware/tempauth.py
+@@ -444,7 +444,8 @@ class TempAuth(object):
+             account, user = account_user.split(':', 1)
+             account_id = self.users[account_user]['url'].rsplit('/', 1)[-1]
+             path = env['PATH_INFO']
+-            env['PATH_INFO'] = path.replace(account_user, account_id, 1)
++            v1, _, rest = split_path(path, 3, 3, True)
++            env['PATH_INFO'] = '/%s/%s/%s' % (v1, account_id, rest)
+             valid_signature = base64.encodestring(hmac.new(
+                 self.users[account_user]['key'],
+                 s3_auth_details['string_to_sign'],
