@@ -10,7 +10,7 @@ Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        4.1.13
-Release:        1%{?dist}
+Release:        2%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -28,7 +28,7 @@ Epoch:          1
 %endif
 
 Summary:        OpenIO Cloud Storage Solution
-License:        AGPL
+License:        AGPL-3.0
 URL:            http://www.openio.io/
 Source1:        openio-sds.tmpfiles
 
@@ -48,7 +48,6 @@ BuildRequires:  libcurl-devel
 %if %{?suse_version}0
 BuildRequires:  libapr1-devel            >= 1.2
 BuildRequires:  apache2-devel            >= 2.2
-BuildRequires:  libjson-c2               >= 0.12
 BuildRequires:  libjson-c-devel          >= 0.12
 BuildRequires:  libdb-6_0-devel
 BuildRequires:  zeromq-devel
@@ -89,7 +88,7 @@ Requires:       glib2         >= 2.28
 Requires:       openio-asn1c  >= 0.9.27
 Requires:       zlib
 %if %{?suse_version}0
-Requires:       libjson-c2    >= 0.12
+Requires:       (libjson-c3 or libjson-c2>=0.12)
 %else
 Requires:       json-c        >= 0.12
 %endif
@@ -134,7 +133,6 @@ Requires:       compat-libevent-20 >= 2.0
 BuildRequires:  libevent           >= 2.0
 %endif
 Requires:       leveldb
-Requires:       leveldb-devel
 Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
@@ -144,7 +142,7 @@ Requires:       python-simplejson  >= 2.0.9
 # Python oiopy dependencies
 Requires:       python-eventlet >= 0.15.2, python-requests >= 2.6.0, python-cliff-tablib, python-cliff >= 1.13, python-tablib, python-pyeclib >= 1.2.0
 Requires:       python-urllib3 >= 1.12
-Obsoletes:      python-oiopy
+Provides:       python-oiopy
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -236,6 +234,11 @@ PBR_VERSION=%{targetversion} %{__python} setup.py build
 
 
 %install
+%if %{?suse_version}0
+%{__sed} -i -e 's,#!/usr/bin/env python,#!/usr/bin/python2,g' tools/*.py
+%{__sed} -i -e 's,#!/usr/bin/env bash,#!/bin/bash,g' tools/*.sh
+%endif
+
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
@@ -280,7 +283,6 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %defattr(0640,openio,openio,0750)
 %{_sharedstatedir}/oio
 %dir %{_datarootdir}/%{name}-%{version}
-/run/oio
 
 %files server
 %defattr(755,root,root,755)
@@ -320,6 +322,11 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %defattr(644,root,root,755)
 %{python_sitelib}/oio*
 /usr/lib/tmpfiles.d/openio-sds.conf
+%if %{?suse_version}0
+%ghost /run/oio
+%else
+/run/oio
+%endif
 
 %files common-devel
 %defattr(644,root,root,755)
@@ -362,6 +369,7 @@ fi
 /sbin/ldconfig
 %post server
 /sbin/ldconfig
+%tmpfiles_create %{_tmpfilesdir}/openio-sds.conf
 %post mod-httpd
 /sbin/ldconfig
 
@@ -373,6 +381,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Wed Feb 28 2018 - 4.1.13-2 - Florent Vennetier <florent@fridu.net>
+- Fix compilation on opensuse
 * Wed Feb 21 2018 - 4.1.13-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Tue Jan 23 2018 - 4.1.12-1 - Vincent Legoll <vincent.legoll@openio.io>
@@ -425,7 +435,7 @@ fi
 * Fri Dec 23 2016 - 3.1.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Update to 3.1.2 (Kraken released)
 * Tue Nov 01 2016 - 3.1.0-0.beta0 - Sebastien Lapierre <sebastien.lapierre@openio.io>
-- Update to 3.1.0.b0 
+- Update to 3.1.0.b0
 * Mon Oct 31 2016 - 3.0.1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Oct 21 2016 - 3.0.0-2 - Romain Acciari <romain.acciari@openio.io>
