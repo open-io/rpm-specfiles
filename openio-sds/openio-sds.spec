@@ -22,7 +22,8 @@ Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
 %define         targetversion 4.0.0
-Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
+%define         git_repo https://github.com/open-io/oio-sds
+Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
 

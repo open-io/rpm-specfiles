@@ -12,7 +12,8 @@ Source0:        https://github.com/open-io/python-diamond-openio/archive/%{versi
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-Source0:        https://github.com/open-io/python-diamond-openio/archive/%{tarversion}.tar.gz
+%define         git_repo https://github.com/open-io/python-diamond-openio
+Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
 
