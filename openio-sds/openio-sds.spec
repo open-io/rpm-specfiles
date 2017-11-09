@@ -286,11 +286,6 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 
 %files server
 %defattr(755,root,root,755)
-%dir %{_libdir}/grid
-%{_libdir}/grid/msg_conscience.so*
-%{_libdir}/grid/msg_fallback.so*
-%{_libdir}/grid/msg_ping.so*
-%{_libdir}/grid/msg_stats.so*
 %{_libdir}/libmeta0v2.so*
 %{_libdir}/libmeta1v2.so*
 %{_libdir}/libmeta2v2.so*
