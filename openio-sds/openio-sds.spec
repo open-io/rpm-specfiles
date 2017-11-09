@@ -338,6 +338,7 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 
 %files tools
 %defattr(755,root,root,755)
+%{_bindir}/%{cli_name}-check-services
 %{_bindir}/%{cli_name}-bootstrap.py
 %{_bindir}/%{cli_name}-reset.sh
 %{_bindir}/zk-reset.py
