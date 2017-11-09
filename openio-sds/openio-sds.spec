@@ -261,7 +261,6 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 
 %files common
 %defattr(755,root,root,755)
-%{_libdir}/libgridcluster-conscience.so*
 %{_libdir}/libgridcluster.so*
 %{_libdir}/libhcresolve.so*
 %{_libdir}/libmeta0utils.so*
