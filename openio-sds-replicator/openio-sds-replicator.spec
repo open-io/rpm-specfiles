@@ -5,12 +5,14 @@ Version:        0.4.4
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         jarversion %{version}
+%define         gradlew_args -Pbuild.type=release
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
 %global         shortcommit %(c=%{tag}; echo ${c:0:7})
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
+%define         gradlew_args
 %define         tarversion %{tag}
 %define         jarversion 0.5-SNAPSHOT
 Epoch:          1
@@ -35,10 +37,9 @@ OpenIO SDS replicator service.
 %prep
 %setup -q -n oio-replicator-%{version}
 
-
 %build
-#OPENIO_API_VERSION=0.6.3 ./gradlew assemble
-./gradlew assemble
+#OPENIO_API_VERSION=0.6.3 ./gradlew %{gradlew_args} assemble
+./gradlew %{gradlew_args} assemble
 
 
 %install
