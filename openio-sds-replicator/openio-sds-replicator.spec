@@ -6,8 +6,9 @@ Release:        1%{?dist}
 %define         tarversion %{version}
 %define         jarversion %{version}
 Source0:        oio-replicator-%{version}.tar.gz
-#curl -u 'openio-private:$TOKEN' -i https://api.github.com/repos/openio-private/oio-replicator/tags
-#curl -L https://api.github.com/repos/openio-private/oio-replicator/tarball/%{version}?access_token=$TOKEN >%{version}.tar.gz
+%define         tardir oio-replicator-%{version}
+#curl -u "open-io:$TOKEN" -i https://api.github.com/repos/open-io/oio-replicator/tags
+#curl -L https://api.github.com/repos/open-io/oio-replicator/tarball/%{tarversion}?access_token=$TOKEN > ./oio-replicator-%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -15,8 +16,9 @@ Source0:        oio-replicator-%{version}.tar.gz
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-%define         jarversion 0.2-SNAPSHOT
+%define         jarversion 0.5-SNAPSHOT
 Source0:        oio-replicator-%{tag}.tar.gz
+%define         tardir open-io-oio-replicator-%{tag}
 Epoch:          1
 %endif
 
@@ -24,7 +26,7 @@ Epoch:          1
 Summary:        OpenIO SDS replicator service
 BuildArch:      noarch
 License:        OpenIO Copyright
-URL:            http://gitlab.openio.io/openio/oio-replicator/
+URL:            https://github.com/open-io/oio-replicator
 
 BuildRequires:  java-1.8.0-openjdk-devel
 Requires:       java = 1:1.8.0
@@ -34,7 +36,7 @@ OpenIO SDS replicator service.
 
 
 %prep
-%setup -q -n oio-replicator-%{version}
+%setup -q -n %{tardir}
 
 
 %build
