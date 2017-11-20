@@ -12,6 +12,7 @@ Name:           openio-sds
 Version:        4.1.5
 Release:        1%{?dist}
 %define         tarversion %{version}
+%define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
@@ -231,22 +232,14 @@ cmake \
 make %{?_smp_mflags}
 
 # Build python
-%if %{?_with_test:0}%{!?_with_test:1}
-PBR_VERSION=%{version} %{__python} setup.py build
-%else
 PBR_VERSION=%{targetversion} %{__python} setup.py build
-%endif
 
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-%if %{?_with_test:0}%{!?_with_test:1}
-PBR_VERSION=%{version} %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-%else
 PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-%endif
 %if %{?suse_version}0
 %fdupes %{buildroot}%{python_sitelib}
 %endif
