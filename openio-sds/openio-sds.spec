@@ -11,7 +11,6 @@ Name:           openio-sds
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        4.1.5
 Release:        1%{?dist}
-#%%define         tarversion %{version}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %else
