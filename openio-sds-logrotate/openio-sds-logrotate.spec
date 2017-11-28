@@ -1,5 +1,5 @@
 Name:		openio-sds-logrotate
-Version:	1.6
+Version:	1.7
 Release:	1%{?dist}
 Summary:	OpenIO SDS logrotate configuration
 BuildArch:	noarch
@@ -31,6 +31,8 @@ This package contains logrotate configuration for the OpenIO SDS solution.
 
 
 %changelog
+* Tue Nov 28 2017 - 1.7-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Tue Feb 21 2017 - 1.6-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Thu Jan 19 2017 - 1.5-1 - Romain Acciari <romain.acciari@openio.io>
