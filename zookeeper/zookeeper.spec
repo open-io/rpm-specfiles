@@ -3,7 +3,7 @@
 
 Summary: High-performance coordination service for distributed applications.
 Name: zookeeper
-Version: 3.4.10
+Version: 3.4.11
 Release: 1%{?dist}
 License: Apache License v2.0
 Group: Applications/Databases
@@ -113,7 +113,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE.txt NOTICE.txt README.txt
+#%doc LICENSE.txt NOTICE.txt README.txt
+%doc LICENSE.txt NOTICE.txt
 %doc docs recipes
 %dir %attr(0750, zookeeper, zookeeper) %{_localstatedir}/lib/zookeeper
 %dir %attr(0750, zookeeper, zookeeper) %{_localstatedir}/lib/zookeeper/data
@@ -202,6 +203,8 @@ if [ "$1" -ge "1" ] ; then
 fi
 
 %changelog
+* Mon Nov 13 2017 Romain Acciari <romain.acciari@openio.io> - 3.4.11-1
+- Update to 3.4.11
 * Tue Oct 24 2017 Romain Acciari <romain.acciari@openio.io> - 3.4.10-1
 - Update to 3.4.10
 * Wed Dec 28 2016 Romain Acciari <romain.acciari@openio.io> - 3.4.9-1
