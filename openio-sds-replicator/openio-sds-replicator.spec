@@ -24,7 +24,7 @@ Epoch:          1
 Summary:        OpenIO SDS replicator service
 BuildArch:      noarch
 License:        OpenIO Copyright
-URL:            http://gitlab.openio.io/openio/oio-replicator/
+URL:            https://github.com/open-io/oio-replicator
 
 BuildRequires:  java-1.8.0-openjdk-devel
 Requires:       java = 1:1.8.0
