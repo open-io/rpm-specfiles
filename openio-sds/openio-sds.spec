@@ -9,7 +9,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.1.6
+Version:        4.1.11
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
@@ -372,11 +372,25 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Tue Dec 12 2017 - 4.1.11-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Mon Dec 11 2017 - 4.1.10-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Mon Nov 27 2017 - 4.1.9-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Fri Nov 24 2017 - 4.1.8-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Tue Nov 21 2017 - 4.1.7-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Mon Nov 06 2017 - 4.1.6-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Fri Oct 27 2017 - 4.1.5-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Wed Oct 04 2017 - 4.1.4-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Tue Sep 19 2017 - 4.1.2-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Mon Sep 18 2017 - 4.1.1-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 * Tue Sep 12 2017 - 4.1.0-2 - Romain Acciari <romain.acciari@openio.io>
 - Update python-urllib3 requirement
