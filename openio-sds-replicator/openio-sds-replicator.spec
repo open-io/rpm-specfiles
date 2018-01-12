@@ -62,7 +62,7 @@ popd
 - New release
 * Mon Dec 04 2017 Vincent Legoll <vincent.legoll@openio.io> 0.4.2-1
 - New release
-* Mon Aug 28 2017 Romain Acciari <romain.acciari@openio.io> 0.4.1-2
+* Mon Aug 28 2017 Romain Acciari <romain.acciari@openio.io> 0.4.1-1
 - New release
 * Fri Dec 23 2016 Romain Acciari <romain.acciari@openio.io> 0.2.1-2
 - Add a symlink to current version
