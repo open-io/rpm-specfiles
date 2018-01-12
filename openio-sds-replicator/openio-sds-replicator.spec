@@ -5,9 +5,6 @@ Version:        0.4.4
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         jarversion %{version}
-Source0:        oio-replicator-%{version}.tar.gz
-#curl -u 'openio-private:$TOKEN' -i https://api.github.com/repos/openio-private/oio-replicator/tags
-#curl -L https://api.github.com/repos/openio-private/oio-replicator/tarball/%{version}?access_token=$TOKEN >%{version}.tar.gz
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -16,10 +13,12 @@ Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
 %define         jarversion 0.5-SNAPSHOT
-Source0:        oio-replicator-%{tag}.tar.gz
 Epoch:          1
 %endif
 
+#curl -u "open-io:$TOKEN" -i https://api.github.com/repos/open-io/oio-replicator/tags
+#curl -L https://api.github.com/repos/open-io/oio-replicator/tarball/%{tarversion}?access_token=$TOKEN > ./oio-replicator-%{tarversion}.tar.gz
+Source0:        oio-replicator-%{tarversion}.tar.gz
 
 Summary:        OpenIO SDS replicator service
 BuildArch:      noarch
