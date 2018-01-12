@@ -15,7 +15,7 @@ Source0:        oio-replicator-%{version}.tar.gz
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-%define         jarversion 0.2-SNAPSHOT
+%define         jarversion 0.5-SNAPSHOT
 Source0:        oio-replicator-%{tag}.tar.gz
 Epoch:          1
 %endif
