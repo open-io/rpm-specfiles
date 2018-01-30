@@ -315,6 +315,7 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
 %{_bindir}/zk-bootstrap.py*
+%{_bindir}/oio-gdb.py*
 %{_bindir}/openio
 %defattr(644,root,root,755)
 %{python_sitelib}/oio*
