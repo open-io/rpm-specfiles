@@ -9,7 +9,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.1.11
+Version:        4.1.13
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
