@@ -373,6 +373,10 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Wed Feb 21 2018 - 4.1.13-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Tue Jan 23 2018 - 4.1.12-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Tue Dec 12 2017 - 4.1.11-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Mon Dec 11 2017 - 4.1.10-1 - Vincent Legoll <vincent.legoll@openio.io>
