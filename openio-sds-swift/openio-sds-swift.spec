@@ -3,7 +3,7 @@
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.2.0
+Version:        1.2.4
 Release:        1%{?dist}
 %define         tarname oioswift
 %define         tarversion %{version}
@@ -50,6 +50,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Mar 12 2018 - 1.2.4-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Mon Mar 12 2018 - 1.2.3-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
+* Thu Mar 08 2018 - 1.2.2-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Wed Feb 28 2018 - 1.2.0-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Mon Sep 11 2017 - 1.0.0-1 - Romain Acciari <romain.acciari@openio.io>
