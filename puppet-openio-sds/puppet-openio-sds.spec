@@ -55,6 +55,8 @@ Puppet module to install OpenIO SDS solution.
 - New release
 * Tue Mar 13 2018 - 4.0.18-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
+* Tue Mar 06 2018 - 4.0.17-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Wed Feb 28 2018 - 4.0.16-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Tue Oct 24 2017 - 4.0.15-1 - Romain Acciari <romain.acciari@openio.io>

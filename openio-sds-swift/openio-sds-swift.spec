@@ -58,6 +58,8 @@ rm -rf $RPM_BUILD_ROOT
 - New release
 * Thu Mar 08 2018 - 1.2.2-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
+* Tue Mar 06 2018 - 1.2.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Wed Feb 28 2018 - 1.2.0-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Mon Sep 11 2017 - 1.0.0-1 - Romain Acciari <romain.acciari@openio.io>
