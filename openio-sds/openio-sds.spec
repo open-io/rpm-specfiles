@@ -385,6 +385,8 @@ fi
 * Mon Mar 19 2018 - 4.1.16-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Fix pbr for CentOS and SuSe
+* Tue Mar 06 2018 - 4.1.14-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Wed Feb 28 2018 - 4.1.13-2 - Florent Vennetier <florent@fridu.net>
 - Fix compilation on opensuse
 * Wed Feb 21 2018 - 4.1.13-1 - Vincent Legoll <vincent.legoll@openio.io>
