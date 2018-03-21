@@ -33,6 +33,8 @@ Preparation
 Build one package
 --------
 
+    # Log on the build VM (OpenStack)
+    ssh buildsys-rpm
     cd ~/rpmbuild/SPECS/openio-sds
 
     # Stable build
