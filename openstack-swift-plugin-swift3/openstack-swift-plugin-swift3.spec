@@ -60,7 +60,7 @@ PBR_VERSION=1.12.0 %{__python2} setup.py install -O1 --skip-build --root %{build
 %changelog
 * Thu Mar 08 2018 Romain Acciari <romain.acciari@openio.io> - 1.12.1-0
 - New release
-* Tue Feb 1 2018 Sebastien Lapierre <sebastien.lapierre@openio.io> - 1.12.0-1
+* Thu Feb 1 2018 Sebastien Lapierre <sebastien.lapierre@openio.io> - 1.12.0-1
 - Add Unstable packaging 
 * Thu Aug 3 2017 Sebastien Lapierre <sebastien.lapierre@openio.io> - 1.12.0-1
 - Fix  BucketAlreadyExists error
