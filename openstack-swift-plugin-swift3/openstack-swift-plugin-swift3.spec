@@ -1,12 +1,25 @@
 #%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 Name:           openio-sds-swift-plugin-swift3
-Version:        1.12.0.b1
-Release:        1%{?dist}
+License:        ASL 2.0
 Summary:        The swift3 plugin for OpenIO SDS Swift
 
-License:        ASL 2.0
+%if %{?_with_test:0}%{!?_with_test:1}
+Version:        1.12.0.b1
+Release:        1%{?dist}
 URL:            https://github.com/open-io/swift3
 Source0:        https://github.com/open-io/swift3/archive/%{version}-openio.tar.gz
+%else
+# Testing purpose only. Do not modify.
+%define         date %(date +"%Y%m%d%H%M")
+%global         shortcommit %(c=%{tag}; echo ${c:0:7})
+Version:        test%{date}.git%{shortcommit}
+Release:        0%{?dist}
+%define         tarname swift3
+%define         tarversion %{tag}
+URL:            https://github.com/open-io/swift3
+Source0:        https://github.com/open-io/%{tarname}/archive/%{tarversion}.tar.gz
+Epoch:          1
+%endif
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
@@ -23,7 +36,12 @@ The swift3 plugin permits accessing OpenIO Swift via the
 Amazon S3 API.
 
 %prep
+%if %{?_with_test:0}%{!?_with_test:1}
 %setup -q -n swift3-%{version}-openio
+%else
+# Testing purpose only. Do not modify.
+%setup -q -n swift3-%{tarversion}
+%endif
 
 %build
 PBR_VERSION=1.12.0 %{__python2} setup.py build
@@ -42,6 +60,8 @@ PBR_VERSION=1.12.0 %{__python2} setup.py install -O1 --skip-build --root %{build
 %changelog
 * Thu Mar 08 2018 Romain Acciari <romain.acciari@openio.io> - 1.12.1-0
 - New release
+* Tue Feb 1 2018 Sebastien Lapierre <sebastien.lapierre@openio.io> - 1.12.0-1
+- Add unstable packaging
 * Thu Aug 3 2017 Sebastien Lapierre <sebastien.lapierre@openio.io> - 1.12.0-1
 - Fix  BucketAlreadyExists error
 * Tue Jun 27 2017 Romain Acciari <romain.acciari@openio.io> - 1.12.0-0
