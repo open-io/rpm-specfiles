@@ -9,7 +9,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.1.16
+Version:        4.1.17
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
@@ -382,6 +382,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Thu Mar 22 2018 - 4.1.17-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Mon Mar 19 2018 - 4.1.16-1 - Romain Acciari <romain.acciari@openio.io>
 - New release
 - Fix pbr for CentOS and SuSe
