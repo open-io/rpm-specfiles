@@ -3,7 +3,7 @@
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.2.9
+Version:        1.2.10
 Release:        1%{?dist}
 %define         tarname oioswift
 %define         tarversion %{version}
@@ -50,6 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Apr 11 2018 - 1.2.10-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Fri Mar 30 2018 - 1.2.9-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Wed Mar 28 2018 - 1.2.8-1 - Vincent Legoll <vincent.legoll@openio.io>
