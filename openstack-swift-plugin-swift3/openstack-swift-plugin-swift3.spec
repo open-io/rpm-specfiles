@@ -14,10 +14,9 @@ Source0:        https://github.com/open-io/swift3/archive/%{version}-openio.tar.
 %global         shortcommit %(c=%{tag}; echo ${c:0:7})
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
-%define         tarname swift3
 %define         tarversion %{tag}
 URL:            https://github.com/open-io/swift3
-Source0:        https://github.com/open-io/%{tarname}/archive/%{tarversion}.tar.gz
+Source0:        https://github.com/open-io/swift3/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
 
