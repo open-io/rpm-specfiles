@@ -5,7 +5,6 @@ Name:           openio-sds-swift
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        1.2.10
 Release:        1%{?dist}
-%define         tarname oioswift
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
 %else
@@ -14,7 +13,6 @@ Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.g
 %global         shortcommit %(c=%{tag}; echo ${c:0:7})
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
-%define         tarname oio-swift
 %define         tarversion %{tag}
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
 Epoch:          1
