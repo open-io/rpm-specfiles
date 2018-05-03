@@ -137,13 +137,23 @@ Requires:       leveldb
 Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
-Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests >= 2.6.0,python-plyvel,PyYAML,python-futures
+Requires:       python-eventlet
+Requires:       python-zmq
+Requires:       python-redis
+Requires:       PyYAML
+Requires:       python-futures
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
-# Python oiopy dependencies
-Requires:       python-eventlet >= 0.15.2, python-requests >= 2.6.0, python-cliff-tablib, python-cliff >= 1.13, python-tablib, python-pyeclib >= 1.2.0
-Requires:       python-urllib3 >= 1.12
+Requires:       python-cliff       >= 1.13
+Requires:       python-pyeclib     >= 1.2.0
+Requires:       python-urllib3     >= 1.12
+Requires:       python-werkzeug
+# Needed for backblaze connector
+Requires:       python-requests    >= 2.6.0
+
 Provides:       python-oiopy
+
+
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
