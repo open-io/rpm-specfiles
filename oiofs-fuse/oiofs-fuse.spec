@@ -35,6 +35,7 @@ BuildRequires:  json-c-devel
 BuildRequires:  cmake >= 2.8.12
 BuildRequires:  python-setuptools
 BuildRequires:  libsoup-devel
+BuildRequires:  libattr-devel
 
 BuildRequires:  openio-sds-common-devel >= 4.0
 
