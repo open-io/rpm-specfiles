@@ -7,6 +7,19 @@ User=root
 Group=root
 ExecStart=/usr/bin/gridinit -s GRIDINIT,local,gridinit,0 /etc/gridinit.conf
 Restart=on-failure
+LimitCPU=infinity
+LimitFSIZE=infinity
+LimitDATA=infinity
+#LimitSTACK=infinity
+LimitCORE=0
+LimitRSS=infinity
+LimitNOFILE=500000
+LimitAS=infinity
+#LimitNPROC=infinity
+#LimitMEMLOCK=infinity
+#LimitLOCKS=infinity
+#LimitSIGPENDING=infinity
+#LimitMSGQUEUE=infinity
 
 [Install]
 WantedBy=multi-user.target
