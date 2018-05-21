@@ -1,0 +1,728 @@
+diff -w -r -N -U 3 zookeeper-3.4.11-vanilla/src/c/src/mt_adaptor.c zookeeper-3.4.11-optimized/src/c/src/mt_adaptor.c
+--- zookeeper-3.4.11-vanilla/src/c/src/mt_adaptor.c	2017-11-01 19:47:50.000000000 +0100
++++ zookeeper-3.4.11-optimized/src/c/src/mt_adaptor.c	2018-04-24 16:49:01.793362658 +0200
+@@ -42,6 +42,7 @@
+ #include <poll.h>
+ #include <unistd.h>
+ #include <sys/time.h>
++#include <sys/eventfd.h>
+ #endif
+ 
+ int zoo_lock_auth(zhandle_t *zh)
+@@ -238,17 +239,20 @@
+ 
+     /* We use a pipe for interrupting select() in unix/sol and socketpair in windows. */
+ #ifdef WIN32   
+-    if (create_socket_pair(adaptor_threads->self_pipe) == -1){
+-       LOG_ERROR(("Can't make a socket."));
++    int rc = create_socket_pair(adaptor_threads->self_pipe);
+ #else
+-    if(pipe(adaptor_threads->self_pipe)==-1) {
+-        LOG_ERROR(("Can't make a pipe %d",errno));
++	adaptor_threads->self_wake = eventfd(0, EFD_CLOEXEC|EFD_NONBLOCK);
++	int rc = (adaptor_threads->self_wake < 0) ? -1 : 0;
+ #endif
++    if (rc == -1) {
++        LOG_ERROR(("Can't make a socket."));
+         free(adaptor_threads);
+         return -1;
+     }
++#ifdef WIN32
+     set_nonblock(adaptor_threads->self_pipe[1]);
+     set_nonblock(adaptor_threads->self_pipe[0]);
++#endif
+ 
+     pthread_mutex_init(&zh->auth_h.lock,0);
+ 
+@@ -314,8 +318,12 @@
+ 
+     pthread_mutex_destroy(&zh->auth_h.lock);
+ 
++#ifdef WIN32
+     close(adaptor->self_pipe[0]);
+     close(adaptor->self_pipe[1]);
++#else
++	close(adaptor->self_wake);
++#endif
+     free(adaptor);
+     zh->adaptor_priv=0;
+ }
+@@ -323,21 +331,18 @@
+ int wakeup_io_thread(zhandle_t *zh)
+ {
+     struct adaptor_threads *adaptor_threads = zh->adaptor_priv;
+-    char c=0;
+ #ifndef WIN32
+-    return write(adaptor_threads->self_pipe[1],&c,1)==1? ZOK: ZSYSTEMERROR;    
++	uint64_t evt = 1;
++    return write(adaptor_threads->self_wake,&evt,8)==8? ZOK: ZSYSTEMERROR;    
+ #else
++    char c=0;
+     return send(adaptor_threads->self_pipe[1], &c, 1, 0)==1? ZOK: ZSYSTEMERROR;    
+ #endif         
+ }
+ 
+ int adaptor_send_queue(zhandle_t *zh, int timeout)
+ {
+-    if(!zh->close_requested)
+         return wakeup_io_thread(zh);
+-    // don't rely on the IO thread to send the messages if the app has
+-    // requested to close 
+-    return flush_send_queue(zh, timeout);
+ }
+ 
+ /* These two are declared here because we will run the event loop
+@@ -365,7 +370,7 @@
+     api_prolog(zh);
+     notify_thread_ready(zh);
+     LOG_DEBUG(("started IO thread"));
+-    fds[0].fd=adaptor_threads->self_pipe[0];
++    fds[0].fd=adaptor_threads->self_wake;
+     fds[0].events=POLLIN;
+     while(!zh->close_requested) {
+         struct timeval tv;
+@@ -390,8 +395,11 @@
+         }
+         if(fds[0].revents&POLLIN){
+             // flush the pipe
+-            char b[128];
+-            while(read(adaptor_threads->self_pipe[0],b,sizeof(b))==sizeof(b)){}
++            uint64_t evt = 0;
++            int rc = read(adaptor_threads->self_wake, &evt, sizeof(evt));
++			if (rc != sizeof(evt)) {
++                LOG_DEBUG(("eventd read error: errno=%d", errno));
++            }
+         }        
+ #else
+     fd_set rfds, wfds, efds;
+@@ -422,8 +430,7 @@
+         }
+        FD_SET( adaptor_threads->self_pipe[0] ,&rfds );        
+        rc = select((int)maxfd, &rfds, &wfds, &efds, &tv);
+-       if (fd != -1) 
+-       {
++       if (fd != -1) {
+            interest = (FD_ISSET(fd, &rfds))? ZOOKEEPER_READ:0;
+            interest|= (FD_ISSET(fd, &wfds))? ZOOKEEPER_WRITE:0;
+         }
+diff -w -r -N -U 3 zookeeper-3.4.11-vanilla/src/c/src/st_adaptor.c zookeeper-3.4.11-optimized/src/c/src/st_adaptor.c
+--- zookeeper-3.4.11-vanilla/src/c/src/st_adaptor.c	2017-11-01 19:47:50.000000000 +0100
++++ zookeeper-3.4.11-optimized/src/c/src/st_adaptor.c	2018-04-23 11:04:56.202767488 +0200
+@@ -84,7 +84,7 @@
+ 
+ int adaptor_send_queue(zhandle_t *zh, int timeout)
+ {
+-    return flush_send_queue(zh, timeout);
++    return ZOK;
+ }
+ 
+ int32_t inc_ref_counter(zhandle_t* zh,int i)
+diff -w -r -N -U 3 zookeeper-3.4.11-vanilla/src/c/src/zk_adaptor.h zookeeper-3.4.11-optimized/src/c/src/zk_adaptor.h
+--- zookeeper-3.4.11-vanilla/src/c/src/zk_adaptor.h	2017-11-01 19:47:50.000000000 +0100
++++ zookeeper-3.4.11-optimized/src/c/src/zk_adaptor.h	2018-04-24 16:13:28.473360291 +0200
+@@ -163,7 +163,7 @@
+ #ifdef WIN32
+      SOCKET self_pipe[2];
+ #else
+-     int self_pipe[2];
++     int self_wake;
+ #endif
+ };
+ #endif
+@@ -190,12 +190,24 @@
+     struct sockaddr_storage *addrs; /* the addresses that correspond to the hostname */
+     int addrs_count; /* The number of addresses in the addrs array */
+     watcher_fn watcher; /* the registered watcher */
+-    struct timeval last_recv; /* The time that the last message was received */
+-    struct timeval last_send; /* The time that the last message was sent */
+-    struct timeval last_ping; /* The time that the last PING was sent */
+-    struct timeval next_deadline; /* The time of the next deadline */
+-    int recv_timeout; /* The maximum amount of time that can go by without 
+-     receiving anything from the zookeeper server */
++
++    /* The time that the last message was received
++     * Monotonic clock, in milliseconds */
++    uint64_t last_recv;
++    /* The time that the last message was sent
++     * Monotonic clock, in milliseconds */
++    uint64_t last_send;
++    /* The time that the last PING was sent
++     * Monotonic clock, in milliseconds */
++    uint64_t last_ping;
++    /* The time of the next deadline
++     * Monotonic clock, in milliseconds */
++    uint64_t next_deadline;
++
++    /* The maximum amount of time that can go by without receiving anything
++     * from the zookeeper server */
++    int recv_timeout;
++
+     buffer_list_t *input_buffer; /* the current buffer being read in */
+     buffer_head_t to_process; /* The buffers that have been read and are ready to be processed. */
+     buffer_head_t to_send; /* The packets queued to send */
+@@ -217,10 +229,12 @@
+     int32_t ref_counter;
+     volatile int close_requested;
+     void *adaptor_priv;
+-    /* Used for debugging only: non-zero value indicates the time when the zookeeper_process
+-     * call returned while there was at least one unprocessed server response 
+-     * available in the socket recv buffer */
+-    struct timeval socket_readable;
++
++    /* Used for debugging only: non-zero value indicates the time when the
++     * zookeeper_process() call returned while there was at least one
++     * unprocessed server response available in the socket recv buffer.
++     * Monotonic clock, in milliseconds */
++    uint64_t socket_readable;
+     
+     zk_hashtable* active_node_watchers;   
+     zk_hashtable* active_exist_watchers;
+diff -w -r -N -U 3 zookeeper-3.4.11-vanilla/src/c/src/zookeeper.c zookeeper-3.4.11-optimized/src/c/src/zookeeper.c
+--- zookeeper-3.4.11-vanilla/src/c/src/zookeeper.c	2017-11-01 19:47:50.000000000 +0100
++++ zookeeper-3.4.11-optimized/src/c/src/zookeeper.c	2018-04-24 16:37:32.481465836 +0200
+@@ -245,6 +245,21 @@
+ #endif
+ }
+ 
++static uint64_t monotonic_now_ms() {
++    uint64_t rc = 0;
++#if __linux__
++    struct timespec tv = {0,0};
++    clock_gettime(CLOCK_MONOTONIC, &tv);
++    rc = tv.tv_nsec / 1000000;
++#else
++    struct timeval tv = {0, 0};
++    gettimeofday(&tv, NULL);
++    rc = tv.tv_usec / 1000;
++#endif
++    rc += tv.tv_sec * 1000;
++    return rc;
++}
++
+ const void *zoo_get_context(zhandle_t *zh)
+ {
+     return zh->context;
+@@ -888,8 +903,8 @@
+     zh->primer_buffer.len = sizeof(zh->primer_storage_buffer);
+     zh->primer_buffer.next = 0;
+     zh->last_zxid = 0;
+-    zh->next_deadline.tv_sec=zh->next_deadline.tv_usec=0;
+-    zh->socket_readable.tv_sec=zh->socket_readable.tv_usec=0;
++    zh->next_deadline = 0;
++    zh->socket_readable = 0;
+     zh->active_node_watchers=create_zk_hashtable();
+     zh->active_exist_watchers=create_zk_hashtable();
+     zh->active_child_watchers=create_zk_hashtable();
+@@ -1058,6 +1073,13 @@
+     unlock_buffer_list(list);
+     return i;
+ }
++
++#ifdef _WINDOWS
++# define ERR_IS_EAGAIN() (WSAGetLastError() == WSAEWOULDBLOCK)
++#else
++# define ERR_IS_EAGAIN() (errno == EAGAIN)
++#endif
++
+ /* returns:
+  * -1 if send failed,
+  * 0 if send would block while sending the buffer (or a send was incomplete),
+@@ -1079,15 +1101,7 @@
+         char *b = (char*)&nlen;
+         rc = zookeeper_send(fd, b + off, sizeof(nlen) - off);
+         if (rc == -1) {
+-#ifndef _WINDOWS
+-            if (errno != EAGAIN) {
+-#else            
+-            if (WSAGetLastError() != WSAEWOULDBLOCK) {
+-#endif            
+-                return -1;
+-            } else {
+-                return 0;
+-            }
++            return ERR_IS_EAGAIN() ? 0 : -1;
+         } else {
+             buff->curr_offset  += rc;
+         }
+@@ -1098,13 +1112,8 @@
+         off -= sizeof(buff->len);
+         rc = zookeeper_send(fd, buff->buffer + off, len - off);
+         if (rc == -1) {
+-#ifndef _WINDOWS
+-            if (errno != EAGAIN) {
+-#else            
+-            if (WSAGetLastError() != WSAEWOULDBLOCK) {
+-#endif            
++            if (!ERR_IS_EAGAIN())
+                 return -1;
+-            }
+         } else {
+             buff->curr_offset += rc;
+         }
+@@ -1136,14 +1145,7 @@
+         case 0:
+             errno = EHOSTDOWN;
+         case -1:
+-#ifndef _WINDOWS
+-            if (errno == EAGAIN) {
+-#else
+-            if (WSAGetLastError() == WSAEWOULDBLOCK) {
+-#endif
+-                return 0;
+-            }
+-            return -1;
++            return ERR_IS_EAGAIN() ? 0 : -1;
+         default:
+             buff->curr_offset += rc;
+         }
+@@ -1162,13 +1164,8 @@
+         case 0:
+             errno = EHOSTDOWN;
+         case -1:
+-#ifndef _WINDOWS
+-            if (errno == EAGAIN) {
+-#else
+-            if (WSAGetLastError() == WSAEWOULDBLOCK) {
+-#endif
++            if (ERR_IS_EAGAIN())
+                 break;
+-            }
+             return -1;
+         default:
+             buff->curr_offset += rc;
+@@ -1531,17 +1528,6 @@
+     return ZOK;
+ }
+ 
+-static inline int calculate_interval(const struct timeval *start,
+-        const struct timeval *end)
+-{
+-    int interval;
+-    struct timeval i = *end;
+-    i.tv_sec -= start->tv_sec;
+-    i.tv_usec -= start->tv_usec;
+-    interval = i.tv_sec * 1000 + (i.tv_usec/1000);
+-    return interval;
+-}
+-
+ static struct timeval get_timeval(int interval)
+ {
+     struct timeval tv;
+@@ -1555,6 +1541,7 @@
+ 
+  static int add_void_completion(zhandle_t *zh, int xid, void_completion_t dc,
+      const void *data);
++
+  static int add_string_completion(zhandle_t *zh, int xid,
+      string_completion_t dc, const void *data);
+ 
+@@ -1566,7 +1553,7 @@
+ 
+     rc = serialize_RequestHeader(oa, "header", &h);
+     enter_critical(zh);
+-    gettimeofday(&zh->last_ping, 0);
++    zh->last_ping = monotonic_now_ms();
+     rc = rc < 0 ? rc : queue_buffer_bytes(&zh->to_send, get_buffer(oa),
+             get_buffer_len(oa));
+     leave_critical(zh);
+@@ -1574,72 +1561,45 @@
+     return rc<0 ? rc : adaptor_send_queue(zh, 0);
+ }
+ 
++static int _open_socket(zhandle_t *zh) {
+ #ifdef WIN32
+-int zookeeper_interest(zhandle_t *zh, SOCKET *fd, int *interest,
+-     struct timeval *tv)
+-{
+-
+     ULONG nonblocking_flag = 1;
+-#else
+-int zookeeper_interest(zhandle_t *zh, int *fd, int *interest,
+-     struct timeval *tv)
+-{
+-#endif
+-    struct timeval now;
+-    if(zh==0 || fd==0 ||interest==0 || tv==0)
+-        return ZBADARGUMENTS;
+-    if (is_unrecoverable(zh))
+-        return ZINVALIDSTATE;
+-    gettimeofday(&now, 0);
+-    if(zh->next_deadline.tv_sec!=0 || zh->next_deadline.tv_usec!=0){
+-        int time_left = calculate_interval(&zh->next_deadline, &now);
+-        if (time_left > 10)
+-            LOG_WARN(("Exceeded deadline by %dms", time_left));
+-    }
+-    api_prolog(zh);
+-    *fd = zh->fd;
+-    *interest = 0;
+-    tv->tv_sec = 0;
+-    tv->tv_usec = 0;
+-    if (*fd == -1) {
+-        if (zh->connect_index == zh->addrs_count) {
+-            /* Wait a bit before trying again so that we don't spin */
+-            zh->connect_index = 0;
+-        }else {
+-            int rc;
+-#ifdef WIN32
+             char enable_tcp_nodelay = 1;
+ #else
+             int enable_tcp_nodelay = 1;
+ #endif
+-            int ssoresult;
++    int ssoresult = 0;
++    int rc = 1;
++
++    LOG_WARN(("[zk] connect()"));
+ 
+             zh->fd = socket(zh->addrs[zh->connect_index].ss_family, SOCK_STREAM, 0);
+             if (zh->fd < 0) {
+-                return api_epilog(zh,handle_socket_error_msg(zh,__LINE__,
+-                                                             ZSYSTEMERROR, "socket() call failed"));
++        return -1;
+             }
+-            ssoresult = setsockopt(zh->fd, IPPROTO_TCP, TCP_NODELAY, &enable_tcp_nodelay, sizeof(enable_tcp_nodelay));
++
++    ssoresult = setsockopt(zh->fd, IPPROTO_TCP, TCP_NODELAY,
++            &enable_tcp_nodelay, sizeof(enable_tcp_nodelay));
+             if (ssoresult != 0) {
+                 LOG_WARN(("Unable to set TCP_NODELAY, operation latency may be effected"));
+             }
++
+ #ifdef WIN32
+             ioctlsocket(zh->fd, FIONBIO, &nonblocking_flag);                    
+ #else
+             fcntl(zh->fd, F_SETFL, O_NONBLOCK|fcntl(zh->fd, F_GETFL, 0));
+ #endif
++
+ #if defined(AF_INET6)
+             if (zh->addrs[zh->connect_index].ss_family == AF_INET6) {
+                 rc = connect(zh->fd, (struct sockaddr*) &zh->addrs[zh->connect_index], sizeof(struct sockaddr_in6));
+-            } else {
+-#else
+-               LOG_DEBUG(("[zk] connect()\n"));
+-            {
++    } else
+ #endif
++    {
+                 rc = connect(zh->fd, (struct sockaddr*) &zh->addrs[zh->connect_index], sizeof(struct sockaddr_in));
+-#ifdef WIN32
+-                errno = GetLastError();
++    }
+ 
++#ifdef WIN32
+ #ifndef EWOULDBLOCK
+ #define EWOULDBLOCK WSAEWOULDBLOCK
+ #endif
+@@ -1647,8 +1607,7 @@
+ #ifndef EINPROGRESS
+ #define EINPROGRESS WSAEINPROGRESS
+ #endif
+-
+-#if _MSC_VER >= 1600
++    errno = GetLastError();
+                 switch (errno) {
+                 case WSAEWOULDBLOCK:
+                     errno = EWOULDBLOCK;
+@@ -1658,20 +1617,57 @@
+                     break;
+                 }
+ #endif
++
++    return rc;
++}
++
++#ifdef WIN32
++int zookeeper_interest(zhandle_t *zh, SOCKET *fd, int *interest,
++     struct timeval *tv)
++#else
++int zookeeper_interest(zhandle_t *zh, int *fd, int *interest,
++     struct timeval *tv)
+ #endif
++{
++    if(zh==0 || fd==0 ||interest==0 || tv==0)
++        return ZBADARGUMENTS;
++    if (is_unrecoverable(zh))
++        return ZINVALIDSTATE;
++
++    const uint64_t now = monotonic_now_ms();
++    if (zh->next_deadline > 0 && zh->next_deadline < now) {
++        const uint64_t time_left = now - zh->next_deadline;
++        if (time_left > 10) {
++            LOG_WARN(("Exceeded deadline by %lums", (unsigned long) time_left));
++        }
+             }
++
++    api_prolog(zh);
++    *fd = zh->fd;
++    *interest = 0;
++    tv->tv_sec = 0;
++    tv->tv_usec = 0;
++
++    if (*fd == -1) {
++        if (zh->connect_index == zh->addrs_count) {
++            /* Wait a bit before trying again so that we don't spin */
++            zh->connect_index = 0;
++        } else {
++            int rc = _open_socket(zh);
+             if (rc == -1) {
+                 /* we are handling the non-blocking connect according to
+                  * the description in section 16.3 "Non-blocking connect"
+                  * in UNIX Network Programming vol 1, 3rd edition */
+-                if (errno == EWOULDBLOCK || errno == EINPROGRESS)
++                if (errno == EWOULDBLOCK || errno == EINPROGRESS) {
+                     zh->state = ZOO_CONNECTING_STATE;
+-                else
++                } else {
+                     return api_epilog(zh,handle_socket_error_msg(zh,__LINE__,
+                             ZCONNECTIONLOSS,"connect() call failed"));
++                }
+             } else {
+-                if((rc=prime_connection(zh))!=0)
++                if((rc=prime_connection(zh))!=0) {
+                     return api_epilog(zh,rc);
++                }
+ 
+                 LOG_INFO(("Initiated connection to server [%s]",
+                         format_endpoint_info(&zh->addrs[zh->connect_index])));
+@@ -1682,12 +1678,15 @@
+         zh->last_recv = now;
+         zh->last_send = now;
+         zh->last_ping = now;
++        zh->next_deadline = now;
+     }
++
+     if (zh->fd != -1) {
+-        int idle_recv = calculate_interval(&zh->last_recv, &now);
+-        int idle_send = calculate_interval(&zh->last_send, &now);
+-        int recv_to = zh->recv_timeout*2/3 - idle_recv;
++        uint64_t idle_recv = now - zh->last_recv;
++        uint64_t idle_send = now - zh->last_send;
+         int send_to = zh->recv_timeout/3;
++        int recv_to = (zh->recv_timeout * 2) / 3 - (int) idle_recv;
++
+         // have we exceeded the receive timeout threshold?
+         if (recv_to <= 0) {
+             // We gotta cut our losses and connect to someone else
+@@ -1722,15 +1721,13 @@
+                 send_to = zh->recv_timeout/3;
+             }
+         }
++
+         // choose the lesser value as the timeout
+-        *tv = get_timeval(recv_to < send_to? recv_to:send_to);
+-        zh->next_deadline.tv_sec = now.tv_sec + tv->tv_sec;
+-        zh->next_deadline.tv_usec = now.tv_usec + tv->tv_usec;
+-        if (zh->next_deadline.tv_usec > 1000000) {
+-            zh->next_deadline.tv_sec += zh->next_deadline.tv_usec / 1000000;
+-            zh->next_deadline.tv_usec = zh->next_deadline.tv_usec % 1000000;
+-        }
++        const int timeout = recv_to < send_to ? recv_to : send_to;
++        *tv = get_timeval(timeout);
+         *interest = ZOOKEEPER_READ;
++        zh->next_deadline = now + timeout;
++
+         /* we are interested in a write if we are connected and have something
+          * to send, or we are waiting for a connect to finish. */
+         if ((zh->to_send.head && (zh->state == ZOO_CONNECTED_STATE))
+@@ -1738,6 +1735,7 @@
+             *interest |= ZOOKEEPER_WRITE;
+         }
+     }
++
+     return api_epilog(zh,ZOK);
+ }
+ 
+@@ -1783,7 +1781,7 @@
+                 "failed while receiving a server response");
+         }
+         if (rc > 0) {
+-            gettimeofday(&zh->last_recv, 0);
++            zh->last_recv = monotonic_now_ms();
+             if (zh->input_buffer != &zh->primer_buffer) {
+                 queue_buffer(&zh->to_process, zh->input_buffer, 0);
+             } else  {
+@@ -2185,7 +2183,7 @@
+     fds.events = POLLIN;
+     if (poll(&fds,1,0)<=0) {
+         // socket not readable -- no more responses to process
+-        zh->socket_readable.tv_sec=zh->socket_readable.tv_usec=0;
++        zh->socket_readable = 0;
+     }
+ #else
+     fd_set rfds;
+@@ -2194,28 +2192,24 @@
+     FD_SET( zh->fd , &rfds);
+     if (select(0, &rfds, NULL, NULL, &waittime) <= 0){
+         // socket not readable -- no more responses to process
+-        zh->socket_readable.tv_sec=zh->socket_readable.tv_usec=0;
++        zh->socket_readable = 0;
+     }
+ #endif
+     else{
+-        gettimeofday(&zh->socket_readable,0);
++        zh->socket_readable = monotonic_now_ms();
+     }
+ }
+ 
+ static void checkResponseLatency(zhandle_t* zh)
+ {
+-    int delay;
+-    struct timeval now;
+-
+-    if(zh->socket_readable.tv_sec==0)
++    if(zh->socket_readable == 0)
+         return;
+ 
+-    gettimeofday(&now,0);
+-    delay=calculate_interval(&zh->socket_readable, &now);
++    uint64_t delay = monotonic_now_ms() - zh->socket_readable;
+     if(delay>20)
+-        LOG_DEBUG(("The following server response has spent at least %dms sitting in the client socket recv buffer",delay));
++        LOG_DEBUG(("The following server response has spent at least %dms sitting in the client socket recv buffer", (unsigned int) delay));
+ 
+-    zh->socket_readable.tv_sec=zh->socket_readable.tv_usec=0;
++    zh->socket_readable = 0;
+ }
+ 
+ int zookeeper_process(zhandle_t *zh, int events)
+@@ -2248,11 +2242,7 @@
+ 
+         if (hdr.xid == PING_XID) {
+             // Ping replies can arrive out-of-order
+-            int elapsed = 0;
+-            struct timeval now;
+-            gettimeofday(&now, 0);
+-            elapsed = calculate_interval(&zh->last_ping, &now);
+-            LOG_DEBUG(("Got ping response in %d ms", elapsed));
++            LOG_DEBUG(("Got ping response in %d ms", monotonic_now_ms() - zh->last_ping));
+             free_buffer(bptr);
+         } else if (hdr.xid == WATCHER_EVENT_XID) {
+             struct WatcherEvent evt;
+@@ -2575,7 +2565,7 @@
+ 
+         /* make sure the close request is sent; we set timeout to an arbitrary
+          * (but reasonable) number of milliseconds since we want the call to block*/
+-        rc=adaptor_send_queue(zh, 3000);
++        rc= flush_send_queue(zh, 3000);
+     }else{
+         LOG_INFO(("Freeing zookeeper resources for sessionId=%#llx\n",
+                 zh->client_id.client_id));
+@@ -3305,35 +3295,12 @@
+     return rc;
+ }
+ 
+-/* specify timeout of 0 to make the function non-blocking */
+-/* timeout is in milliseconds */
+-int flush_send_queue(zhandle_t*zh, int timeout)
+-{
+-    int rc= ZOK;
+-    struct timeval started;
++static int _poll_zk_cnx(zhandle_t *zh, int timeout) {
++    LOG_INFO(("Polling with timeout %d", timeout));
++	int rc;
+ #ifdef WIN32
+     fd_set pollSet; 
+-    struct timeval wait;
+-#endif
+-    gettimeofday(&started,0);
+-    // we can't use dequeue_buffer() here because if (non-blocking) send_buffer()
+-    // returns EWOULDBLOCK we'd have to put the buffer back on the queue.
+-    // we use a recursive lock instead and only dequeue the buffer if a send was
+-    // successful
+-    lock_buffer_list(&zh->to_send);
+-    while (zh->to_send.head != 0&& zh->state == ZOO_CONNECTED_STATE) {
+-        if(timeout!=0){
+-            int elapsed;
+-            struct timeval now;
+-            gettimeofday(&now,0);
+-            elapsed=calculate_interval(&started,&now);
+-            if (elapsed>timeout) {
+-                rc = ZOPERATIONTIMEOUT;
+-                break;
+-            }
+-
+-#ifdef WIN32
+-            wait = get_timeval(timeout-elapsed);
++    struct timeval wait = get_timeval(timeout);
+             FD_ZERO(&pollSet);
+             FD_SET(zh->fd, &pollSet);
+             // Poll the socket
+@@ -3343,32 +3310,65 @@
+             fds.fd = zh->fd;
+             fds.events = POLLOUT;
+             fds.revents = 0;
+-            rc = poll(&fds, 1, timeout-elapsed);
++	rc = poll(&fds, 1, timeout);
+ #endif
+-            if (rc<=0) {
++	if (rc > 0)
++		return ZOK;
+                 /* timed out or an error or POLLERR */
+-                rc = rc==0 ? ZOPERATIONTIMEOUT : ZSYSTEMERROR;
++	return rc==0 ? ZOPERATIONTIMEOUT : ZSYSTEMERROR;
++}
++
++/* specify timeout of 0 to make the function non-blocking */
++/* timeout is in milliseconds */
++int flush_send_queue(zhandle_t*zh, int timeout)
++{
++    int rc = ZOK;
++    uint64_t started = monotonic_now_ms();
++
++    /* To make the critical sections as short as possible, we prefer
++     * remove any syscall from it, and just manage lists of buffers.
++     * Then we call dequeue_buffer() (that holds the locks), then we
++     * try to push the buffer, and if we didn't succeed we return the
++     * partial buffer at the head of the list.
++     *
++     * !!! Please note this requires to call flush_send_queue() from just
++     * one thread of control at the same time. !!!
++     */
++    while (zh->to_send.head != 0 && zh->state == ZOO_CONNECTED_STATE) {
++        if (timeout!=0) {
++			int elapsed = monotonic_now_ms() - started;
++            if (elapsed > timeout) {
++                rc = ZOPERATIONTIMEOUT;
++                break;
++            } else {
++				rc = _poll_zk_cnx(zh, timeout - elapsed);
++				if (rc != ZOK)
+                 break;
+             }
+         }
+ 
+-        rc = send_buffer(zh->fd, zh->to_send.head);
++        /* Pop the head buffer from the pending list */
++        buffer_list_t *first = dequeue_buffer(&zh->to_send);
++
++        rc = send_buffer(zh->fd, first);
+         if(rc==0 && timeout==0){
+             /* send_buffer would block while sending this buffer */
++            queue_buffer(&zh->to_send, first, 1);
+             rc = ZOK;
+-            break;
+-        }
+-        if (rc < 0) {
++        } else if (rc < 0) {
++            queue_buffer(&zh->to_send, first, 1);
+             rc = ZCONNECTIONLOSS;
+-            break;
+-        }
++        } else {
+         // if the buffer has been sent successfully, remove it from the queue
+-        if (rc > 0)
+-            remove_buffer(&zh->to_send);
+-        gettimeofday(&zh->last_send, 0);
++            if (rc == 0) {
++                queue_buffer(&zh->to_send, first, 1);
++            } else {
++                free_buffer(first);
++            }
+         rc = ZOK;
++            zh->last_send = monotonic_now_ms();
++        }
+     }
+-    unlock_buffer_list(&zh->to_send);
+     return rc;
+ }
+
