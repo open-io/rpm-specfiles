@@ -142,29 +142,29 @@ make DESTDIR=%{buildroot} install
 
 
 %post
-if [ $1 -eq 1 ] ; then 
-  # Initial installation 
-  /usr/bin/systemctl preset gridinit.service >/dev/null 2>&1 || : 
+if [ $1 -eq 1 ] ; then
+  # Initial installation
+  /usr/bin/systemctl preset gridinit.service >/dev/null 2>&1 || :
 else
-  /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : 
+  /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
-/usr/bin/systemctl reload-or-restart rsyslog.service || : 
+/usr/bin/systemctl reload-or-restart rsyslog.service || :
 %if 0%{?suse_version}
   %tmpfiles_create %_tmpfilesdir/gridinit.conf
 %endif
 %preun
-if [ $1 -eq 0 ] ; then 
-  # Package removal, not upgrade 
-  /usr/bin/systemctl --no-reload disable gridinit.service > /dev/null 2>&1 || : 
-  /usr/bin/systemctl stop gridinit.service > /dev/null 2>&1 || : 
+if [ $1 -eq 0 ] ; then
+  # Package removal, not upgrade
+  /usr/bin/systemctl --no-reload disable gridinit.service > /dev/null 2>&1 || :
+  /usr/bin/systemctl stop gridinit.service > /dev/null 2>&1 || :
 fi
 %postun
-/usr/bin/systemctl daemon-reload >/dev/null 2>&1 || : 
-if [ $1 -ge 1 ] ; then 
-  # Package upgrade, not uninstall 
-  /usr/bin/systemctl try-restart gridinit.service >/dev/null 2>&1 || : 
+/usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+if [ $1 -ge 1 ] ; then
+  # Package upgrade, not uninstall
+  /usr/bin/systemctl try-restart gridinit.service >/dev/null 2>&1 || :
 fi
-/usr/bin/systemctl reload-or-restart rsyslog.service || : 
+/usr/bin/systemctl reload-or-restart rsyslog.service || :
 
 %post utils
 /sbin/ldconfig
