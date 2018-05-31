@@ -50,6 +50,23 @@ Build one package
     SRCRPM=$(rpmbuild -bs --nodeps --define '_with_test 1' --define "tag $GITTAG" *.spec | awk '{print $2}')
     mock -r epel-7-x86_64-openio-sds-unstable --define '_with_test 1' --define "tag $GITTAG" --rebuild $SRCRPM
 
+Repair the mirror / Remove a broken package
+--------
+
+    # Log on the build VM (OpenStack)
+    ssh buildsys-rpm
+    # Go inside the mirror (NFS mounted directory from mirror2.openio.io)
+    cd /mnt/koji/mirror/pub/repo/openio/sds/17.04/el/7/x86_64
+    # Remove the broken package(s)
+    sudo rm -i openio-gridinit-1.7.0*
+    # Re-create the metadatas
+    createrepo .
+    # Ask the QA team to double-check mirror2
+    # Synchronize to the external mirror, if needed
+
+    # In some rare unknown circumstances you may need to fix permissions
+    sudo chmod g+w /mnt/koji/mirror/pub/repo/openio/sds/unstable/el/7/x86_64/repodata{,/*}
+
 Bootstrap a release
 --------
 
