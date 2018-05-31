@@ -5,15 +5,14 @@ Name:           openio-%{realname}
 Version:        1.7.0
 Release:        1%{?dist}
 %define         tarversion %{version}
-Source0:        https://github.com/open-io/gridinit/archive/%{version}.tar.gz
 %else
 %define         date %(date +"%Y%m%d%H%M")
 Version:        test%{date}.%{tag}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-Source0:        https://github.com/open-io/gridinit/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
+Source0:        https://github.com/open-io/gridinit/archive/%{tarversion}.tar.gz
 
 Summary:        OpenIO gridinit daemon
 License:        AGPL-3.0+
