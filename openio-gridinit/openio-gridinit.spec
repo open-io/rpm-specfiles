@@ -94,8 +94,8 @@ make %{?_smp_mflags}
 make DESTDIR=%{buildroot} install
 
 # Default config file
-%{__mkdir_p} -m755 %{buildroot}%{_sysconfdir}/%{realname}
-%{__install} -m644 gridinit.conf %{buildroot}%{_sysconfdir}/%{realname}/gridinit.conf
+%{__mkdir_p} -m755 %{buildroot}%{_sysconfdir}
+%{__install} -m644 gridinit.conf %{buildroot}%{_sysconfdir}/gridinit.conf
 
 # Install init script
 %{__mkdir_p} -m755 %{buildroot}/usr/lib/systemd/system
@@ -124,8 +124,7 @@ make DESTDIR=%{buildroot} install
 %defattr(-,root,root,-)
 /usr/lib/systemd/system/gridinit.service
 %{_bindir}/*
-%dir %{_sysconfdir}/%{realname}
-%config(noreplace) %{_sysconfdir}/%{realname}/*
+%config(noreplace) %{_sysconfdir}/gridinit.conf
 %{_prefix}/lib/tmpfiles.d/*
 %ghost /run/%{realname}
 %config %{_sysconfdir}/rsyslog.d/*
