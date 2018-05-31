@@ -5,7 +5,7 @@ Name:           openio-%{realname}
 Version:        1.6
 Release:        3%{?dist}
 %define         tarversion %{version}
-Source0:        https://github.com/open-io/gridinit/archive/%{version}.0.tar.gz
+Source0:        https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
 %else
 %define         date %(date +"%Y%m%d%H%M")
 Version:        test%{date}.%{tag}
