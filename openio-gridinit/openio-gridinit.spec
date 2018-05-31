@@ -105,12 +105,12 @@ make DESTDIR=%{buildroot} install
 %{__install} -m644 %{SOURCE2} %{buildroot}%{_prefix}/lib/tmpfiles.d/gridinit.conf
 
 # Install rsyslog configuration
-%{__mkdir_p} -m755 -v %{buildroot}/etc/rsyslog.d
-%{__install} -m644 %{SOURCE3} %{buildroot}/etc/rsyslog.d/gridinit.conf
+%{__mkdir_p} -m755 -v %{buildroot}%{_sysconfdir}/rsyslog.d
+%{__install} -m644 %{SOURCE3} %{buildroot}%{_sysconfdir}/rsyslog.d/gridinit.conf
 
 # Install logrotate configuration
-%{__mkdir_p} -m755 -v %{buildroot}/etc/logrotate.d
-%{__install} -m644 %{SOURCE4} %{buildroot}/etc/logrotate.d/gridinit.conf
+%{__mkdir_p} -m755 -v %{buildroot}%{_sysconfdir}/logrotate.d
+%{__install} -m644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/gridinit.conf
 
 # Install /run directory
 %{__mkdir_p} -m755 -v %{buildroot}/run/%{realname}
