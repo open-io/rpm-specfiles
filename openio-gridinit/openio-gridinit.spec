@@ -94,7 +94,8 @@ make %{?_smp_mflags}
 make DESTDIR=%{buildroot} install
 
 # Default config file
-%{__install} -m644 gridinit.conf %{buildroot}%{_sysconfdir}/%{realname}.conf
+%{__mkdir_p} -m755 %{buildroot}%{_sysconfdir}/%{realname}
+%{__install} -m644 gridinit.conf.default %{buildroot}%{_sysconfdir}/%{realname}/gridinit.conf
 
 # Install init script
 %{__mkdir_p} -m755 %{buildroot}%{_libdir}/systemd/system
