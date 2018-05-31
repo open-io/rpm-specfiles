@@ -2,10 +2,10 @@
 
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.6
-Release:        3%{?dist}
+Version:        1.7.0
+Release:        1%{?dist}
 %define         tarversion %{version}
-Source0:        https://github.com/open-io/gridinit/archive/v%{version}.tar.gz
+Source0:        https://github.com/open-io/gridinit/archive/%{version}.tar.gz
 %else
 %define         date %(date +"%Y%m%d%H%M")
 Version:        test%{date}.%{tag}
@@ -172,6 +172,8 @@ fi
 
 
 %changelog
+* Thu May 31 2018 - 1.7.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- unreleased
 * Thu Oct 27 2016 - 1.6-3 - Romain Acciari <romain.acciari@openio.io>
 - Add tmpfiles_create at %%post for OpenSuSe
 * Sun Apr 17 2016 - 1.6-2 - Romain Acciari <romain.acciari@openio.io>
