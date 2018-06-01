@@ -45,6 +45,8 @@ Requires:       %{name}-utils  = 1:%{version}
 # SuSe requires
 %if 0%{?suse_version}
 Requires:  systemd
+%{?systemd_requires}
+Recommends:     logrotate
 %endif
 
 
@@ -140,6 +142,11 @@ make DESTDIR=%{buildroot} install
 %{_libdir}/libgridinit-utils.so
 
 
+%pre
+%if 0%{?suse_version}
+%service_add_pre gridinit.service
+%endif
+
 %post
 if [ $1 -eq 1 ] ; then
   # Initial installation
@@ -150,6 +157,7 @@ fi
 /usr/bin/systemctl reload-or-restart rsyslog.service || :
 %if 0%{?suse_version}
   %tmpfiles_create %{_tmpfilesdir}/gridinit.conf
+  %service_add_post gridinit.service
 %endif
 %preun
 if [ $1 -eq 0 ] ; then
