@@ -30,8 +30,8 @@ BuildRequires:  autoconf,automake,libtool
 BuildRequires:  git,bison,flex,cmake
 BuildRequires:  glib2-devel    >= 2.28.8
 BuildRequires:  libevent-devel >= 2.0
-%if 0%{?suse_version}
 BuildRequires:  systemd
+%if 0%{?suse_version}
 BuildRequires:  rsyslog
 %endif
 
@@ -101,8 +101,8 @@ make DESTDIR=%{buildroot} install
 %{__install} -m644 %{SOURCE1} %{buildroot}%{_prefix}/lib/systemd/system/gridinit.service
 
 # Install tmpfiles
-%{__mkdir_p} -m755 -v %{buildroot}%{_prefix}/lib/tmpfiles.d
-%{__install} -m644 %{SOURCE2} %{buildroot}%{_prefix}/lib/tmpfiles.d/gridinit.conf
+%{__mkdir_p} -m755 -v %{buildroot}%{_tmpfilesdir}
+%{__install} -m644 %{SOURCE2} %{buildroot}%{_tmpfilesdir}/gridinit.conf
 
 # Install rsyslog configuration
 %{__mkdir_p} -m755 -v %{buildroot}%{_sysconfdir}/rsyslog.d
@@ -125,7 +125,7 @@ make DESTDIR=%{buildroot} install
 %{_bindir}/*
 %dir %{_sysconfdir}/gridinit.d
 %config(noreplace) %{_sysconfdir}/gridinit.conf
-%{_prefix}/lib/tmpfiles.d/*
+%{_tmpfilesdir}/gridinit.conf
 %ghost /run/%{realname}
 %config %{_sysconfdir}/rsyslog.d/*
 %config %{_sysconfdir}/logrotate.d/*
@@ -149,7 +149,7 @@ else
 fi
 /usr/bin/systemctl reload-or-restart rsyslog.service || :
 %if 0%{?suse_version}
-  %tmpfiles_create %_tmpfilesdir/gridinit.conf
+  %tmpfiles_create %{_tmpfilesdir}/gridinit.conf
 %endif
 %preun
 if [ $1 -eq 0 ] ; then
