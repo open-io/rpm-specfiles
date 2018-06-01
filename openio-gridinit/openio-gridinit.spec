@@ -93,11 +93,11 @@ make %{?_smp_mflags}
 make DESTDIR=%{buildroot} install
 
 # Default config file & services directory
-%{__mkdir_p} -m755 %{buildroot}%{_sysconfdir}/gridinit.d
+%{__mkdir_p} -m755 -v %{buildroot}%{_sysconfdir}/gridinit.d
 %{__install} -m644 gridinit.conf %{buildroot}%{_sysconfdir}/gridinit.conf
 
 # Install init script
-%{__mkdir_p} -m755 %{buildroot}%{_prefix}/lib/systemd/system
+%{__mkdir_p} -m755 -v %{buildroot}%{_prefix}/lib/systemd/system
 %{__install} -m644 %{SOURCE1} %{buildroot}%{_prefix}/lib/systemd/system/gridinit.service
 
 # Install tmpfiles
