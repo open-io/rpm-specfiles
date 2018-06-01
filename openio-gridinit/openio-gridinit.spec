@@ -155,8 +155,8 @@ else
   /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 /usr/bin/systemctl reload-or-restart rsyslog.service || :
+%tmpfiles_create %{_tmpfilesdir}/gridinit.conf
 %if 0%{?suse_version}
-  %tmpfiles_create %{_tmpfilesdir}/gridinit.conf
   %service_add_post gridinit.service
 %endif
 %preun
