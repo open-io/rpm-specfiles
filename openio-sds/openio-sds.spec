@@ -9,7 +9,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.1.24
+Version:        4.1.25
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
@@ -383,6 +383,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Wed Jun 13 2018 - 4.1.25-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Mon Jun 04 2018 - 4.1.24-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Mon May 28 2018 - 4.1.23-1 - Vincent Legoll <vincent.legoll@openio.io>
