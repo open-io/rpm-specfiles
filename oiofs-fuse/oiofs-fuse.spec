@@ -3,9 +3,9 @@
 Name:           oiofs-fuse
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.0.0
-Release:        0.c4%{?dist}
-%define         tarversion %{version}.c4
+Version:        2.0.0
+Release:        0%{?dist}
+%define         tarversion %{version}
 #Source0:        https://github.com/open-io/oio-fs/archive/%{tarversion}.tar.gz
 Source0:        oio-fs-%{tarversion}.tar.gz
 %else
@@ -62,7 +62,7 @@ oiofs FUSE provides another means to access OpenIO SDS Storage.
 
 
 %prep
-%setup -q -n oio-fs-%{tarversion}
+%setup -q -n open-io-oio-fs-%{tarversion}
 
 
 %build
