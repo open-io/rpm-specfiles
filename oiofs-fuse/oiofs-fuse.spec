@@ -3,7 +3,7 @@
 Name:           oiofs-fuse
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.0.0
+Version:        2.1.0
 Release:        0%{?dist}
 %define         tarversion %{version}
 #Source0:        https://github.com/open-io/oio-fs/archive/%{tarversion}.tar.gz
@@ -90,6 +90,12 @@ cmake \
 
 
 %changelog
+* Wed Jun 13 2018 Vincent Legoll <vincent.legoll@openio.io> - 2.1.0
+- New release
+* Tue Jun 05 2018 Vincent Legoll <vincent.legoll@openio.io> - 2.1.0.c1
+- New release
+* Tue May 15 2018 Vincent Legoll <vincent.legoll@openio.io> - 2.0.0
+- New release
 * Tue Mar 21 2017 Romain Acciari <romain.acciari@openio.io> - 1.0.0.c3
 - New release
 * Thu Oct 20 2016 Romain Acciari <romain.acciari@openio.io> - 1.0.0.c2
