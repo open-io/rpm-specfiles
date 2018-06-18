@@ -352,6 +352,9 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-blob-registrator
 %{_bindir}/%{cli_name}-election-stat.py
+%{_bindir}/%{cli_name}-check-directory
+%{_bindir}/%{cli_name}-check-master
+%{_bindir}/%{cli_name}-meta2-mover
 %{_bindir}/%{cli_name}-meta1-rebuilder
 %{_bindir}/%{cli_name}-meta2-rebuilder
 
