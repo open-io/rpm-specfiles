@@ -4,11 +4,10 @@
 Name:           openio-billing
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.0.0
+Version:        0.0.2
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
-Source0:        https://github.com/open-io/oio-cb/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -17,9 +16,10 @@ Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
 %define         targetversion 1.0.0
-Source0:        https://github.com/open-io/oio-cb/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
+
+Source0:        https://github.com/open-io/%{tarname}/archive/%{tarversion}.tar.gz
 
 Summary:        OpenIO Billing service
 License:        Proprietary
@@ -68,5 +68,5 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 
 
 %changelog
-* Fri May 04 2018 - 1.0.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+* Fri May 04 2018 - 0.0.2-1 - Vincent Legoll <vincent.legoll@openio.io>
 - Initial release
