@@ -12,7 +12,7 @@ Summary:          Extra features for standard library's cmd module
 Group:            Development/Libraries
 License:          MIT
 URL:              http://pypi.python.org/pypi/cmd2
-Source0:          http://pypi.python.org/packages/source/c/%{modname}/%{modname}-%{version}.tar.gz
+Source0:          https://files.pythonhosted.org/packages/03/d0/44659622cf83812b6cc04570ba6d90a028de94c44f8b80f5d6b646392003/cmd2-0.6.7.tar.gz
 
 BuildArch:        noarch
 
