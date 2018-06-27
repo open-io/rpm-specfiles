@@ -17,7 +17,7 @@ Summary:        Python 2 and 3 compatibility utilities
 Group:          Development/Languages
 License:        MIT
 URL:            http://pypi.python.org/pypi/six/
-Source0:        http://pypi.python.org/packages/source/s/six/six-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/16/64/1dc5e5976b17466fd7d712e59cbe9fb1e18bec153109e5ba3ed6c9102f1a/six-1.9.0.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
