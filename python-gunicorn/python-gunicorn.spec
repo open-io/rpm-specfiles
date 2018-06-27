@@ -13,7 +13,7 @@ Summary:        Python WSGI application server
 Group:          System Environment/Daemons
 License:        MIT
 URL:            http://gunicorn.org/
-Source0:        http://pypi.python.org/packages/source/g/%{upstream_name}/%{upstream_name}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/1e/67/95248e17050822ab436c8a43dbfc0625a8545775737e33b66508cffad278/gunicorn-19.4.5.tar.gz
 # distro-specific, not upstreamable
 Patch100:       %{name}-dev-log.patch
 
