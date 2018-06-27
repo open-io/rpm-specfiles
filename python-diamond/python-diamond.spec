@@ -8,7 +8,7 @@ Summary:        Smart data producer for graphite graphing package
 
 License:        MIT
 URL:            https://github.com/python-diamond/Diamond
-Source0:        https://github.com/python-diamond/Diamond/archive/v%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/0c/b6/4c58a8a1111c138fbed9e65dd918be706af8abd07bb5e8fe3ddfb453d899/diamond-%{version}.tar.gz
 
 BuildRequires:  python >= 2.7
 Requires:       python >= 2.7
@@ -23,7 +23,7 @@ any source.
 
 
 %prep
-%setup -q -n Diamond-%{version}
+%setup -q -n diamond-%{version}
 
 
 %build
@@ -70,7 +70,7 @@ fi
 
 
 %files
-%doc CHANGELOG LICENSE
+%doc LICENSE
 %config(noreplace) %{_sysconfdir}/*
 %{_bindir}/*
 %{_datarootdir}/*
