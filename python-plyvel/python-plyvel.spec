@@ -13,7 +13,7 @@ Release:        3%{?dist}
 Summary:        Python interface to the LevelDB embedded database library
 License:        BSD
 URL:            https://github.com/wbolster/plyvel
-Source0:        http://pypi.python.org/packages/source/p/%{upstream_name}/%{upstream_name}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/32/09/7e849991f3fcf0ad3bba475c113ea0cf5623376d716ce9923eb291838201/plyvel-0.9.tar.gz
 Patch0:         0001-py.test.mark.skipif-wants-str-not-bool.patch
 BuildRequires:  python2-devel
 BuildRequires:  python-setuptools
