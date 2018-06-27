@@ -12,7 +12,7 @@ Summary:        Google Application Utilities for Python
 
 License:        ASL 2.0
 URL:            https://github.com/google/%{srcname}
-Source0:        https://pypi.python.org/packages/source/g/%{srcname}/%{srcname}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/69/66/a511c428fef8591c5adfa432a257a333e0d14184b6c5d03f1450827f7fe7/google-apputils-0.4.2.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
