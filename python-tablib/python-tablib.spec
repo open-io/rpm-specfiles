@@ -11,7 +11,7 @@ Summary:          Format agnostic tabular data library (XLS, JSON, YAML, CSV)
 
 License:          MIT
 URL:              http://github.com/kennethreitz/tablib
-Source0:          https://pypi.python.org/packages/source/t/tablib/%{modname}-%{version}.tar.gz
+Source0:          https://files.pythonhosted.org/packages/b9/59/ee7267257ad70f795669525a04d9838474ee38b3025f28c018090231e4ad/tablib-0.10.0.tar.gz
 BuildArch:        noarch
 
 BuildRequires:    python2-devel
