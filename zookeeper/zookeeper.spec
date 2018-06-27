@@ -41,7 +41,7 @@ implementing coordination services from scratch.
 
 %prep
 %setup -q -n zookeeper-%{version}
-%patch0 -up1
+%patch0 -p1
 
 pushd src/c
 rm -rf aclocal.m4 autom4te.cache/ config.guess config.status config.log \
