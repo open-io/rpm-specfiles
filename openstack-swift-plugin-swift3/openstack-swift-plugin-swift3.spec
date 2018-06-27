@@ -4,7 +4,7 @@ License:        ASL 2.0
 Summary:        The swift3 plugin for OpenIO SDS Swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.12.4
+Version:        1.12.5
 Release:        1%{?dist}
 URL:            https://github.com/open-io/swift3
 Source0:        https://github.com/open-io/swift3/archive/%{version}-openio.tar.gz
@@ -57,6 +57,8 @@ PBR_VERSION=1.12.0 %{__python2} setup.py install -O1 --skip-build --root %{build
 %doc AUTHORS README.md
 
 %changelog
+* Wed Jun 27 2018 - 1.12.5-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Mon May 28 2018 - 1.12.4-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Tue May 15 2018 - 1.12.3-1 - Vincent Legoll <vincent.legoll@openio.io>
