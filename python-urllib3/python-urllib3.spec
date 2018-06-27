@@ -21,7 +21,7 @@ Summary:        Python HTTP library with thread-safe connection pooling and file
 
 License:        MIT
 URL:            http://urllib3.readthedocs.org/
-Source0:        https://pypi.io/packages/source/u/%{srcname}/%{srcname}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/3b/f0/e763169124e3f5db0926bc3dbfcd580a105f9ca44cf5d8e6c7a803c9f6b5/urllib3-1.16.tar.gz
 
 # Only used for python3 (and for python2 on F22 and newer)
 Source1:        ssl_match_hostname_py3.py
