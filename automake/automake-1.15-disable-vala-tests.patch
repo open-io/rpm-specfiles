@@ -1,8 +1,15 @@
+From: Pavel Raiskup <praiskup@redhat.com>
+Date: Tue, 7 Jul 2015 11:46:24 +0200
+Subject: [PATCH] tests: disable vala testcases
+
+Currently broken vala installation in Fedora?  Upstream thread:
+http://debbugs.gnu.org/cgi/bugreport.cgi?bug=12522
+
 diff --git a/t/list-of-tests.mk b/t/list-of-tests.mk
-index 591b4f0..20a9398 100644
+index 9363ee3..b99f15c 100644
 --- a/t/list-of-tests.mk
 +++ b/t/list-of-tests.mk
-@@ -1202,16 +1200,6 @@ t/upc2.sh \
+@@ -1239,16 +1239,6 @@ t/upc2.sh \
  t/upc3.sh \
  t/vala-configure.sh \
  t/vala-grepping.sh \

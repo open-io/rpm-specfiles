@@ -1,4 +1,9 @@
-%global api_version 1.14
+%global api_version 1.16
+
+# run "make check" by default
+%bcond_without check
+# Run optional test
+%bcond_without automake_enables_optional_test
 
 # remove once %%configure is used instead of ./configure
 %{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
@@ -6,7 +11,7 @@
 Summary:    A GNU tool for automatically creating Makefiles
 Name:       automake
 Version:    %{api_version}.1
-Release:    6%{?dist}
+Release:    4%{?dist}
 
 # docs ~> GFDL, sources ~> GPLv2+, mkinstalldirs ~> PD and install-sh ~> MIT
 License:    GPLv2+ and GFDL and Public Domain and MIT
@@ -16,20 +21,13 @@ Source:     ftp://ftp.gnu.org/gnu/automake/automake-%{version}.tar.xz
 Source2:    http://git.savannah.gnu.org/cgit/config.git/plain/config.sub
 Source3:    http://git.savannah.gnu.org/cgit/config.git/plain/config.guess
 
-# Disable tests for broken vala installation
-# ~> downstream
-Patch0:     %{name}-1.13.1-disable-tests.patch
+# Keep those patches in 'git format-patch' format (with docs).
 
-# Something changed in Perl 5.18 and the testsuite started to fail because
-# of random looping in hashes items.  Upstream will probably start sorting of
-# hash items by default for this failing case ~> we just don't resist on its
-# order for now (only testsuite change).
-# ~> Downstream, but proper fix will be pushed:
-#    http://lists.gnu.org/archive/html/bug-automake/2013-07/msg00030.html
-# ~> http://lists.gnu.org/archive/html/bug-automake/2013-07/msg00022.html
-Patch1:     %{name}-1.14-hash-order-workaround.patch
 
-Patch2:     %{name}-1.14.1-autoreconf.patch
+%if %{with check} && !%{without automake_enables_optional_test}
+Patch0:     automake-1.15-disable-vala-tests.patch
+%endif
+Patch1:     automake-1.13-compatfix.patch
 
 URL:        http://www.gnu.org/software/automake/
 Requires:   autoconf >= 2.65
@@ -39,28 +37,32 @@ Requires:   perl(Thread::Queue)
 Requires:   perl(threads)
 
 BuildRequires:  autoconf >= 2.65
-BuildRequires:  automake
+BuildRequires:  coreutils
+BuildRequires:  findutils
+BuildRequires:  help2man
+BuildRequires:  make
+BuildRequires:  perl-generators
+BuildRequires:  perl-interpreter
+BuildRequires:  perl(Thread::Queue)
+BuildRequires:  perl(threads)
+
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 BuildArch:  noarch
 
-# run "make check" by default
-%bcond_without check
-
 # for better tests coverage:
 %if %{with check}
-BuildRequires: libtool gettext-devel flex bison texinfo-tex texlive-dvips
+%if %{with automake_enables_optional_test}
+BuildRequires: automake libtool gettext-devel flex bison texinfo-tex texlive-dvips
 BuildRequires: java-devel-openjdk gcc-gfortran
-BuildRequires: dejagnu expect emacs imake python-docutils vala
-BuildRequires: cscope ncompress sharutils help2man
+BuildRequires: dejagnu expect emacs imake vala
+BuildRequires: cscope ncompress sharutils
 BuildRequires: gcc-objc gcc-objc++
 %if !0%{?rhel:1}
-BuildRequires: python-virtualenv lzip
+BuildRequires: lzip
 %endif
 %endif
-
-# the filtering macros are currently in /etc/rpm/macros.perl:
-BuildRequires: perl-macros
+%endif
 
 # remove bogus Automake perl dependencies and provides
 %global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(Automake::
@@ -74,20 +76,19 @@ You should install Automake if you are developing software and would
 like to use its ability to automatically generate GNU standard
 Makefiles.
 
+
 %prep
-%setup -q -n automake-%{version}
-%patch0 -p1 -b .disable_tests
-%patch1 -p1 -b .hash_order
-%patch2 -p1 -b .autoreconf
-#autoreconf -iv
+%autosetup -p1
+%if %{with check} && %{with automake_enables_optional_test}
+autoreconf -iv
+%endif
 
-file=`find -name config.sub | head -1`
-cp %{SOURCE2} $file
-file=`find -name config.guess | head -1`
-cp %{SOURCE3} $file
+for file in %SOURCE2 %SOURCE3; do
+    for dest in $(find -name "$(basename "$file")"); do
+        cp "$file" "$dest"
+    done
+done
 
-# Fedora only to add ppc64p7 (Power7 optimized) arch:
-perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" lib/config.sub
 
 %build
 # disable replacing config.guess and config.sub from redhat-rpm-config
@@ -97,15 +98,18 @@ make %{?_smp_mflags}
 cp m4/acdir/README README.aclocal
 cp contrib/multilib/README README.multilib
 
+
 %install
 make install DESTDIR=%{buildroot}
 
-%check
-# %%global TESTS_FLAGS t/preproc-errmsg t/preproc-basics
+
+#%check
+## %%global TESTS_FLAGS t/preproc-errmsg t/preproc-basics
 #%if %{with check}
 #make -k %{?_smp_mflags} check %{?TESTS_FLAGS: TESTS="%{TESTS_FLAGS}"} \
 #    || ( cat ./test-suite.log && false )
 #%endif
+
 
 %post
 /sbin/install-info %{_infodir}/automake.info.gz %{_infodir}/dir || :
@@ -115,18 +119,96 @@ if [ $1 = 0 ]; then
     /sbin/install-info --delete %{_infodir}/automake.info.gz %{_infodir}/dir || :
 fi
 
+
 %files
 %doc AUTHORS README THANKS NEWS README.aclocal README.multilib COPYING*
+#%doc %{_pkgdocdir}/amhello-1.0.tar.gz
+%doc %{_defaultdocdir}/%{name}
 %exclude %{_infodir}/dir
 %exclude %{_datadir}/aclocal
 %{_bindir}/*
 %{_infodir}/*.info*
 %{_datadir}/automake-%{api_version}
 %{_datadir}/aclocal-%{api_version}
-%{_defaultdocdir}/%{name}
 %{_mandir}/man1/*
 
+
 %changelog
+* Thu Jun 28 2018 Romain Acciari <romain.acciari@openio.io> - 1.16.1-4
+- Add patch to build against automake 1.13 from CentOS 7
+- Fixed amhello tarball path
+
+* Wed May 09 2018 Pavel Raiskup <praiskup@redhat.com> - 1.16.1-3
+- update config.{guess,sub} to gnuconfig git HEAD
+- drop ppc64p7 hack in config.sub, it's not needed - per:
+  https://lists.fedoraproject.org/archives/list/
+  devel@lists.fedoraproject.org/thread/2OWD2QRDFBEC6HTPVQ7FMJENH32BWT54/
+- don't BR python2-* packages; switching BRs to python3 would make no sense
+  since the upstream testsuite is not yet python3 ready
+
+* Wed Mar 14 2018 Iryna Shcherbina <ishcherb@redhat.com> - 1.16.1-2
+- Update Python 2 dependency declarations to new packaging standards
+  (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
+
+* Mon Mar 12 2018 Pavel Raiskup <praiskup@redhat.com> - 1.16.1-1
+- latest upstream release, per
+  http://lists.gnu.org/archive/html/automake/2018-03/msg00019.html
+
+* Fri Feb 09 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.15.1-5
+- Escape macros in %%changelog
+
+* Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.15.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Fri Nov 03 2017 Merlin Mathesius <mmathesi@redhat.com> - 1.15.1-3
+- Bump release number in spec so package will build with commits made
+  by Petr Písař <ppisar@redhat.com> on Thu Aug 31 2017:
+  - Add build conditions for modularity
+  - Specify all dependencies
+
+* Tue Aug 15 2017 Pavel Raiskup <praiskup@redhat.com> - 1.15.1-2
+- update config.{guess,sub} to gnuconfig git HEAD
+
+* Tue Aug 15 2017 Pavel Raiskup <praiskup@redhat.com> - 1.15.1-1
+- new upstream bug-fix release
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.15-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Wed Mar 29 2017 Pavel Raiskup <praiskup@redhat.com> - 1.15-10
+- update config.{guess,sub} to gnuconfig git HEAD
+- avoid autoreconf with disabled testsuite
+
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.15-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Thu Oct 13 2016 Pavel Raiskup <praiskup@redhat.com> - 1.15-8
+- update config.{guess,sub} to gnuconfig git HEAD
+
+* Tue Jun 28 2016 Pavel Raiskup <praiskup@redhat.com> - 1.15-7
+- avoid using $GZIP variable during make dist, fix one dejagnu test case
+  (FTBFS fix, rhbz#1349381)
+
+* Wed Feb 03 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.15-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
+* Wed Aug 12 2015 Pavel Raiskup <praiskup@redhat.com> - 1.15-5
+- use _pkgdocdir for docs to install amhello.tar.gz again (FTBFS in rawhide)
+
+* Tue Jul 07 2015 Pavel Raiskup <praiskup@redhat.com> - 1.15-4
+- use %%autosetup macro
+- fix FTBFS with new Perl (rhbz#1239379)
+
+* Tue Jun 23 2015 Pavel Raiskup <praiskup@redhat.com> - 1.15-3
+- add perl-Thread-Queue BR to avoid FTBFS
+
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.15-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
+* Tue Jan 06 2015 Pavel Raiskup <praiskup@redhat.com> - 1.15-1
+- rebase to new minor version (#1179182)
+- update config.{guess,sub} to gnuconfig git HEAD
+
 * Wed Sep 10 2014 Pavel Raiskup <praiskup@redhat.com> - 1.14.1-6
 - from now (#991613 is fixed), use %%configure macro together with
   disabled %%_configure_gnuconfig_hack
@@ -163,7 +245,7 @@ fi
 - don't require /usr/bin/g77 (#994910)
 
 * Mon Aug 05 2013 Pavel Raiskup <praiskup@redhat.com> - 1.13.4-5
-- allow build for unversioned %doc directory (#986871), resolves #992003
+- allow build for unversioned %%doc directory (#986871), resolves #992003
 
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.13.4-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
