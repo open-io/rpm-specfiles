@@ -17,7 +17,7 @@ Summary:        Simple powerful testing with Python
 Group:          Development/Languages
 License:        MIT
 URL:            http://pytest.org
-Source0:        http://pypi.python.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/45/c1/3d6dfd17bb7126724c8d422f0b0bdef8650e9aacfb5aa1405ba3229b1955/pytest-2.7.1.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
