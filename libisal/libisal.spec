@@ -1,16 +1,17 @@
 %define         tarname isa-l
 
 Name:           libisal
-Version:        2.14.0
+Version:        2.22.0
 Release:        1%{?dist}
 Summary:        Intel(R) Intelligent Storage Acceleration Library
 
 License:        BSD
 URL:            https://01.org/intel®-storage-acceleration-library-open-source-version/
-Source0:        https://01.org/sites/default/files/downloads/intelr-storage-acceleration-library-open-source-version/isa-l-%{version}.tar.gz
+Source0:        https://github.com/01org/isa-l/archive/v%{version}.tar.gz
 
 BuildRequires:  yasm-devel
 BuildRequires:  automake >= 1.14
+BuildRequires:  libtool
 Requires:       yasm
 
 %description
@@ -38,6 +39,7 @@ library.
 
 %prep
 %setup -q -n %{tarname}-%{version}
+./autogen.sh
 
 
 %build
@@ -58,5 +60,8 @@ make install DESTDIR=%{buildroot}
 
 
 %changelog
+* Thu Jun 28 2018 Romain Acciari <romain.acciari@openio.io> - 2.22.0
+- Update to 2.22.0
+- Update source path to GitHub
 * Wed May 25 2016 Romain Acciari <romain.acciari@openio.io> - 2.14.0
 - Initial release
