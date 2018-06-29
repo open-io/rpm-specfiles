@@ -3,7 +3,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.2.14
+Version:        0.2.15
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -69,5 +69,7 @@ go build container.plugin.go
 
 
 %changelog
+* Fri Jun 29 2018 - 0.2.15-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Tue Jun 26 2018 - 0.2.14-1 - Vincent Legoll <vincent.legoll@openio.io>
 - Initial release
