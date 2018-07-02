@@ -268,6 +268,9 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_tmpfilesdir} ${RPM_BUILD_ROOT}/run/oio/sds
 %{__install} -m 644 %{SOURCE1} ${RPM_BUILD_ROOT}%{_tmpfilesdir}/openio-sds.conf
 
+# Remove unwanted debug tool
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
+
 
 %files common
 %defattr(755,root,root,755)
