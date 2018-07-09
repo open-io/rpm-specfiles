@@ -1,11 +1,12 @@
 %define dist_sn       el
 %define dist_ln       Entreprise Linux
 
-%define oiorelease    17.04
+%define oiorelease    18.04
 
 %define host          http://mirror.openio.io
 %define basedir       /pub/repo/openio/sds/%{oiorelease}
-%define pki           file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OPENIO-0
+%define pki_dir       %{_sysconfdir}/pki/rpm-gpg
+%define pki_file      RPM-GPG-KEY-OPENIO-0
 
 
 Name:           openio-sds-release
@@ -16,7 +17,7 @@ Summary:        OpenIO repository configuration for %{dist_ln}
 Group:          System Environment/Base
 License:        Apachev2
 URL:            http://www.openio.io/
-Source0:        http://mirror.openio.io/pub/repo/openio/RPM-GPG-KEY-OPENIO-0
+Source0:        %{host}/pub/repo/openio/%{pki_file}
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -38,8 +39,7 @@ install -pm 644 %{SOURCE0} .
 
 %install
 # Install GPG key
-install -Dpm 644 %{SOURCE0} \
-    $RPM_BUILD_ROOT%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-OPENIO-0
+install -Dpm 644 %{SOURCE0} $RPM_BUILD_ROOT%{pki_dir}/%{pki_file}
 
 ### Install yum stable repositories
 install -dm 755 $RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d
@@ -49,13 +49,13 @@ name=OpenIO SDS packages for %{dist_ln} \$releasever - \$basearch
 baseurl=%{host}%{basedir}/%{dist_sn}/\$releasever/\$basearch
 enabled=1
 gpgcheck=1
-gpgkey=%{pki}
+gpgkey=file://%{pki_dir}/%{pki_file}
 
 [openio-sds-%{version}-source]
 name=OpenIO SDS packages for %{dist_ln} \$releasever - \$basearch - Source
 baseurl=%{host}%{basedir}/%{dist_sn}/\$releasever/SRPM
 enabled=0
-gpgkey=%{pki}
+gpgkey=file://%{pki_dir}/%{pki_file}
 gpgcheck=1
 EOF
 %{__chmod} 644 $RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/openio*.repo
@@ -68,6 +68,8 @@ EOF
 
 
 %changelog
+* Thu Jul 05 2018 <vincent.legoll@openio.io> - 18.04-1
+- New release
 * Tue Jun 27 2017 <romain.acciari@openio.io> - 17.04-1
 - New release
 * Thu Oct 20 2016 <romain.acciari@openio.io> - 16.10-1
