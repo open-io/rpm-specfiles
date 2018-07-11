@@ -6,8 +6,6 @@ Name:           oiofs-fuse
 Version:        2.1.0
 Release:        0%{?dist}
 %define         tarversion %{version}
-#Source0:        https://github.com/open-io/oio-fs/archive/%{tarversion}.tar.gz
-Source0:        oio-fs-%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -15,10 +13,10 @@ Source0:        oio-fs-%{tarversion}.tar.gz
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-Source0:        %{tarversion}.tar.gz
 Epoch:          1
 %endif
 
+Source0:        https://github.com/open-io/oio-fs/archive/%{tarversion}.tar.gz
 
 Summary:        OpenIO FileSystem FUSE adapter
 License:        Proprietary
