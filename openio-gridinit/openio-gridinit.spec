@@ -160,10 +160,6 @@ if [ $1 -eq 0 ] ; then
 fi
 %postun
 /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
-if [ $1 -ge 1 ] ; then
-  # Package upgrade, not uninstall
-  /usr/bin/systemctl try-restart gridinit.service >/dev/null 2>&1 || :
-fi
 /usr/bin/systemctl reload-or-restart rsyslog.service || :
 
 %post utils
