@@ -2,18 +2,17 @@
 
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.6
-Release:        3%{?dist}
+Version:        1.7.0
+Release:        1%{?dist}
 %define         tarversion %{version}
-Source0:        https://github.com/open-io/gridinit/archive/%{version}.0.tar.gz
 %else
 %define         date %(date +"%Y%m%d%H%M")
 Version:        test%{date}.%{tag}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-Source0:        https://github.com/open-io/gridinit/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
+Source0:        https://github.com/open-io/gridinit/archive/%{tarversion}.tar.gz
 
 Summary:        OpenIO gridinit daemon
 License:        AGPL-3.0+
@@ -31,8 +30,8 @@ BuildRequires:  autoconf,automake,libtool
 BuildRequires:  git,bison,flex,cmake
 BuildRequires:  glib2-devel    >= 2.28.8
 BuildRequires:  libevent-devel >= 2.0
-%if 0%{?suse_version}
 BuildRequires:  systemd
+%if 0%{?suse_version}
 BuildRequires:  rsyslog
 %endif
 
@@ -46,6 +45,8 @@ Requires:       %{name}-utils  = 1:%{version}
 # SuSe requires
 %if 0%{?suse_version}
 Requires:  systemd
+%{?systemd_requires}
+Recommends:     logrotate
 %endif
 
 
@@ -93,24 +94,25 @@ make %{?_smp_mflags}
 %install
 make DESTDIR=%{buildroot} install
 
-# Default config file
-%{__install} -m644 gridinit.conf %{buildroot}%{_sysconfdir}/%{realname}.conf
+# Default config file & services directory
+%{__mkdir_p} -m755 -v %{buildroot}%{_sysconfdir}/gridinit.d
+%{__install} -m644 gridinit.conf %{buildroot}%{_sysconfdir}/gridinit.conf
 
-# Install init script
-%{__mkdir_p} -m755 %{buildroot}%{_libdir}/systemd/system
-%{__install} -m644 %{SOURCE1} %{buildroot}%{_libdir}/systemd/system/gridinit.service
+# Install systemd unit file
+%{__mkdir_p} -m755 -v %{buildroot}%{_unitdir}
+%{__install} -m644 %{SOURCE1} %{buildroot}%{_unitdir}/gridinit.service
 
 # Install tmpfiles
-%{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}%{_prefix}%{_lib}/tmpfiles.d
-%{__install} -m644 %{SOURCE2} ${RPM_BUILD_ROOT}%{_prefix}%{_lib}/tmpfiles.d/gridinit.conf
+%{__mkdir_p} -m755 -v %{buildroot}%{_tmpfilesdir}
+%{__install} -m644 %{SOURCE2} %{buildroot}%{_tmpfilesdir}/gridinit.conf
 
 # Install rsyslog configuration
-%{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}/etc/rsyslog.d
-%{__install} -m644 %{SOURCE3} ${RPM_BUILD_ROOT}/etc/rsyslog.d/gridinit.conf
+%{__mkdir_p} -m755 -v %{buildroot}%{_sysconfdir}/rsyslog.d
+%{__install} -m644 %{SOURCE3} %{buildroot}%{_sysconfdir}/rsyslog.d/gridinit.conf
 
 # Install logrotate configuration
-%{__mkdir_p} -m755 -v ${RPM_BUILD_ROOT}/etc/logrotate.d
-%{__install} -m644 %{SOURCE4} ${RPM_BUILD_ROOT}/etc/logrotate.d/gridinit.conf
+%{__mkdir_p} -m755 -v %{buildroot}%{_sysconfdir}/logrotate.d
+%{__install} -m644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/gridinit.conf
 
 # Install /run directory
 %{__mkdir_p} -m755 -v %{buildroot}/run/%{realname}
@@ -121,11 +123,11 @@ make DESTDIR=%{buildroot} install
 
 %files
 %defattr(-,root,root,-)
-%{_libdir}/systemd/system/gridinit.service
+%{_unitdir}/gridinit.service
 %{_bindir}/*
-%dir %{_sysconfdir}/%{realname}
-%config(noreplace) %{_sysconfdir}/%{realname}/*
-%{_prefix}%{_lib}/tmpfiles.d/*
+%dir %{_sysconfdir}/gridinit.d
+%config(noreplace) %{_sysconfdir}/gridinit.conf
+%{_tmpfilesdir}/gridinit.conf
 %ghost /run/%{realname}
 %config %{_sysconfdir}/rsyslog.d/*
 %config %{_sysconfdir}/logrotate.d/*
@@ -140,6 +142,11 @@ make DESTDIR=%{buildroot} install
 %{_libdir}/libgridinit-utils.so
 
 
+%pre
+%if 0%{?suse_version}
+%service_add_pre gridinit.service
+%endif
+
 %post
 if [ $1 -eq 1 ] ; then
   # Initial installation
@@ -148,8 +155,9 @@ else
   /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 fi
 /usr/bin/systemctl reload-or-restart rsyslog.service || :
+%tmpfiles_create %{_tmpfilesdir}/gridinit.conf
 %if 0%{?suse_version}
-  %tmpfiles_create %_tmpfilesdir/gridinit.conf
+  %service_add_post gridinit.service
 %endif
 %preun
 if [ $1 -eq 0 ] ; then
@@ -172,6 +180,8 @@ fi
 
 
 %changelog
+* Thu May 31 2018 - 1.7.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- unreleased
 * Thu Oct 27 2016 - 1.6-3 - Romain Acciari <romain.acciari@openio.io>
 - Add tmpfiles_create at %%post for OpenSuSe
 * Sun Apr 17 2016 - 1.6-2 - Romain Acciari <romain.acciari@openio.io>

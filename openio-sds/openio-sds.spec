@@ -137,13 +137,22 @@ Requires:       leveldb
 Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
-Requires:       python-flask,python-eventlet,python-zmq,python-redis,python-requests >= 2.6.0,python-plyvel,PyYAML,python-futures
+Requires:       python-eventlet
+Requires:       python-zmq
+Requires:       python-redis
+Requires:       PyYAML
+Requires:       python-futures
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
-# Python oiopy dependencies
-Requires:       python-eventlet >= 0.15.2, python-requests >= 2.6.0, python-cliff-tablib, python-cliff >= 1.13, python-tablib, python-pyeclib >= 1.2.0
-Requires:       python-urllib3 >= 1.12
+Requires:       python-cliff       >= 1.13
+Requires:       python-pyeclib     >= 1.2.0
+Requires:       python-urllib3     >= 1.12
+# Needed for backblaze connector
+Requires:       python-requests    >= 2.6.0
+
 Provides:       python-oiopy
+
+
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -261,7 +270,6 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 
 %files common
 %defattr(755,root,root,755)
-%{_libdir}/libgridcluster-conscience.so*
 %{_libdir}/libgridcluster.so*
 %{_libdir}/libhcresolve.so*
 %{_libdir}/libmeta0utils.so*
@@ -287,11 +295,6 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 
 %files server
 %defattr(755,root,root,755)
-%dir %{_libdir}/grid
-%{_libdir}/grid/msg_conscience.so*
-%{_libdir}/grid/msg_fallback.so*
-%{_libdir}/grid/msg_ping.so*
-%{_libdir}/grid/msg_stats.so*
 %{_libdir}/libmeta0v2.so*
 %{_libdir}/libmeta1v2.so*
 %{_libdir}/libmeta2v2.so*
@@ -344,6 +347,7 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 
 %files tools
 %defattr(755,root,root,755)
+%{_bindir}/%{cli_name}-check-services
 %{_bindir}/%{cli_name}-bootstrap.py
 %{_bindir}/%{cli_name}-reset.sh
 %{_bindir}/zk-reset.py
@@ -357,6 +361,9 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-blob-registrator
 %{_bindir}/%{cli_name}-election-stat.py
+%{_bindir}/%{cli_name}-check-directory
+%{_bindir}/%{cli_name}-check-master
+%{_bindir}/%{cli_name}-meta2-mover
 %{_bindir}/%{cli_name}-meta1-rebuilder
 %{_bindir}/%{cli_name}-meta2-rebuilder
 
