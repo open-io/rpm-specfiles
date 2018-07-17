@@ -20,6 +20,10 @@ Source0:        https://github.com/open-io/swift3/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
 
+Obsoletes:      %{name} <= %{version}
+Provides:       %{name} = %{version}
+Conflicts:      swift-plugin-s3
+
 BuildArch:      noarch
 BuildRequires:  python2-devel
 BuildRequires:  python-pbr
