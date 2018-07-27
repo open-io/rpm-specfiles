@@ -16,7 +16,7 @@ Release:        0%{?dist}
 Epoch:          1
 %endif
 
-Source0:        https://vincent-legoll:%{token}@github.com/open-io/oio-fs/archive/%{tarversion}.tar.gz
+Source0:        https://github.com/open-io/oio-fs/archive/%{tarversion}.tar.gz
 
 Summary:        OpenIO FileSystem FUSE adapter
 License:        Proprietary
