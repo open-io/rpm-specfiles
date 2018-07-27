@@ -17,6 +17,18 @@ Supported Platforms
 How to build OpenIO SDS
 --------
 
+Build host setup
+--------
+
+    # Install required packages
+    yum install -y mock rpmdevtools git
+    # Get mock config samples
+    git clone https://github.com/open-io/mock-config-openio.git
+    # Copy one mock config
+    cp mock-config-openio/epel-7-x86_64-openio-sds-17.04.cfg /etc/mock/epel-7-x86_64-openio-oiofs-18.04.cfg
+    # Edit to suit your needs, for example
+    sed -i -e 's/17.04/18.04/g' /etc/mock/epel-7-x86_64-openio-oiofs-18.04.cfg
+
 Preparation
 --------
 
