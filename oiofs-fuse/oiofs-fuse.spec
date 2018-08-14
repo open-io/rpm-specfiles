@@ -68,6 +68,7 @@ cmake \
   -DCMAKE_INSTALL_PREFIX=%{_prefix} \
   -DOIOSDS_INCDIR=%{_includedir} \
   -DOIOSDS_LIBDIR=%{_libdir} \
+  -DCMAKE_BUILD_TYPE=Release \
   .
 
 #PBR_VERSION=%{version} %{__python} setup.py build
