@@ -241,6 +241,8 @@ cd -
 
 
 %build
+#VL: Workaround: "ERROR: No build ID note found in ..."
+%undefine _missing_build_ids_terminate_build
 cmake \
   -DCMAKE_BUILD_TYPE="Release" \
   -DCMAKE_INSTALL_PREFIX="%{_prefix}" \
