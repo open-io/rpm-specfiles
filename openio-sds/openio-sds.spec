@@ -342,6 +342,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
 %{_bindir}/%{cli_name}-meta1-client
 %{_bindir}/%{cli_name}-rawx-compress
 %{_bindir}/%{cli_name}-rawx-uncompress
+%{_bindir}/%{cli_name}-rawx
 %{_bindir}/%{cli_name}-rdir-server
 %{_bindir}/%{cli_name}-sqlx
 %{_bindir}/%{cli_name}-sqlx-server
