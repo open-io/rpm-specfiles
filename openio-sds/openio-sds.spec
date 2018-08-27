@@ -32,6 +32,10 @@ License:        AGPL-3.0
 URL:            http://www.openio.io/
 Source1:        openio-sds.tmpfiles
 
+# golang deps
+Source2:        https://github.com/tylerb/graceful/archive/v1.2.15.tar.gz
+Source3:        https://github.com/go-ini/ini/archive/v1.38.2.tar.gz
+
 Obsoletes:      openio-sds-client,openio-sds-client-devel
 
 BuildRequires:  glib2-devel              >= 2.52.0
@@ -73,6 +77,7 @@ BuildRequires:  lzo-devel                >= 2.0
 BuildRequires:  zlib-devel
 BuildRequires:  openio-asn1c             >= 0.9.27
 BuildRequires:  cmake,bison,flex
+BuildRequires:  golang
 
 
 %description
@@ -218,6 +223,21 @@ This package contains side tools for OpenIO SDS solution.
 
 %prep
 %setup -q -n %{tarname}-%{tarversion}
+
+# Golang dependencies
+cd ..
+tar xf %{SOURCE2}
+tar xf %{SOURCE3}
+
+mkdir -p /builddir/go/src/gopkg.in/tylerb
+cd /builddir/go/src/gopkg.in/tylerb
+ln -s /builddir/build/BUILD/graceful-* graceful.v1
+cd -
+
+mkdir -p /builddir/go/src/gopkg.in/go-ini
+cd /builddir/go/src/gopkg.in
+ln -s /builddir/build/BUILD/ini-* ini.v1
+cd -
 
 
 %build
