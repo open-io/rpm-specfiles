@@ -69,6 +69,8 @@ cmake \
   -DOIOSDS_INCDIR=%{_includedir} \
   -DOIOSDS_LIBDIR=%{_libdir} \
   -DCMAKE_BUILD_TYPE=Release \
+  -DOIOFS_VERSION=%{tarversion} \
+  -DOIOFS_COMMIT=%{tarversion} \
   .
 
 #PBR_VERSION=%{version} %{__python} setup.py build
