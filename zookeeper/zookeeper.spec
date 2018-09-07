@@ -3,8 +3,8 @@
 
 Summary: High-performance coordination service for distributed applications.
 Name: zookeeper
-Version: 3.4.12
-Release: 2%{?dist}
+Version: 3.4.13
+Release: 1%{?dist}
 License: Apache License v2.0
 Group: Applications/Databases
 URL: http://hadoop.apache.org/zookeeper/
@@ -205,6 +205,8 @@ if [ "$1" -ge "1" ] ; then
 fi
 
 %changelog
+* Fri Sep 07 2018 Vincent Legoll <vincent.legoll@openio.io> - 3.4.13-1
+- Update to 3.4.13
 * Mon May 21 2018 Vincent Legoll <vincent.legoll@openio.io> - 3.4.12-2
 - Add ZOOKEEPER-critsects.patch for enhanced performance
 * Mon May 21 2018 Vincent Legoll <vincent.legoll@openio.io> - 3.4.12-1
