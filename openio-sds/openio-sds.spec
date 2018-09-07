@@ -305,7 +305,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
 %{_libdir}/librawx.so*
 %{_bindir}/%{cli_name}-account-server
 %{_bindir}/%{cli_name}-blob-auditor
-%{_bindir}/%{cli_name}-blob-converter
 %{_bindir}/%{cli_name}-blob-indexer
 %{_bindir}/%{cli_name}-blob-mover
 %{_bindir}/%{cli_name}-blob-rebuilder
