@@ -1,5 +1,5 @@
 Name:		openio-sds-rsyslog
-Version:	1.2
+Version:	1.3.0
 Release:	1%{?dist}
 Summary:	OpenIO SDS rsyslog configuration
 BuildArch:	noarch
@@ -39,6 +39,7 @@ if [ $? -ne 0 ] ; then
 fi
 /usr/bin/systemctl reload-or-restart rsyslog.service
 
+
 %postun
 /usr/bin/systemctl reload-or-restart rsyslog.service
 
@@ -49,6 +50,8 @@ fi
 
 
 %changelog
+* Mon Sep 24 2018 - 1.3.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- Set the right file owner
 * Fri Mar 06 2015 - 1.2-1 - Romain Acciari <romain.acciari@openio.io>
 - Fixes directories and filenames
 * Tue Feb 17 2015 - 1.1-1 - Romain Acciari <romain.acciari@openio.io>
