@@ -1,7 +1,7 @@
 %define dist_sn       el
 %define dist_ln       Entreprise Linux
 
-%define oiorelease    18.04
+%define oiorelease    18.10
 
 %define host          http://mirror.openio.io
 %define basedir       /pub/repo/openio/sds/%{oiorelease}
@@ -68,6 +68,8 @@ EOF
 
 
 %changelog
+* Tue Sep 25 2018 <vincent.legoll@openio.io> - 18.10-1
+- New release
 * Thu Jul 05 2018 <vincent.legoll@openio.io> - 18.04-1
 - New release
 * Tue Jun 27 2017 <romain.acciari@openio.io> - 17.04-1
