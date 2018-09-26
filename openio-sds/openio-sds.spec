@@ -9,8 +9,8 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.2.1.2
-Release:        1%{?dist}
+Version:        4.2.2
+Release:        2%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -34,7 +34,7 @@ Source1:        openio-sds.tmpfiles
 
 Obsoletes:      openio-sds-client,openio-sds-client-devel
 
-BuildRequires:  glib2-devel              >= 2.28.8
+BuildRequires:  glib2-devel              >= 2.52.0
 BuildRequires:  leveldb-devel
 %if %{?fedora}%{?suse_version}0
 BuildRequires:  python-pbr
@@ -85,7 +85,7 @@ OpenIO is a fork of Redcurrant, from Worldline by Atos.
 %package common
 Summary: Common files for OpenIO Cloud Storage Solution
 Requires:       expat
-Requires:       glib2         >= 2.28
+Requires:       glib2         >= 2.52
 Requires:       openio-asn1c  >= 0.9.27
 Requires:       zlib
 %if %{?suse_version}0
@@ -395,6 +395,10 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Wed Sep 26 2018 - 4.2.2-2 - Vincent Legoll <vincent.legoll@openio.io>
+- Bump glib2 dependency to at least 2.52.0
+* Wed Sep 26 2018 - 4.2.2-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Tue Sep 11 2018 - 4.2.1.2-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Fri Sep 07 2018 - 4.2.1.1-1 - Vincent Legoll <vincent.legoll@openio.io>
