@@ -1,5 +1,5 @@
 Name:		openio-sds-rsyslog
-Version:	1.3.1
+Version:	1.3.2
 Release:	1%{?dist}
 Summary:	OpenIO SDS rsyslog configuration
 BuildArch:	noarch
@@ -50,8 +50,10 @@ fi
 
 
 %changelog
+* Thu Oct 04 2018 - 1.3.2-1 - Vincent Legoll <vincent.legoll@openio.io>
+- Real-fix serviceID with a PID in syslogtag
 * Thu Oct 04 2018 - 1.3.1-1 - Vincent Legoll <vincent.legoll@openio.io>
-- Fix serviceID with a PID in syslogtag
+- Quasi-fix serviceID with a PID in syslogtag
 * Mon Sep 24 2018 - 1.3.0-1 - Vincent Legoll <vincent.legoll@openio.io>
 - Set the right file owner
 * Fri Mar 06 2015 - 1.2-1 - Romain Acciari <romain.acciari@openio.io>
