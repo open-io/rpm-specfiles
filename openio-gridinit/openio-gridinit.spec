@@ -2,8 +2,8 @@
 
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.7.0
-Release:        2%{?dist}
+Version:        2.0.0
+Release:        1%{?dist}
 %define         tarversion %{version}
 %else
 %define         date %(date +"%Y%m%d%H%M")
@@ -145,6 +145,11 @@ fi
 
 
 %changelog
+* Wed Oct 10 2018 - 2.0.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- Remove the gridinit-utils library subpackage
+- Remove the gridinit-devel subpackage
+- Update glib2 requirement to 2.52
+- Remove libevent dependencies
 * Wed Jul 11 2018 - 1.7.0-2 - Vincent Legoll <vincent.legoll@openio.io>
 - Remove the restart gridinit when upgrading
 * Wed Jun 27 2018 - 1.7.0-1 - Vincent Legoll <vincent.legoll@openio.io>
