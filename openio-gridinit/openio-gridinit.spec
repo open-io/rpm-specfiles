@@ -52,15 +52,6 @@ interface through a UNIX socket. Services can be started/stopped/monitored.
 OpenIO gridinit is a fork of Redcurrant gridinit, from Worldline by Atos.
 
 
-%package        devel
-Summary:        Grid Init devel headers
-License:        AGPL-3.0+
-
-
-%description    devel
-Devel files for OpenIO gridinit.
-
-
 %prep
 %setup -q -n %{realname}-%{tarversion}
 
@@ -115,11 +106,6 @@ make DESTDIR=%{buildroot} install
 %ghost /run/%{realname}
 %config %{_sysconfdir}/rsyslog.d/*
 %config %{_sysconfdir}/logrotate.d/*
-
-
-%files devel
-%defattr(-,root,root,-)
-%{_includedir}/*.h
 
 
 %pre
