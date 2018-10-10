@@ -34,14 +34,12 @@ BuildRequires:  bison
 BuildRequires:  flex
 BuildRequires:  cmake
 BuildRequires:  glib2-devel    >= 2.52.0
-BuildRequires:  libevent-devel >= 2.0
 BuildRequires:  systemd
 %if 0%{?suse_version}
 BuildRequires:  rsyslog
 %endif
 
 Requires:       glib2         >= 2.52
-Requires:       libevent      >= 2.0
 # SuSe requires
 %if 0%{?suse_version}
 Requires:  systemd
