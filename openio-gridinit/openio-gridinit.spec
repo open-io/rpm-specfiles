@@ -26,8 +26,13 @@ Source5:        %{name}-rpmlintrc
 %endif
 
 # Requires
-BuildRequires:  autoconf,automake,libtool
-BuildRequires:  git,bison,flex,cmake
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  libtool
+BuildRequires:  git
+BuildRequires:  bison
+BuildRequires:  flex
+BuildRequires:  cmake
 BuildRequires:  glib2-devel    >= 2.28.8
 BuildRequires:  libevent-devel >= 2.0
 BuildRequires:  systemd
