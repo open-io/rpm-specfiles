@@ -37,11 +37,6 @@ BuildRequires:  rsyslog
 
 Requires:       glib2         >= 2.28.8
 Requires:       libevent      >= 2.0
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:       %{name}-utils  = %{version}
-%else
-Requires:       %{name}-utils  = 1:%{version}
-%endif
 # SuSe requires
 %if 0%{?suse_version}
 Requires:  systemd
@@ -57,22 +52,11 @@ interface through a UNIX socket. Services can be started/stopped/monitored.
 OpenIO gridinit is a fork of Redcurrant gridinit, from Worldline by Atos.
 
 
-%package        utils
-Summary:        Grid Init utilities libraries
-License:        AGPL-3.0+
-Requires:       glib2 >= 2.28.8
-%description    utils
-C code library with children processes management features. This library is
-internally used by the gridinit process.
-
 %package        devel
 Summary:        Grid Init devel headers
 License:        AGPL-3.0+
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:       %{name}-utils  = %{version}
-%else
-Requires:       %{name}-utils  = 1:%{version}
-%endif
+
+
 %description    devel
 Devel files for OpenIO gridinit.
 
@@ -132,20 +116,17 @@ make DESTDIR=%{buildroot} install
 %config %{_sysconfdir}/rsyslog.d/*
 %config %{_sysconfdir}/logrotate.d/*
 
-%files utils
-%defattr(-,root,root,-)
-%{_libdir}/libgridinit-utils.so.*
 
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/*.h
-%{_libdir}/libgridinit-utils.so
 
 
 %pre
 %if 0%{?suse_version}
 %service_add_pre gridinit.service
 %endif
+
 
 %post
 if [ $1 -eq 1 ] ; then
@@ -159,20 +140,19 @@ fi
 %if 0%{?suse_version}
   %service_add_post gridinit.service
 %endif
+
+
 %preun
 if [ $1 -eq 0 ] ; then
   # Package removal, not upgrade
   /usr/bin/systemctl --no-reload disable gridinit.service > /dev/null 2>&1 || :
   /usr/bin/systemctl stop gridinit.service > /dev/null 2>&1 || :
 fi
+
+
 %postun
 /usr/bin/systemctl daemon-reload >/dev/null 2>&1 || :
 /usr/bin/systemctl reload-or-restart rsyslog.service || :
-
-%post utils
-/sbin/ldconfig
-%postun utils
-/sbin/ldconfig
 
 
 %changelog
