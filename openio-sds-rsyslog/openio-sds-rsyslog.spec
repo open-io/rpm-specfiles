@@ -1,12 +1,13 @@
 Name:		openio-sds-rsyslog
-Version:	1.3.2
+Version:	1.3.3
 Release:	1%{?dist}
 Summary:	OpenIO SDS rsyslog configuration
 BuildArch:	noarch
 
 Group:		openio
 License:	GPL v3
-Source0:	openio-sds-rsyslog.conf
+
+Source0:	https://github.com/open-io/openio-sds-rsyslog/archive/%{version}.tar.gz
 
 Requires:	rsyslog >= 3.20
 Requires:	openio-sds-server
@@ -16,6 +17,7 @@ OpenIO SDS rsyslog configuration.
 
 
 %prep
+%setup -q -n %{name}-%{version}
 
 
 %build
@@ -23,7 +25,7 @@ OpenIO SDS rsyslog configuration.
 
 %install
 %{__mkdir_p} %{buildroot}%{_sysconfdir}/rsyslog.d
-%{__install} -m644 %{SOURCE0} %{buildroot}%{_sysconfdir}/rsyslog.d/openio-sds.conf
+%{__install} -m644 rpm/openio-sds-rsyslog.conf %{buildroot}%{_sysconfdir}/rsyslog.d/openio-sds.conf
 
 
 %post
@@ -50,6 +52,8 @@ fi
 
 
 %changelog
+* Fri Oct 19 2018 - 1.3.3-1 - Vincent Legoll <vincent.legoll@openio.io>
+- Package from new source repository
 * Thu Oct 04 2018 - 1.3.2-1 - Vincent Legoll <vincent.legoll@openio.io>
 - Real-fix serviceID with a PID in syslogtag
 * Thu Oct 04 2018 - 1.3.1-1 - Vincent Legoll <vincent.legoll@openio.io>
