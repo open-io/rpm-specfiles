@@ -57,6 +57,7 @@ go build cmd/command.plugin/command.plugin.go
     openio.plugin \
     zookeeper.plugin \
     container.plugin \
+    command.plugin \
     ${RPM_BUILD_ROOT}%{_libexecdir}/netdata/plugins.d
 # Looks like bare golang's `go build` don't do the required linker magic
 # http://fedoraproject.org/wiki/Releases/FeatureBuildId
