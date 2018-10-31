@@ -63,11 +63,13 @@ go build cmd/command.plugin/command.plugin.go
 # http://fedoraproject.org/wiki/Releases/FeatureBuildId
 %undefine _missing_build_ids_terminate_build
 
+
 %files
 %defattr(755,root,root,755)
 %{_libexecdir}/netdata/plugins.d/openio.plugin
 %{_libexecdir}/netdata/plugins.d/zookeeper.plugin
 %{_libexecdir}/netdata/plugins.d/container.plugin
+%{_libexecdir}/netdata/plugins.d/command.plugin
 
 
 %changelog
