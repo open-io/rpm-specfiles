@@ -3,7 +3,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.2.17
+Version:        0.3.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -45,9 +45,10 @@ ln -s ../../../../redis-* redis
 
 %build
 export GOPATH=${GOPATH:-$(go env GOPATH)}:$(pwd)/../go
-go build openio.plugin.go
-go build zookeeper.plugin.go
-go build container.plugin.go
+go build cmd/openio.plugin/openio.plugin.go
+go build cmd/zookeeper.plugin/zookeeper.plugin.go
+go build cmd/container.plugin/container.plugin.go
+go build cmd/command.plugin/command.plugin.go
 
 
 %install
@@ -69,6 +70,8 @@ go build container.plugin.go
 
 
 %changelog
+* Wed Oct 31 2018 - 0.3.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Tue Aug 28 2018 - 0.2.17-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Mon Jul 09 2018 - 0.2.16-1 - Vincent Legoll <vincent.legoll@openio.io>
