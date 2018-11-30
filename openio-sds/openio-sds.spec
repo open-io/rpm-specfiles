@@ -394,6 +394,8 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
 %{_bindir}/%{cli_name}-meta2-mover
 %{_bindir}/%{cli_name}-meta1-rebuilder
 %{_bindir}/%{cli_name}-meta2-rebuilder
+%{_bindir}/%{cli_name}-meta2-indexer
+%{_bindir}/%{cli_name}-file-tool
 
 %pre common
 # Add user and group "openio" if not exists
