@@ -18,7 +18,7 @@ clouds - test files
 
 Name:           python-%{pypi_name}
 Version:        0.12.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        An SDK for building applications to work with OpenStack
 
 License:        ASL 2.0
@@ -84,19 +84,19 @@ Requires:       python2-munch
 Requires:       python2-jmespath
 Requires:       python2-futures
 Requires:       python2-iso8601
-Requires:       python2-os-service-types >= 1.1.0
+Requires:       python2-os-service-types >= 1.2.0
 %if 0%{?fedora} || 0%{?rhel} > 7
 Requires:       python2-decorator
 Requires:       python2-dogpile-cache
-Requires:       python2-ipaddress
+Requires:       python2-ipaddress >= 1.0.17
 Requires:       python2-netifaces
 Requires:       python2-pyyaml
 %else
 Requires:       python-decorator
 Requires:       python-dogpile-cache
-Requires:       python-ipaddress
+Requires:       python-ipaddress >= 1.0.17
 Requires:       python-netifaces
-Requires:       PyYAML
+Requires:       PyYAML >= 3.12
 %endif
 
 %description -n python2-%{pypi_name}
@@ -146,7 +146,7 @@ Requires:       python3-jsonpatch >= 1.16
 Requires:       python3-keystoneauth1 >= 3.3.0
 Requires:       python3-six
 Requires:       python3-pbr >= 2.0.0
-Requires:       python3-PyYAML
+Requires:       python3-PyYAML >= 3.12
 Requires:       python3-appdirs
 Requires:       python3-requestsexceptions >= 1.2.0
 Requires:       python3-dogpile-cache
@@ -156,7 +156,7 @@ Requires:       python3-jmespath
 Requires:       python3-netifaces
 Requires:       python3-jsonschema
 Requires:       python3-iso8601
-Requires:       python3-os-service-types >= 1.1.0
+Requires:       python3-os-service-types >= 1.2.0
 
 %description -n python3-%{pypi_name}
 %{common_desc}
@@ -247,6 +247,8 @@ rm -rf html/.{doctrees,buildinfo}
 %endif
 
 %changelog
+* Fri Oct 05 2018 Romain Acciari <romain.acciari@openio.io> 0.12.0-2
+- Update dependencies
 * Thu Oct 04 2018 Romain Acciari <romain.acciari@openio.io> 0.12.0-1
 - Update to 0.12.0
 * Sun Feb 11 2018 RDO <dev@lists.rdoproject.org> 0.11.3-1
