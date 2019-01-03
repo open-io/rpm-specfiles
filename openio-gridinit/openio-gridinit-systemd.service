@@ -20,6 +20,7 @@ LimitAS=infinity
 #LimitLOCKS=infinity
 #LimitSIGPENDING=infinity
 #LimitMSGQUEUE=infinity
+TasksMax=infinity
 
 [Install]
 WantedBy=multi-user.target
