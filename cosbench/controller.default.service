@@ -1,0 +1,4 @@
+COSBENCH_CONTROLLER_CONSOLE_PORT=19089
+COSBENCH_CONTROLLER_TOMCAT_CONF=/etc/cosbench/controller-tomcat-server.xml
+COSBENCH_CONTROLLER_CONFIG=/etc/cosbench/controller.conf
+COSBENCH_CONTROLLER_LOG4J_CONFIG=/etc/cosbench/controller.log4j.properties
