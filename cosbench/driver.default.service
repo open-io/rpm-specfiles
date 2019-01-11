@@ -1,0 +1,4 @@
+COSBENCH_DRIVER_CONSOLE_PORT=18089
+COSBENCH_DRIVER_TOMCAT_CONF=/etc/cosbench/driver-tomcat-server.xml
+COSBENCH_DRIVER_CONFIG=/etc/cosbench/driver.conf
+COSBENCH_DRIVER_LOG4J_CONFIG=/etc/cosbench/driver.log4j.properties

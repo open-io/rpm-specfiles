@@ -5,6 +5,9 @@ Source0:       https://github.com/open-io/cosbench/releases/download/%{version}-
 Source1:       cosbench-controller.service
 Source2:       controller.default.service
 Source3:       controller.log4j.properties
+Source4:       cosbench-driver.service
+Source5:       driver.default.service
+Source6:       driver.log4j.properties
 
 Summary:       A benchmark tool for cloud object storage service
 License:       Apache 2.0
@@ -28,6 +31,11 @@ Summary:       Cosbench Controller
 Requires:      jre6
 Requires:      %{name} = %{version}-%{release}
 
+%package driver
+Summary:       Cosbench Driver
+Requires:      jre6
+Requires:      %{name} = %{version}-%{release}
+
 %description
 COSBench is a benchmarking tool to measure the performance of Cloud Object
 Storage services. Object storage is an emerging technology that is different
@@ -47,21 +55,29 @@ COSBench now supports:
  * ... as well as custom adaptors
 
 %description controller
-Only include the controller part of Cosbench.
+Only the controller part of Cosbench is included.
+
+%description driver
+Only the driver part of Cosbench is included.
+
 
 
 %prep
 %setup -q -n cosbench-%{version}-openio
 cp %{SOURCE1} %{SOURCE2} %{SOURCE3} conf/
+cp %{SOURCE4} %{SOURCE5} %{SOURCE6} conf/
 
 # comment default value
 sed 's/^/#/' conf/controller.default.service > conf/controller.sysconfig.service
+sed 's/^/#/' conf/driver.default.service > conf/driver.sysconfig.service
 
 # update path to cosbench-users.xml
 sed -i "s@./conf/cosbench-users.xml@%{cosbench_etc}/cosbench-users.xml@" conf/controller-tomcat-server.xml
+sed -i "s@./conf/cosbench-users.xml@%{cosbench_etc}/cosbench-users.xml@" conf/driver-tomcat-server.xml
 
 # update log file path
-sed -i "s@log/system.log@/var/log/cosbench/system.log@" conf/controller.conf
+sed -i "s@log/system.log@/var/log/cosbench/system-controller.log@" conf/controller.conf
+echo -e "\nlog_file = /var/log/cosbench/system-driver.log" >> conf/driver.conf
 
 # update arhive dir
 sed -i "s@= archive@= %{cosbench_home}/archives@" conf/controller.conf
@@ -96,6 +112,15 @@ install -D conf/controller.sysconfig.service $RPM_BUILD_ROOT%{_sysconfdir}/sysco
 install -d $RPM_BUILD_ROOT%{_unitdir}/
 install    conf/cosbench-controller.service $RPM_BUILD_ROOT%{_unitdir}/
 
+# Driver
+install -d $RPM_BUILD_ROOT%{cosbench_home}/driver
+install    conf/.driver/config.ini $RPM_BUILD_ROOT%{cosbench_home}/driver/
+install    conf/{driver.conf,driver-tomcat-server.xml,driver.log4j.properties} $RPM_BUILD_ROOT%{cosbench_etc}/
+install -D conf/driver.default.service $RPM_BUILD_ROOT%{_sysconfdir}/default/cosbench-driver
+install -D conf/driver.sysconfig.service $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/cosbench-driver
+install -d $RPM_BUILD_ROOT%{_unitdir}/
+install    conf/cosbench-driver.service $RPM_BUILD_ROOT%{_unitdir}/
+
 # Logs
 install -d $RPM_BUILD_ROOT%{_localstatedir}/log/cosbench
 
@@ -112,22 +137,8 @@ install -d $RPM_BUILD_ROOT%{cosbench_home}/archives
 %{_localstatedir}/log/cosbench
 
 # docs
-%dir %{_datadir}/cosbench
-
-%license %{_datadir}/cosbench/3rd-party-licenses.pdf
-%license %{_datadir}/cosbench/LICENSE
-%license %{_datadir}/cosbench/licenses
-
-%doc %{_datadir}/cosbench/CHANGELOG
-%doc %{_datadir}/cosbench/NOTICE
-%doc %{_datadir}/cosbench/workloads
-
-%dir %{_datadir}/doc/cosbench
-%doc %{_datadir}/doc/cosbench/README.md
-%doc %{_datadir}/doc/cosbench/BUILD.md
-%doc %{_datadir}/doc/cosbench/COSBenchAdaptorDevGuide.pdf
-%doc %{_datadir}/doc/cosbench/COSBenchUserGuide.pdf
-%doc %{_datadir}/doc/cosbench/javadoc
+%{_datadir}/cosbench
+%{_datadir}/doc/cosbench
 
 %files controller
 %defattr(-,root,root) 
@@ -142,6 +153,18 @@ install -d $RPM_BUILD_ROOT%{cosbench_home}/archives
 %{cosbench_home}/controller
 %config %dir %{cosbench_home}/archives
 
+%files driver
+%defattr(-,root,root) 
+%config %{cosbench_etc}/driver.conf
+%config %{cosbench_etc}/driver-tomcat-server.xml
+%config %{cosbench_etc}/driver.log4j.properties
+%{_sysconfdir}/default/cosbench-driver
+%config %{_sysconfdir}/sysconfig/cosbench-driver
+%{_unitdir}/cosbench-driver.service
+
+%defattr(-,%{cosbench_user},%{cosbench_group}) 
+%{cosbench_home}/driver
+
 %pre
 getent group %{cosbench_group} >/dev/null || groupadd -r %{cosbench_group}
 getent passwd %{cosbench_user}  >/dev/null || useradd -r -g %{cosbench_group} -d %{cosbench_home} -s /sbin/nologin -c "Cosbench Running User" %{cosbench_user}
@@ -155,6 +178,15 @@ exit 0
 
 %postun controller
 %systemd_postun_with_restart cosbench-controller.service
+
+%post driver
+%systemd_post cosbench-driver.service
+
+%preun driver
+%systemd_preun cosbench-driver.service
+
+%postun driver
+%systemd_postun_with_restart cosbench-driver.service
 
 %changelog
 * Thu Jan 10 2019 - Jérôme Loyet <jerome.loyet@openio.io> - 0.4.4-1
