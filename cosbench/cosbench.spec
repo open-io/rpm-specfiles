@@ -19,6 +19,7 @@ Requires(pre): shadow-utils
 %{?systemd_requires}
 BuildRequires: systemd
 Requires: which
+Requires: jre-headless = 1:1.8.0
 
 %define        cosbench_home    %{_sharedstatedir}/cosbench
 %define        cosbench_prefix  %{_prefix}/cosbench
@@ -28,12 +29,10 @@ Requires: which
 
 %package controller
 Summary:       Cosbench Controller
-Requires:      jre6
 Requires:      %{name} = %{version}-%{release}
 
 %package driver
 Summary:       Cosbench Driver
-Requires:      jre6
 Requires:      %{name} = %{version}-%{release}
 
 %description
@@ -126,6 +125,9 @@ install -d $RPM_BUILD_ROOT%{_localstatedir}/log/cosbench
 
 # archives
 install -d $RPM_BUILD_ROOT%{cosbench_home}/archives
+
+# temporary fix until mission dir is not hardcoded anymore
+(cd $RPM_BUILD_ROOT%{cosbench_prefix}/ && ln -s %{_localstatedir}/log/cosbench log)
 
 %files
 %defattr(-,root,root) 
