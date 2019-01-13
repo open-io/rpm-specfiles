@@ -9,7 +9,7 @@ Type=simple
 User=cosbench
 WorkingDirectory=/usr/cosbench/
 
-ExecStart=/usr/lib/jvm/jre-1.6.0/bin/java -Dlog4j.configuration=file:${COSBENCH_DRIVER_LOG4J_CONFIG} -Dcosbench.driver.config=${COSBENCH_DRIVER_CONFIG} -Dcosbench.tomcat.config=${COSBENCH_DRIVER_TOMCAT_CONF} -server -cp main/* org.eclipse.equinox.launcher.Main -configuration /var/lib/cosbench/driver -console ${COSBENCH_DRIVER_CONSOLE_PORT}
+ExecStart=/usr/lib/jvm/jre-1.8.0/bin/java -Dlog4j.configuration=file:${COSBENCH_DRIVER_LOG4J_CONFIG} -Dcosbench.driver.config=${COSBENCH_DRIVER_CONFIG} -Dcosbench.tomcat.config=${COSBENCH_DRIVER_TOMCAT_CONF} -server -cp main/* org.eclipse.equinox.launcher.Main -configuration /var/lib/cosbench/driver -console ${COSBENCH_DRIVER_CONSOLE_PORT}
 
 Restart=on-failure
 
