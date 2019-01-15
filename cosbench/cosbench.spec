@@ -1,5 +1,5 @@
 Name:          cosbench-openio
-Version:       0.4.4
+Version:       0.4.5
 Release:       1%{?dist}
 Source0:       https://github.com/open-io/cosbench/releases/download/%{version}-openio/cosbench-%{version}-openio.tar.gz
 Source1:       cosbench-controller.service
@@ -75,11 +75,19 @@ sed -i "s@./conf/cosbench-users.xml@%{cosbench_etc}/cosbench-users.xml@" conf/co
 sed -i "s@./conf/cosbench-users.xml@%{cosbench_etc}/cosbench-users.xml@" conf/driver-tomcat-server.xml
 
 # update log file path
-sed -i "s@log/system.log@/var/log/cosbench/system-controller.log@" conf/controller.conf
-echo -e "\nlog_file = /var/log/cosbench/system-driver.log" >> conf/driver.conf
+sed -i "s@log/system.log@%{_localstatedir}/log/cosbench/system-controller.log@" conf/controller.conf
+sed -i "s@log/system.log@%{_localstatedir}/log/cosbench/system-driver.log@" conf/driver.conf
 
 # update arhive dir
 sed -i "s@= archive@= %{cosbench_home}/archives@" conf/controller.conf
+
+# update mission dir
+sed -i "s@= log/mission@= %{_localstatedir}/log/cosbench/missions@" conf/driver.conf
+
+# update path in config.ini for controller and driver
+sed -i "s@libs/@%{cosbench_prefix}/osgi/libs/@g" conf/.{controller,driver}/config.ini
+sed -i "s@plugins/@%{cosbench_prefix}/osgi/plugins/@g" conf/.{controller,driver}/config.ini
+sed -i "s@=osgi/@=%{cosbench_prefix}/osgi/@g" conf/.{controller,driver}/config.ini
 
 %build
 
@@ -104,7 +112,7 @@ install    conf/cosbench-users.xml $RPM_BUILD_ROOT%{cosbench_etc}/
 
 # Controller 
 install -d $RPM_BUILD_ROOT%{cosbench_home}/controller
-install    conf/.controller/config.ini $RPM_BUILD_ROOT%{cosbench_home}/controller/
+install    conf/.controller/config.ini VERSION BUILD.no $RPM_BUILD_ROOT%{cosbench_home}/controller/
 install    conf/{controller.conf,controller-tomcat-server.xml,controller.log4j.properties} $RPM_BUILD_ROOT%{cosbench_etc}/
 install -D conf/controller.default.service $RPM_BUILD_ROOT%{_sysconfdir}/default/cosbench-controller
 install -D conf/controller.sysconfig.service $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/cosbench-controller
@@ -113,7 +121,7 @@ install    conf/cosbench-controller.service $RPM_BUILD_ROOT%{_unitdir}/
 
 # Driver
 install -d $RPM_BUILD_ROOT%{cosbench_home}/driver
-install    conf/.driver/config.ini $RPM_BUILD_ROOT%{cosbench_home}/driver/
+install    conf/.driver/config.ini VERSION BUILD.no  $RPM_BUILD_ROOT%{cosbench_home}/driver/
 install    conf/{driver.conf,driver-tomcat-server.xml,driver.log4j.properties} $RPM_BUILD_ROOT%{cosbench_etc}/
 install -D conf/driver.default.service $RPM_BUILD_ROOT%{_sysconfdir}/default/cosbench-driver
 install -D conf/driver.sysconfig.service $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/cosbench-driver
@@ -122,12 +130,10 @@ install    conf/cosbench-driver.service $RPM_BUILD_ROOT%{_unitdir}/
 
 # Logs
 install -d $RPM_BUILD_ROOT%{_localstatedir}/log/cosbench
+install -d $RPM_BUILD_ROOT%{_localstatedir}/log/cosbench/missions
 
 # archives
 install -d $RPM_BUILD_ROOT%{cosbench_home}/archives
-
-# temporary fix until mission dir is not hardcoded anymore
-(cd $RPM_BUILD_ROOT%{cosbench_prefix}/ && ln -s %{_localstatedir}/log/cosbench log)
 
 %files
 %defattr(-,root,root) 
@@ -166,6 +172,7 @@ install -d $RPM_BUILD_ROOT%{cosbench_home}/archives
 
 %defattr(-,%{cosbench_user},%{cosbench_group}) 
 %{cosbench_home}/driver
+%{_localstatedir}/log/cosbench/missions
 
 %pre
 getent group %{cosbench_group} >/dev/null || groupadd -r %{cosbench_group}
@@ -191,5 +198,9 @@ exit 0
 %systemd_postun_with_restart cosbench-driver.service
 
 %changelog
+* Tue Jan 15 2019 - Jérôme LOYET <jerome.loyet@openio.io> - 0.4.5-1
+- Add prometheus support
+- several fixes
+- change running path from /usr/cosbench to /var/lib/cosbench/{controller,driver}
 * Thu Jan 10 2019 - Jérôme Loyet <jerome.loyet@openio.io> - 0.4.4-1
 - Initial release
