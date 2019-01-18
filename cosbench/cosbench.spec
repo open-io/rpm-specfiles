@@ -1,5 +1,5 @@
 Name:          cosbench-openio
-Version:       0.4.5
+Version:       0.4.6
 Release:       1%{?dist}
 Source0:       https://github.com/open-io/cosbench/releases/download/%{version}-openio/cosbench-%{version}-openio.tar.gz
 Source1:       cosbench-controller.service
@@ -198,6 +198,8 @@ exit 0
 %systemd_postun_with_restart cosbench-driver.service
 
 %changelog
+* Thu Jan 17 2019 - Jérôme LOYET <jerome.loyet@openio.io> - 0.4.6-1
+- Permit to use active drivers only
 * Tue Jan 15 2019 - Jérôme LOYET <jerome.loyet@openio.io> - 0.4.5-1
 - Add prometheus support
 - several fixes
