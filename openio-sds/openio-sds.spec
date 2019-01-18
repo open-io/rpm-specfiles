@@ -292,6 +292,7 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 
 # Remove unwanted debug tool
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 
 
 %files common
@@ -394,8 +395,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
 %{_bindir}/%{cli_name}-meta2-mover
 %{_bindir}/%{cli_name}-meta1-rebuilder
 %{_bindir}/%{cli_name}-meta2-rebuilder
-%{_bindir}/%{cli_name}-meta2-indexer
-%{_bindir}/%{cli_name}-file-tool
 
 %pre common
 # Add user and group "openio" if not exists
