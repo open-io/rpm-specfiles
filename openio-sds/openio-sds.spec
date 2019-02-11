@@ -332,6 +332,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-blob-indexer
 %{_bindir}/%{cli_name}-blob-mover
 %{_bindir}/%{cli_name}-blob-rebuilder
+%{_bindir}/%{cli_name}-blob-improver
 %{_bindir}/%{cli_name}-conscience-agent
 %{_bindir}/%{cli_name}-cluster
 %{_bindir}/%{cli_name}-crawler-storage-tierer
@@ -340,7 +341,11 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-meta0-server
 %{_bindir}/%{cli_name}-meta1-server
 %{_bindir}/%{cli_name}-meta2-server
+%{_bindir}/%{cli_name}-meta1-rebuilder
+%{_bindir}/%{cli_name}-meta2-rebuilder
 %{_bindir}/%{cli_name}-meta1-client
+%{_bindir}/%{cli_name}-meta2-indexer
+%{_bindir}/%{cli_name}-meta2-mover
 %{_bindir}/%{cli_name}-rawx-compress
 %{_bindir}/%{cli_name}-rawx-uncompress
 %{_bindir}/%{cli_name}-rawx
@@ -392,9 +397,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-election-stat.py
 %{_bindir}/%{cli_name}-check-directory
 %{_bindir}/%{cli_name}-check-master
-%{_bindir}/%{cli_name}-meta2-mover
-%{_bindir}/%{cli_name}-meta1-rebuilder
-%{_bindir}/%{cli_name}-meta2-rebuilder
+%{_bindir}/%{cli_name}-file-tool
 
 %pre common
 # Add user and group "openio" if not exists
