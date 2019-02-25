@@ -392,6 +392,9 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-election-stat.py
 %{_bindir}/%{cli_name}-check-directory
 %{_bindir}/%{cli_name}-check-master
+%{_bindir}/%{cli_name}-blob-improver
+%{_bindir}/%{cli_name}-file-tool
+%{_bindir}/%{cli_name}-meta2-indexer
 %{_bindir}/%{cli_name}-meta2-mover
 %{_bindir}/%{cli_name}-meta1-rebuilder
 %{_bindir}/%{cli_name}-meta2-rebuilder
