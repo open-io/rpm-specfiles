@@ -74,8 +74,8 @@ go build cmd/fs.plugin/fs.plugin.go
 # By default netdata will run all the plugins in plugin.d directory, which
 # is not the intended behavior. The plugins below won't be set executable
 # by default, and will instead be selectively activated when deploying.
-%attr(644,root,root,644) %{_libexecdir}/netdata/plugins.d/container.plugin
-%attr(644,root,root,644) %{_libexecdir}/netdata/plugins.d/fs.plugin
+%attr(644,root,root) %{_libexecdir}/netdata/plugins.d/container.plugin
+%attr(644,root,root) %{_libexecdir}/netdata/plugins.d/fs.plugin
 
 
 %changelog
