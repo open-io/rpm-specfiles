@@ -3,7 +3,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.3.0
+Version:        0.4.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -49,6 +49,7 @@ go build cmd/openio.plugin/openio.plugin.go
 go build cmd/zookeeper.plugin/zookeeper.plugin.go
 go build cmd/container.plugin/container.plugin.go
 go build cmd/command.plugin/command.plugin.go
+go build cmd/fs.plugin/fs.plugin.go
 
 
 %install
@@ -58,6 +59,7 @@ go build cmd/command.plugin/command.plugin.go
     zookeeper.plugin \
     container.plugin \
     command.plugin \
+    fs.plugin \
     ${RPM_BUILD_ROOT}%{_libexecdir}/netdata/plugins.d
 # Looks like bare golang's `go build` don't do the required linker magic
 # http://fedoraproject.org/wiki/Releases/FeatureBuildId
@@ -68,11 +70,17 @@ go build cmd/command.plugin/command.plugin.go
 %defattr(755,root,root,755)
 %{_libexecdir}/netdata/plugins.d/openio.plugin
 %{_libexecdir}/netdata/plugins.d/zookeeper.plugin
-%{_libexecdir}/netdata/plugins.d/container.plugin
 %{_libexecdir}/netdata/plugins.d/command.plugin
+# By default netdata will run all the plugins in plugin.d directory, which
+# is not the intended behavior. The plugins below won't be set executable
+# by default, and will instead be selectively activated when deploying.
+%attr(644,root,root,644) %{_libexecdir}/netdata/plugins.d/container.plugin
+%attr(644,root,root,644) %{_libexecdir}/netdata/plugins.d/fs.plugin
 
 
 %changelog
+* Mon Mar 18 2019 - 0.4.0-1 - Vladimir Dombrovski <vladimir@openio.io>
+- New release
 * Wed Oct 31 2018 - 0.3.0-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Tue Aug 28 2018 - 0.2.17-1 - Vincent Legoll <vincent.legoll@openio.io>
