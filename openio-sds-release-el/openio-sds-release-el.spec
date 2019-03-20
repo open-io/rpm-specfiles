@@ -1,13 +1,12 @@
 %define dist_sn       el
 %define dist_ln       Entreprise Linux
 
-%define oiorelease    18.10
+%define oiorelease    19.04
 
 %define host          http://mirror.openio.io
 %define basedir       /pub/repo/openio/sds/%{oiorelease}
 %define pki_dir       %{_sysconfdir}/pki/rpm-gpg
 %define pki_file      RPM-GPG-KEY-OPENIO-0
-
 
 Name:           openio-sds-release
 Version:        %{oiorelease}
@@ -25,6 +24,7 @@ BuildArch:      noarch
 Requires:       epel-release
 %endif
 
+
 %description
 This package contains the OpenIO repository GPG key as well as
 configuration for yum and up2date.
@@ -33,6 +33,7 @@ configuration for yum and up2date.
 %prep
 %setup -q -c -T
 install -pm 644 %{SOURCE0} .
+
 
 %build
 
@@ -68,6 +69,8 @@ EOF
 
 
 %changelog
+* Wed Mar 20 2019 <vincent.legoll@openio.io> - 19.04-1
+- New release
 * Tue Sep 25 2018 <vincent.legoll@openio.io> - 18.10-1
 - New release
 * Thu Jul 05 2018 <vincent.legoll@openio.io> - 18.04-1
