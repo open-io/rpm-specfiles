@@ -3,7 +3,7 @@
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.4.0
+Version:        1.6.5.1
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
@@ -48,6 +48,26 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Feb 05 2019 - 1.6.5.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Fri Jan 18 2019 - 1.6.5-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Fri Jan 11 2019 - 1.6.4-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Fri Jan 11 2019 - 1.6.3-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Fri Dec 21 2018 - 1.6.2-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Tue Dec 18 2018 - 1.6.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Wed Nov 21 2018 - 1.6.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Thu Nov 15 2018 - 1.5.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Mon Oct 29 2018 - 1.5.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Wed Sep 26 2018 - 1.4.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Thu Jul 26 2018 - 1.4.0-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Wed Jun 06 2018 - 1.3.0-1 - Vincent Legoll <vincent.legoll@openio.io>
