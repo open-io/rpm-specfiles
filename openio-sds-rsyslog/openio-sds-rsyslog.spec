@@ -1,5 +1,5 @@
 Name:		openio-sds-rsyslog
-Version:	1.3.3
+Version:	1.3.4
 Release:	1%{?dist}
 Summary:	OpenIO SDS rsyslog configuration
 BuildArch:	noarch
@@ -52,6 +52,8 @@ fi
 
 
 %changelog
+* Tue Oct 23 2018 - 1.3.4-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Fri Oct 19 2018 - 1.3.3-1 - Vincent Legoll <vincent.legoll@openio.io>
 - Package from new source repository
 * Thu Oct 04 2018 - 1.3.2-1 - Vincent Legoll <vincent.legoll@openio.io>
