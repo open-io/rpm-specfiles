@@ -1,10 +1,11 @@
 Name:           openio-sds-replicator
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.4.4
+Version:        0.5.1
 Release:        1%{?dist}
 %define         tarversion %{version}
-%define         jarversion %{version}
+##%define         jarversion %{version}
+%define         jarversion 0.5.0-SNAPSHOT
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -12,7 +13,7 @@ Release:        1%{?dist}
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-%define         jarversion 0.5-SNAPSHOT
+%define         jarversion 0.5.0-SNAPSHOT
 Epoch:          1
 %endif
 
@@ -38,6 +39,7 @@ OpenIO SDS replicator service.
 
 %build
 #OPENIO_API_VERSION=0.6.3 ./gradlew assemble
+echo POUET
 ./gradlew assemble
 
 
@@ -55,6 +57,8 @@ popd
 
 
 %changelog
+* Thu Dec 13 2018 Romain Acciari <romain.acciari@openio.io> 0.5.1-1
+- New release
 * Fri Jan 12 2018 Vincent Legoll <vincent.legoll@openio.io> 0.4.4-1
 - New release
 * Tue Dec 12 2017 Vincent Legoll <vincent.legoll@openio.io> 0.4.3-1
