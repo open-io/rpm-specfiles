@@ -9,8 +9,8 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.2.2
-Release:        2%{?dist}
+Version:        4.2.6
+Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -395,6 +395,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Thu Dec 13 2018 - 4.2.6-1 - Romain Acciari <romain.acciari@openio.io>
+- New release
 * Wed Sep 26 2018 - 4.2.2-2 - Vincent Legoll <vincent.legoll@openio.io>
 - Bump glib2 dependency to at least 2.52.0
 * Wed Sep 26 2018 - 4.2.2-1 - Vincent Legoll <vincent.legoll@openio.io>
