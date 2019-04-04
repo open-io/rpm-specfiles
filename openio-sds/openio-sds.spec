@@ -384,7 +384,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-flush-all.sh
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-blob-registrator
-%{_bindir}/%{cli_name}-election-stat.py
 %{_bindir}/%{cli_name}-check-directory
 %{_bindir}/%{cli_name}-check-master
 %{_bindir}/%{cli_name}-blob-improver
