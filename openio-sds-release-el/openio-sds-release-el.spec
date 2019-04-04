@@ -10,7 +10,7 @@
 
 Name:           openio-sds-release
 Version:        %{oiorelease}
-Release:        1.%{dist_sn}
+Release:        1.%{dist_sn}7.oio
 Summary:        OpenIO repository configuration for %{dist_ln}
 
 Group:          System Environment/Base
