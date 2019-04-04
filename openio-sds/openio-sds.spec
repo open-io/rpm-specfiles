@@ -351,6 +351,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-proxy
 %{_bindir}/oio-gdb.py*
 %{_bindir}/openio
+%{_bindir}/openio-admin
 %defattr(644,root,root,755)
 %{python_sitelib}/oio*
 /usr/lib/tmpfiles.d/openio-sds.conf
