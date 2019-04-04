@@ -349,7 +349,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-sqlx-server
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
-%{_bindir}/zk-bootstrap.py*
 %{_bindir}/oio-gdb.py*
 %{_bindir}/openio
 %defattr(644,root,root,755)
@@ -379,14 +378,10 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-check-services
 %{_bindir}/%{cli_name}-bootstrap.py
 %{_bindir}/%{cli_name}-reset.sh
-%{_bindir}/zk-reset.py
 %{_bindir}/%{cli_name}-unlock-all.sh
 %{_bindir}/%{cli_name}-wait-scored.sh
 %{_bindir}/%{cli_name}-test-config.py
 %{_bindir}/%{cli_name}-flush-all.sh
-%{_bindir}/%{cli_name}-election-dump.py
-%{_bindir}/%{cli_name}-election-reset.py
-%{_bindir}/%{cli_name}-election-smudge.py
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-blob-registrator
 %{_bindir}/%{cli_name}-election-stat.py
