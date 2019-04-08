@@ -330,6 +330,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-blob-auditor
 %{_bindir}/%{cli_name}-blob-converter
 %{_bindir}/%{cli_name}-blob-indexer
+%{_bindir}/%{cli_name}-blob-improver
 %{_bindir}/%{cli_name}-blob-mover
 %{_bindir}/%{cli_name}-blob-rebuilder
 %{_bindir}/%{cli_name}-conscience-agent
@@ -339,6 +340,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-meta0-client
 %{_bindir}/%{cli_name}-meta0-server
 %{_bindir}/%{cli_name}-meta1-server
+%{_bindir}/%{cli_name}-meta2-indexer
 %{_bindir}/%{cli_name}-meta2-server
 %{_bindir}/%{cli_name}-meta1-client
 %{_bindir}/%{cli_name}-rawx-compress
@@ -383,6 +385,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-unlock-all.sh
 %{_bindir}/%{cli_name}-wait-scored.sh
 %{_bindir}/%{cli_name}-test-config.py
+%{_bindir}/%{cli_name}-file-tool
 %{_bindir}/%{cli_name}-flush-all.sh
 %{_bindir}/%{cli_name}-election-dump.py
 %{_bindir}/%{cli_name}-election-reset.py
