@@ -1,6 +1,6 @@
 [Unit]
 Description=Gridinit daemon from OpenIO
-After=syslog.target
+After=syslog.target network.target
 
 [Service]
 User=root
