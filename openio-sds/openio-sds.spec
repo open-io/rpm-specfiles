@@ -35,6 +35,7 @@ Source1:        openio-sds.tmpfiles
 # golang deps
 Source2:        https://github.com/tylerb/graceful/archive/v1.2.15.tar.gz
 Source3:        https://github.com/go-ini/ini/archive/v1.38.2.tar.gz
+Source4:        https://github.com/golang/sys/archive/release-branch.go1.11.tar.gz
 
 Obsoletes:      openio-sds-client,openio-sds-client-devel
 
@@ -228,6 +229,7 @@ This package contains side tools for OpenIO SDS solution.
 cd ..
 tar xf %{SOURCE2}
 tar xf %{SOURCE3}
+tar xf %{SOURCE4}
 
 mkdir -p /builddir/go/src/gopkg.in/tylerb
 cd /builddir/go/src/gopkg.in/tylerb
@@ -239,6 +241,10 @@ cd /builddir/go/src/gopkg.in
 ln -s /builddir/build/BUILD/ini-* ini.v1
 cd -
 
+mkdir -p /builddir/go/src/golang.org/x
+cd /builddir/go/src/golang.org/x/
+ln -s /builddir/build/BUILD/sys-* sys
+cd -
 
 %build
 #VL: Workaround: "ERROR: No build ID note found in ..."
@@ -293,6 +299,10 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 # Remove unwanted debug tool
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
+# Remove deprecated tools
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-check-services
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-compress
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-uncompress
 
 
 %files common
@@ -341,8 +351,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-meta1-server
 %{_bindir}/%{cli_name}-meta2-server
 %{_bindir}/%{cli_name}-meta1-client
-%{_bindir}/%{cli_name}-rawx-compress
-%{_bindir}/%{cli_name}-rawx-uncompress
 %{_bindir}/%{cli_name}-rawx
 %{_bindir}/%{cli_name}-rdir-server
 %{_bindir}/%{cli_name}-sqlx
@@ -376,7 +384,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 
 %files tools
 %defattr(755,root,root,755)
-%{_bindir}/%{cli_name}-check-services
 %{_bindir}/%{cli_name}-bootstrap.py
 %{_bindir}/%{cli_name}-reset.sh
 %{_bindir}/%{cli_name}-unlock-all.sh
@@ -385,7 +392,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %{_bindir}/%{cli_name}-flush-all.sh
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-blob-registrator
-%{_bindir}/%{cli_name}-check-directory
 %{_bindir}/%{cli_name}-check-master
 %{_bindir}/%{cli_name}-blob-improver
 %{_bindir}/%{cli_name}-file-tool
