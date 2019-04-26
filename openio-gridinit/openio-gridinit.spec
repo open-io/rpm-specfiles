@@ -2,8 +2,8 @@
 
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.0.0
-Release:        1%{?dist}
+Version:        2.0.2
+Release:        3%{?dist}
 %define         tarversion %{version}
 %else
 %define         date %(date +"%Y%m%d%H%M")
@@ -145,6 +145,12 @@ fi
 
 
 %changelog
+* Fri Apr 26 2019 - 2.0.2-3 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Fri Jan 04 2018 - 2.0.2-2 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Mon Oct 15 2018 - 2.0.2-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Wed Oct 10 2018 - 2.0.0-1 - Vincent Legoll <vincent.legoll@openio.io>
 - Remove the gridinit-utils library subpackage
 - Remove the gridinit-devel subpackage
