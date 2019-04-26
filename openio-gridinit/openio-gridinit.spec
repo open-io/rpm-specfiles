@@ -147,7 +147,7 @@ fi
 %changelog
 * Fri Apr 26 2019 - 2.0.2-3 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
-* Fri Jan 04 2018 - 2.0.2-2 - Vincent Legoll <vincent.legoll@openio.io>
+* Fri Jan 04 2019 - 2.0.2-2 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Mon Oct 15 2018 - 2.0.2-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
