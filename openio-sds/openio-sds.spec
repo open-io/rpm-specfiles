@@ -343,7 +343,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-uncompress
 %{_bindir}/%{cli_name}-blob-mover
 %{_bindir}/%{cli_name}-blob-rebuilder
 %{_bindir}/%{cli_name}-conscience-agent
-%{_bindir}/%{cli_name}-cluster
 %{_bindir}/%{cli_name}-crawler-storage-tierer
 %{_bindir}/%{cli_name}-event-agent
 %{_bindir}/%{cli_name}-meta0-client
@@ -357,7 +356,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-uncompress
 %{_bindir}/%{cli_name}-sqlx-server
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
-%{_bindir}/oio-gdb.py*
 %{_bindir}/openio
 %{_bindir}/openio-admin
 %defattr(644,root,root,755)
@@ -386,7 +384,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-uncompress
 %defattr(755,root,root,755)
 %{_bindir}/%{cli_name}-bootstrap.py
 %{_bindir}/%{cli_name}-reset.sh
-%{_bindir}/%{cli_name}-unlock-all.sh
 %{_bindir}/%{cli_name}-wait-scored.sh
 %{_bindir}/%{cli_name}-test-config.py
 %{_bindir}/%{cli_name}-flush-all.sh
