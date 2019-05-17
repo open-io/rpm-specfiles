@@ -6,6 +6,7 @@ After=syslog.target network.target
 User=root
 Group=root
 ExecStart=/usr/bin/gridinit -s GRIDINIT,local,gridinit,0 /etc/gridinit.conf
+ExecReload=/usr/bin/gridinit_cmd reload
 Restart=on-failure
 LimitCPU=infinity
 LimitFSIZE=infinity
