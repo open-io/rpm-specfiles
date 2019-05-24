@@ -3,7 +3,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.4.0
+Version:        0.5.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -20,6 +20,7 @@ Epoch:          1
 Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
 
 Source1:        https://github.com/go-redis/redis/archive/v6.12.0.tar.gz
+Source2:        https://github.com/aws/aws-sdk-go/archive/v1.19.37.tar.gz
 
 Summary:        OpenIO Plugins for netdata
 License:        AGPL-3.0
@@ -35,13 +36,10 @@ OpenIO Plugins for netdata
 %prep
 %setup -q -n %{tarname}-%{tarversion}
 cd ..
-tar xf %{SOURCE1}
-mkdir -p go/src/github.com/go-redis
-cd go/src
-ln -s ../../%{tarname}-%{tarversion} oionetdata
-cd github.com/go-redis
-ln -s ../../../../redis-* redis
-
+ln -s %{tarname}-%{tarversion} go/src/oionetdata
+mkdir -p go/src/github.com/go-redis go/src/github.com/aws
+tar xf %{SOURCE1} -C go/src/github.com/go-redis/
+tar xf %{SOURCE2} -C go/src/github.com/aws/aws-sdk-go
 
 %build
 export GOPATH=${GOPATH:-$(go env GOPATH)}:$(pwd)/../go
@@ -50,6 +48,7 @@ go build cmd/zookeeper.plugin/zookeeper.plugin.go
 go build cmd/container.plugin/container.plugin.go
 go build cmd/command.plugin/command.plugin.go
 go build cmd/fs.plugin/fs.plugin.go
+go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
 
 
 %install
@@ -60,6 +59,7 @@ go build cmd/fs.plugin/fs.plugin.go
     container.plugin \
     command.plugin \
     fs.plugin \
+    s3roundtrip.plugin \
     ${RPM_BUILD_ROOT}%{_libexecdir}/netdata/plugins.d
 # Looks like bare golang's `go build` don't do the required linker magic
 # http://fedoraproject.org/wiki/Releases/FeatureBuildId
@@ -71,14 +71,14 @@ go build cmd/fs.plugin/fs.plugin.go
 %{_libexecdir}/netdata/plugins.d/openio.plugin
 %{_libexecdir}/netdata/plugins.d/zookeeper.plugin
 %{_libexecdir}/netdata/plugins.d/command.plugin
-# By default netdata will run all the plugins in plugin.d directory, which
-# is not the intended behavior. The plugins below won't be set executable
-# by default, and will instead be selectively activated when deploying.
-%attr(644,root,root) %{_libexecdir}/netdata/plugins.d/container.plugin
-%attr(644,root,root) %{_libexecdir}/netdata/plugins.d/fs.plugin
+%{_libexecdir}/netdata/plugins.d/fs.plugin
+%{_libexecdir}/netdata/plugins.d/container.plugin
+%{_libexecdir}/netdata/plugins.d/s3roundtrip.plugin
 
 
 %changelog
+* Fri May 24 2019 - 0.5.0-1 - Vladimir Dombrovski <vladimir@openio.io>
+- New release
 * Mon Mar 18 2019 - 0.4.0-1 - Vladimir Dombrovski <vladimir@openio.io>
 - New release
 * Wed Oct 31 2018 - 0.3.0-1 - Vincent Legoll <vincent.legoll@openio.io>
