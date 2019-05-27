@@ -36,10 +36,16 @@ OpenIO Plugins for netdata
 %prep
 %setup -q -n %{tarname}-%{tarversion}
 cd ..
-ln -s %{tarname}-%{tarversion} go/src/oionetdata
+tar xf %{SOURCE1}
+tar xf %{SOURCE2}
 mkdir -p go/src/github.com/go-redis go/src/github.com/aws
-tar xf %{SOURCE1} -C go/src/github.com/go-redis/
-tar xf %{SOURCE2} -C go/src/github.com/aws/aws-sdk-go
+cd go/src
+ln -s ../../%{tarname}-%{tarversion} oionetdata
+cd github.com/go-redis
+ln -s ../../../../redis-* redis
+cd ../aws
+ln -s ../../../../aws-* aws-sdk-go
+
 
 %build
 export GOPATH=${GOPATH:-$(go env GOPATH)}:$(pwd)/../go
