@@ -3,7 +3,7 @@
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        2.0.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 %define         tarversion %{version}
 %else
 %define         date %(date +"%Y%m%d%H%M")
@@ -145,6 +145,8 @@ fi
 
 
 %changelog
+* Tue May 28 2019 - 2.0.2-4 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Fri Apr 26 2019 - 2.0.2-3 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Fri Jan 04 2019 - 2.0.2-2 - Vincent Legoll <vincent.legoll@openio.io>
