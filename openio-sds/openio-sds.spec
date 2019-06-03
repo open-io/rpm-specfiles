@@ -92,6 +92,7 @@ Summary: Common files for OpenIO Cloud Storage Solution
 Requires:       expat
 Requires:       glib2         >= 2.52
 Requires:       openio-asn1c  >= 0.9.27
+Requires:       zeromq        >= 4.0.0
 Requires:       zlib
 %if %{?suse_version}0
 Requires:       (libjson-c3 or libjson-c2>=0.12)
@@ -143,7 +144,6 @@ Requires:       lzo                >= 2.0
 Requires:       openio-asn1c       >= 0.9.27
 Requires:       python-gunicorn    >= 19.4.5
 Requires:       python-eventlet
-Requires:       python-zmq
 Requires:       python-redis
 Requires:       PyYAML
 Requires:       python-futures
@@ -422,6 +422,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Mon Jun 03 2019 - 4.3.2-2 - Vladimir Dombrovski <vladimir@openio.io>
+- Remove python-zmq
 * Tue Feb 12 2019 - 4.3.2-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Fri Jan 25 2019 - 4.3.1-1 - Vincent Legoll <vincent.legoll@openio.io>
