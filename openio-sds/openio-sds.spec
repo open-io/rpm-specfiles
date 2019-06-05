@@ -50,13 +50,12 @@ BuildRequires:  zookeeper-lib-devel      >= 3.3.4
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 BuildRequires:  libcurl-devel
+BuildRequires:  zeromq-devel
 %if %{?suse_version}0
 BuildRequires:  libapr1-devel            >= 1.2
 BuildRequires:  apache2-devel            >= 2.2
 BuildRequires:  libjson-c-devel          >= 0.12
 BuildRequires:  libdb-6_0-devel
-BuildRequires:  zeromq-devel
-
 BuildRequires:  fdupes
 %else
 BuildRequires:  apr-devel                >= 1.2
@@ -64,7 +63,6 @@ BuildRequires:  httpd-devel              >= 2.2
 BuildRequires:  json-c                   >= 0.12
 BuildRequires:  json-c-devel             >= 0.12
 BuildRequires:  libdb-devel
-BuildRequires:  zeromq3-devel
 %endif
 BuildRequires:  sqlite-devel             >= 3.7.11
 BuildRequires:  libattr-devel            >= 2.4.32
@@ -92,7 +90,7 @@ Summary: Common files for OpenIO Cloud Storage Solution
 Requires:       expat
 Requires:       glib2         >= 2.52
 Requires:       openio-asn1c  >= 0.9.27
-Requires:       zeromq        >= 4.0.0
+Requires:       zeromq
 Requires:       zlib
 %if %{?suse_version}0
 Requires:       (libjson-c3 or libjson-c2>=0.12)
@@ -422,6 +420,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Wed Jun 05 2019 - 4.4.3-3 - Vladimir Dombrovski <vladimir@openio.io>
+- Remove build dep to zeromq3
 * Mon Jun 03 2019 - 4.4.3-2 - Vladimir Dombrovski <vladimir@openio.io>
 - Remove python-zmq
 * Fri May 17 2019 - 4.4.3-1 - Vincent Legoll <vincent.legoll@openio.io>
