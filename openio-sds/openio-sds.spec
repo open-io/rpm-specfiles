@@ -9,8 +9,8 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.3.2
-Release:        1%{?dist}
+Version:        4.4.3
+Release:        2%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -422,8 +422,14 @@ fi
 /sbin/ldconfig
 
 %changelog
-* Mon Jun 03 2019 - 4.3.2-2 - Vladimir Dombrovski <vladimir@openio.io>
+* Mon Jun 03 2019 - 4.4.3-2 - Vladimir Dombrovski <vladimir@openio.io>
 - Remove python-zmq
+* Fri May 17 2019 - 4.4.3-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Tue Apr 16 2019 - 4.4.2-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Tue Mar 26 2019 - 4.4.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Tue Feb 12 2019 - 4.3.2-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Fri Jan 25 2019 - 4.3.1-1 - Vincent Legoll <vincent.legoll@openio.io>
