@@ -9,8 +9,8 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        4.4.3
-Release:        2%{?dist}
+Version:        4.5.0
+Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -420,6 +420,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Wed Jun 05 2019 - 4.5.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Wed Jun 05 2019 - 4.4.3-3 - Vladimir Dombrovski <vladimir@openio.io>
 - Remove build dep to zeromq3
 * Mon Jun 03 2019 - 4.4.3-2 - Vladimir Dombrovski <vladimir@openio.io>
