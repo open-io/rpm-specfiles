@@ -10,7 +10,7 @@ Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        4.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
@@ -87,6 +87,7 @@ OpenIO is a fork of Redcurrant, from Worldline by Atos.
 
 %package common
 Summary: Common files for OpenIO Cloud Storage Solution
+Obsoletes:      python-zmq
 Requires:       expat
 Requires:       glib2         >= 2.52
 Requires:       openio-asn1c  >= 0.9.27
@@ -420,6 +421,9 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Fri Jun 07 2019 - 4.5.0-2 - Romain Acciari <romain.acciari@openio.io>
+- Add an obsoletes on python-zmq to force its uninstallation
+- Please, remove this in the near future and forgive us.
 * Wed Jun 05 2019 - 4.5.0-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Wed Jun 05 2019 - 4.4.3-3 - Vladimir Dombrovski <vladimir@openio.io>
