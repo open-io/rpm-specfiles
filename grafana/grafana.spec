@@ -26,6 +26,7 @@ ExclusiveArch:  %{ix86} x86_64 %{arm}
 
 BuildRequires: golang >= 1.7.3
 BuildRequires: nodejs-grunt-cli fontconfig
+BuildRequires: nodejs < 1:7
 
 %if 0%{?fedora} || 0%{?rhel} == 7
 BuildRequires: systemd
