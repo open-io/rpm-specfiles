@@ -1,7 +1,7 @@
 Name:           openio-sds-replicator
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.5.1
+Version:        1.0.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 ##%define         jarversion %{version}
@@ -56,7 +56,17 @@ popd
 
 
 %changelog
-* Thu Dec 13 2018 Romain Acciari <romain.acciari@openio.io> 0.5.1-1
+* Wed Jul 17 2019 Romain Acciari <romain.acciari@openio.io> 1.0.0-1
+- New release
+* Fri Jun 14 2019 Vincent Legoll <vincent.legoll@openio.io> 0.5.4-1
+- New release
+* Thu Apr 18 2019 Vincent Legoll <vincent.legoll@openio.io> 0.5.3-1
+- New release
+* Fri Jan 04 2019 Vincent Legoll <vincent.legoll@openio.io> 0.5.2-1
+- New release
+* Fri Jan 04 2019 Vincent Legoll <vincent.legoll@openio.io> 0.5.1-1
+- New release
+* Mon Dec 10 2018 Vincent Legoll <vincent.legoll@openio.io> 0.5.0-1
 - New release
 * Fri Jan 12 2018 Vincent Legoll <vincent.legoll@openio.io> 0.4.4-1
 - New release
