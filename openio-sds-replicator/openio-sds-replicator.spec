@@ -40,6 +40,7 @@ OpenIO SDS replicator service.
 %build
 #OPENIO_API_VERSION=0.6.3 ./gradlew %{gradlew_args} assemble
 ./gradlew %{gradlew_args} assemble
+gradle --stop
 
 
 %install
