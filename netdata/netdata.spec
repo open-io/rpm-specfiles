@@ -74,10 +74,11 @@ Recommends:	python2-psycopg2 \
 Summary:	Real-time performance monitoring, done right
 Name:		netdata
 Version:	1.9.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv3+
 Group:		Applications/System
 Source0:	https://github.com/firehol/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
+Epoch:		1
 URL:		http://my-netdata.io
 BuildRequires:	pkgconfig
 BuildRequires:	xz
@@ -223,6 +224,8 @@ rm -rf "${RPM_BUILD_ROOT}"
 %{_datadir}/%{name}/web
 
 %changelog
+* Tue Aug 20 2019 Vladimir Dombrovski <vladimir@openio.io> - 1.9.0-2
+  Set epoch to resolve conflict with epel package
 * Sun Dec 17 2017 Costa Tsaousis <costa@tsaousis.gr> - 1.9.0-1
   Please check full changelog at github.
   https://github.com/firehol/netdata/releases
