@@ -9,7 +9,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        5.0.0.0a0
+Version:        5.1.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
@@ -420,6 +420,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Fri Aug 16 2019 - 5.1.0-1 - Vladimir Dombrovski <vladimir@openio.io>
+- New release
 * Wed Jun 05 2019 - 5.0.0.0b1-1 - Vladimir Dombrovski <vladimir@openio.io>
 - New release
 - Remove python-zmq dependency
