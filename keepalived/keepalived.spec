@@ -81,6 +81,8 @@ mkdir -p %{buildroot}%{_libexecdir}/keepalived
 %config(noreplace) %attr(0644,root,root) %{_sysconfdir}/keepalived/keepalived.conf
 %doc AUTHOR ChangeLog CONTRIBUTORS COPYING README TODO
 %doc doc/keepalived.conf.SYNOPSIS doc/samples/keepalived.conf.*
+%dir %{_docdir}/keepalived/
+%{_docdir}/keepalived/README
 %dir %{_sysconfdir}/keepalived/
 %dir %{_libexecdir}/keepalived/
 %if %{with snmp}
