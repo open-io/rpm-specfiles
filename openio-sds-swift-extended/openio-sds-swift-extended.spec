@@ -35,9 +35,7 @@ Swift proxy middlewares for OpenIO SDS.
 
 
 %prep
-
-
-%setup -q -n oio-swift-extended-%{tarversion}
+%setup -q -n open-io-oio-swift-extended-%{tarversion}
 
 
 %build
