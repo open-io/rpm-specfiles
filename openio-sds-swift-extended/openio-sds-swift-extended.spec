@@ -6,6 +6,7 @@ Name:           openio-sds-swift-extended
 Version:        0.9.0
 Release:        1%{?dist}
 %define         tarversion %{version}
+%define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-swift-extended/archive/%{tarversion}.tar.gz
 %else
 # Testing purpose only. Do not modify.
@@ -14,6 +15,7 @@ Source0:        https://github.com/open-io/oio-swift-extended/archive/%{tarversi
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
+%define         targetversion 0.9.0
 Source0:        https://github.com/open-io/oio-swift-extended/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
@@ -24,6 +26,7 @@ URL:            http://www.openio.io/
 
 BuildArch:      noarch
 BuildRequires:  python-setuptools
+BuildRequires:  python2-pbr
 Requires:       openio-sds-swift
 
 
@@ -38,11 +41,12 @@ Swift proxy middlewares for OpenIO SDS.
 
 
 %build
+PBR_VERSION=%{targetversion} %{__python} setup.py build
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install --root $RPM_BUILD_ROOT
+PBR_VERSION=%{targetversion} %{__python} setup.py install --skip-build --root $RPM_BUILD_ROOT
 
 
 %files
