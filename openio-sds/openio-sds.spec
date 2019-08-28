@@ -292,6 +292,8 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 # Remove unwanted debug tool
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-bootstrap.py
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-reset.sh
 
 
 %files common
@@ -378,8 +380,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 %files tools
 %defattr(755,root,root,755)
 %{_bindir}/%{cli_name}-check-services
-%{_bindir}/%{cli_name}-bootstrap.py
-%{_bindir}/%{cli_name}-reset.sh
 %{_bindir}/zk-reset.py
 %{_bindir}/%{cli_name}-unlock-all.sh
 %{_bindir}/%{cli_name}-wait-scored.sh
