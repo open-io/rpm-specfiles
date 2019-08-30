@@ -296,15 +296,19 @@ PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --roo
 %{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_tmpfilesdir} ${RPM_BUILD_ROOT}/run/oio/sds
 %{__install} -m 644 %{SOURCE1} ${RPM_BUILD_ROOT}%{_tmpfilesdir}/openio-sds.conf
 
-# Remove unwanted debug tool
+# Remove unwanted stuff from /usr/bin
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-bootstrap.py
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-reset.sh
-# Remove deprecated tools
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-check-services
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-compress
 rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-uncompress
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-test-config.py
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-wait-scored.sh
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-file-tool
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx-server
+rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 
 
 %files common
