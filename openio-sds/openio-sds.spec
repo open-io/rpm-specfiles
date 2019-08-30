@@ -358,8 +358,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 %{_bindir}/%{cli_name}-meta1-client
 %{_bindir}/%{cli_name}-rawx
 %{_bindir}/%{cli_name}-rdir-server
-%{_bindir}/%{cli_name}-sqlx
-%{_bindir}/%{cli_name}-sqlx-server
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
 %{_bindir}/openio
@@ -388,14 +386,11 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 
 %files tools
 %defattr(755,root,root,755)
-%{_bindir}/%{cli_name}-wait-scored.sh
-%{_bindir}/%{cli_name}-test-config.py
 %{_bindir}/%{cli_name}-flush-all.sh
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-blob-registrator
 %{_bindir}/%{cli_name}-check-master
 %{_bindir}/%{cli_name}-blob-improver
-%{_bindir}/%{cli_name}-file-tool
 %{_bindir}/%{cli_name}-meta2-indexer
 %{_bindir}/%{cli_name}-meta2-mover
 %{_bindir}/%{cli_name}-meta1-rebuilder
