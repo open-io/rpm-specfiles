@@ -3,7 +3,7 @@
 
 Name:           python-%{modname}
 Version:        0.25.1
-Release:        1%{?dist}
+Release:        1%{?dist}.oio
 Summary:        Highly concurrent networking library
 License:        MIT
 URL:            http://eventlet.net
@@ -36,46 +36,12 @@ scalability by using non-blocking io while at the same time retaining
 high programmer usability by using coroutines to make the non-blocking
 io operations appear blocking at the source code level.
 
-%package -n python3-%{modname}
-Summary:        %{summary}
-BuildArch:      noarch
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3dist(dnspython) >= 1.15
-BuildRequires:  python3dist(greenlet) >= 0.3
-BuildRequires:  python3dist(monotonic) >= 1.4
-BuildRequires:  python3dist(six) >= 1.10
-BuildRequires:  python3-nose
-BuildRequires:  python3-pyOpenSSL
-%{?python_provide:%python_provide python3-%{modname}}
-
-%description -n python3-%{modname}
-Eventlet is a networking library written in Python. It achieves high
-scalability by using non-blocking io while at the same time retaining
-high programmer usability by using coroutines to make the non-blocking
-io operations appear blocking at the source code level.
-
-%package -n python3-%{modname}-doc
-Summary:        Documentation for python3-%{modname}
-BuildRequires:  python3-sphinx
-BuildRequires:  python3-zmq
-
-%description -n python3-%{modname}-doc
-%{summary}.
-
 %prep
 %autosetup -n %{modname}-%{version} -p1
 rm -vrf *.egg-info
-# Remove dependency on enum-compat from setup.py. enum-compat is installed
-# as Require for python2 subpackage and it is not needed for Python 3
-sed -i "/'enum-compat',/d" setup.py
 
 %build
 %py2_build
-%py3_build
-
-export PYTHONPATH=$(pwd)
-sphinx-build-%{python3_version} -b html -d doctrees doc html-3
 
 %install
 %py2_install
@@ -85,28 +51,12 @@ rm -vrf %{buildroot}%{python2_sitelib}/tests
 # Trying to import it will fail under Python 2.7
 # https://github.com/eventlet/eventlet/issues/369
 rm -rf %{buildroot}/%{python2_sitelib}/%{modname}/green/http/{cookiejar,client}.py
-%py3_install
-rm -vrf %{buildroot}%{python3_sitelib}/tests
-
-%check
-# Tests are written only for Python 3
-nosetests-%{python3_version} -v
 
 %files -n python2-%{modname}
 %doc README.rst AUTHORS LICENSE NEWS
 %license LICENSE
 %{python2_sitelib}/%{modname}/
 %{python2_sitelib}/%{modname}-*.egg-info/
-
-%files -n python3-%{modname}
-%doc README.rst AUTHORS LICENSE NEWS
-%license LICENSE
-%{python3_sitelib}/%{modname}/
-%{python3_sitelib}/%{modname}-*.egg-info/
-
-%files -n python3-%{modname}-doc
-%license LICENSE
-%doc html-3
 
 %changelog
 * Thu Aug 22 2019 Kevin Fenzi <kevin@scrye.com> - 0.25.1-1
