@@ -1,0 +1,51 @@
+From 27457b3b8dd8e530efcb337a160e5862807f539f Mon Sep 17 00:00:00 2001
+From: Lon Hohberger <lon@metamorphism.com>
+Date: Tue, 31 Jul 2018 08:12:43 -0400
+Subject: [PATCH 2/3] greendns udp: Fix infinite loop when source address
+ mismatch
+
+If the source address for a packet did not match where we sent,
+the udp() function would spin in an infinite loop and the timer
+would never expire, causing the process to hang.
+
+Signed-off-by: Lon Hohberger <lon@metamorphism.com>
+---
+ eventlet/support/greendns.py | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/eventlet/support/greendns.py b/eventlet/support/greendns.py
+index 3ecbc9b..0e03113 100644
+--- a/eventlet/support/greendns.py
++++ b/eventlet/support/greendns.py
+@@ -696,14 +696,24 @@ def udp(q, where, timeout=DNS_QUERY_TIMEOUT, port=53,
+             # Q: Do we also need to catch coro.CoroutineSocketWake and pass?
+             if expiration - time.time() <= 0.0:
+                 raise dns.exception.Timeout
+-        while 1:
++            eventlet.sleep(0.01)
++
++        tried = False
++        while True:
++            # If we've tried to receive at least once, check to see if our
++            # timer expired
++            if tried and (expiration - time.time() <= 0.0):
++                raise dns.exception.Timeout
++            # Sleep if we are retrying the operation due to a bad source
++            # address or a socket timeout.
++            if tried:
++                eventlet.sleep(0.01)
++            tried = True
++
+             try:
+                 (wire, from_address) = s.recvfrom(65535)
+             except socket.timeout:
+                 # Q: Do we also need to catch coro.CoroutineSocketWake and pass?
+-                if expiration - time.time() <= 0.0:
+-                    raise dns.exception.Timeout
+-                eventlet.sleep(0.01)
+                 continue
+             if dns.inet.af_for_address(from_address[0]) == dns.inet.AF_INET6:
+                 # Purge all possible zeroes for ipv6 to match above logic
+-- 
+2.13.6
+

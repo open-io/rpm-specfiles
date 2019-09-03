@@ -1,0 +1,62 @@
+From 16aa295ae86791e7b773114102790af46bb7b7ce Mon Sep 17 00:00:00 2001
+From: Lon Hohberger <lon@metamorphism.com>
+Date: Fri, 27 Jul 2018 16:27:31 -0400
+Subject: [PATCH 1/3] Fix bad ipv6 comparison
+
+When performing DNS lookups, the source address from resolv.conf
+may have stray zeroes in it, or the address string returned from
+socket.recvfrom may. Purge them before comparing tuples.
+
+Original backport was broken.
+
+Resolves: rhbz#1607967
+
+Signed-off-by: Lon Hohberger <lon@metamorphism.com>
+Signed-off-by: Lon Hohberger <lhh@redhat.com>
+---
+ eventlet/support/greendns.py | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/eventlet/support/greendns.py b/eventlet/support/greendns.py
+index ea0924c..412e018 100644
+--- a/eventlet/support/greendns.py
++++ b/eventlet/support/greendns.py
+@@ -35,6 +35,7 @@
+ import struct
+ import sys
+ 
++import eventlet
+ from eventlet import patcher
+ from eventlet.green import _socket_nodns
+ from eventlet.green import os
+@@ -674,7 +675,12 @@ def udp(q, where, timeout=DNS_QUERY_TIMEOUT, port=53,
+         if source is not None:
+             source = (source, source_port)
+     elif af == dns.inet.AF_INET6:
+-        destination = (where, port, 0, 0)
++        # Purge any stray zeroes in source address.  When doing the tuple comparison
++        # below, we need to always ensure both our target and where we receive replies
++        # from are compared with all zeroes removed so that we don't erroneously fail.
++        #   e.g. ('00::1', 53, 0, 0) != ('::1', 53, 0, 0)
++        where_trunc = dns.ipv6.inet_ntoa(dns.ipv6.inet_aton(where))
++        destination = (where_trunc, port, 0, 0)
+         if source is not None:
+             source = (source, source_port, 0, 0)
+ 
+@@ -697,6 +703,13 @@ def udp(q, where, timeout=DNS_QUERY_TIMEOUT, port=53,
+                 # Q: Do we also need to catch coro.CoroutineSocketWake and pass?
+                 if expiration - time.time() <= 0.0:
+                     raise dns.exception.Timeout
++                eventlet.sleep(0.01)
++                continue
++            if dns.inet.af_for_address(from_address[0]) == dns.inet.AF_INET6:
++                # Purge all possible zeroes for ipv6 to match above logic
++                addr = from_address[0]
++                addr = dns.ipv6.inet_ntoa(dns.ipv6.inet_aton(addr))
++                from_address = (addr, from_address[1], from_address[2], from_address[3])
+             if from_address == destination:
+                 break
+             if not ignore_unexpected:
+-- 
+2.17.1
+

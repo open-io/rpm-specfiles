@@ -1,0 +1,12 @@
+diff -ruN eventlet-0.20.1/eventlet/wsgi.py eventlet-0.20.1-patched/eventlet/wsgi.py
+--- eventlet-0.20.1/eventlet/wsgi.py	2017-01-03 01:13:25.000000000 +0000
++++ eventlet-0.20.1-patched/eventlet/wsgi.py	2019-09-03 11:59:28.036466238 +0000
+@@ -627,7 +627,7 @@
+             else:
+                 env[envk] = v
+ 
+-        if env.get('HTTP_EXPECT') == '100-continue':
++        if env.get('HTTP_EXPECT', '').lower() == '100-continue':
+             wfile = self.wfile
+             wfile_line = b'HTTP/1.1 100 Continue\r\n'
+         else:

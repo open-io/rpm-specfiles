@@ -1,0 +1,208 @@
+From ea52caabddfab99b25dfeb6266927dfc584d3055 Mon Sep 17 00:00:00 2001
+From: Daniel Alvarez <dalvarez@redhat.com>
+Date: Thu, 2 Aug 2018 12:51:20 +0000
+Subject: [PATCH 1/1] greendns: don't contact nameservers if one entry is
+ returned from hosts file
+
+getaddrinfo() behaves differently from the standard implementation as
+it will try to contact nameservers if only one (IPv4 or IPv6) entry
+is returned from /etc/hosts file.
+
+This patch avoids getaddrinfo() querying nameservers if at least one
+entry is fetched through the hosts file to match the behavior of
+the original socket.getaddrinfo() implementation.
+
+Closes #515
+
+Signed-off-by: Daniel Alvarez <dalvarez@redhat.com>
+---
+ eventlet/support/greendns.py | 39 ++++++++++++++++-----------
+ tests/greendns_test.py       | 63 +++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 83 insertions(+), 19 deletions(-)
+
+diff --git a/eventlet/support/greendns.py b/eventlet/support/greendns.py
+index ea0924c..8eda105 100644
+--- a/eventlet/support/greendns.py
++++ b/eventlet/support/greendns.py
+@@ -304,12 +304,13 @@ class ResolverProxy(object):
+
+     def query(self, qname, rdtype=dns.rdatatype.A, rdclass=dns.rdataclass.IN,
+               tcp=False, source=None, raise_on_no_answer=True,
+-              _hosts_rdtypes=(dns.rdatatype.A, dns.rdatatype.AAAA)):
++              _hosts_rdtypes=(dns.rdatatype.A, dns.rdatatype.AAAA),
++              use_network=True):
+         """Query the resolver, using /etc/hosts if enabled.
+
+         Behavior:
+         1. if hosts is enabled and contains answer, return it now
+-        2. query nameservers for qname
++        2. query nameservers for qname if use_network is True
+         3. if qname did not contain dots, pretend it was top-level domain,
+            query "foobar." and append to previous result
+         """
+@@ -346,7 +347,7 @@ class ResolverProxy(object):
+
+         if (self._hosts and (rdclass == dns.rdataclass.IN) and (rdtype in _hosts_rdtypes)):
+             if step(self._hosts.query, qname, rdtype, raise_on_no_answer=False):
+-                if (result[0] is not None) or (result[1] is not None):
++                if (result[0] is not None) or (result[1] is not None) or (not use_network):
+                     return end()
+
+         # Main query
+@@ -384,10 +385,12 @@ class ResolverProxy(object):
+ resolver = ResolverProxy(hosts_resolver=HostsResolver())
+
+
+-def resolve(name, family=socket.AF_INET, raises=True, _proxy=None):
++def resolve(name, family=socket.AF_INET, raises=True, _proxy=None,
++            use_network=True):
+     """Resolve a name for a given family using the global resolver proxy.
+
+-    This method is called by the global getaddrinfo() function.
++    This method is called by the global getaddrinfo() function. If use_network
++    is False, only resolution via hosts file will be performed.
+
+     Return a dns.resolver.Answer instance.  If there is no answer it's
+     rrset will be emtpy.
+@@ -404,7 +407,8 @@ def resolve(name, family=socket.AF_INET, raises=True, _proxy=None):
+         _proxy = resolver
+     try:
+         try:
+-            return _proxy.query(name, rdtype, raise_on_no_answer=raises)
++            return _proxy.query(name, rdtype, raise_on_no_answer=raises,
++                                use_network=use_network)
+         except dns.resolver.NXDOMAIN:
+             if not raises:
+                 return HostsAnswer(dns.name.Name(name),
+@@ -455,16 +459,19 @@ def _getaddrinfo_lookup(host, family, flags):
+     addrs = []
+     if family == socket.AF_UNSPEC:
+         err = None
+-        for qfamily in [socket.AF_INET6, socket.AF_INET]:
+-            try:
+-                answer = resolve(host, qfamily, False)
+-            except socket.gaierror as e:
+-                if e.errno not in (socket.EAI_AGAIN, socket.EAI_NODATA):
+-                    raise
+-                err = e
+-            else:
+-                if answer.rrset:
+-                    addrs.extend(rr.address for rr in answer.rrset)
++        for use_network in [False, True]:
++            for qfamily in [socket.AF_INET6, socket.AF_INET]:
++                try:
++                    answer = resolve(host, qfamily, False, use_network=use_network)
++                except socket.gaierror as e:
++                    if e.errno not in (socket.EAI_AGAIN, EAI_NONAME_ERROR.errno, EAI_NODATA_ERROR.errno):
++                        raise
++                    err = e
++                else:
++                    if answer.rrset:
++                        addrs.extend(rr.address for rr in answer.rrset)
++            if addrs:
++                break
+         if err is not None and not addrs:
+             raise err
+     elif family == socket.AF_INET6 and flags & socket.AI_V4MAPPED:
+diff --git a/tests/greendns_test.py b/tests/greendns_test.py
+index 17bcd03..963e98c 100644
+--- a/tests/greendns_test.py
++++ b/tests/greendns_test.py
+@@ -173,6 +173,7 @@ def _make_mock_base_resolver():
+         aliases = ['cname.example.com']
+         raises = None
+         rr = RR()
++        rr6 = RR()
+
+         def query(self, *args, **kwargs):
+             self.args = args
+@@ -182,7 +183,10 @@ def _make_mock_base_resolver():
+             if hasattr(self, 'rrset'):
+                 rrset = self.rrset
+             else:
+-                rrset = [self.rr]
++                if self.rr6 and self.args[1] == dns.rdatatype.AAAA:
++                    rrset = [self.rr6]
++                else:
++                    rrset = [self.rr]
+             return greendns.HostsAnswer('foo', 1, 1, rrset, False)
+
+         def getaliases(self, *args, **kwargs):
+@@ -319,7 +323,7 @@ class TestResolve(tests.LimitedTestCase):
+         assert greendns.resolver.args == ('host.example.com', dns.rdatatype.A)
+
+     def test_AAAA(self):
+-        greendns.resolver.rr.address = 'dead:beef::1'
++        greendns.resolver.rr6.address = 'dead:beef::1'
+         ans = greendns.resolve('host.example.com', socket.AF_INET6)
+         assert ans[0].address == 'dead:beef::1'
+         assert greendns.resolver.args == ('host.example.com', dns.rdatatype.AAAA)
+@@ -394,7 +398,8 @@ def _make_mock_resolve():
+         def __init__(self):
+             self.answers = {}
+
+-        def __call__(self, name, family=socket.AF_INET, raises=True):
++        def __call__(self, name, family=socket.AF_INET, raises=True,
++                     _proxy=None, use_network=True):
+             qname = dns.name.from_text(name)
+             try:
+                 rrset = self.answers[name][family]
+@@ -818,3 +823,55 @@ def test_hosts_priority():
+     rrs6 = greendns.resolve(name, family=socket.AF_INET6, _proxy=rp).rrset
+     assert len(rrs6) == 1
+     assert rrs6[0].address == 'dead:beef::1', rrs6[0].address
++
++
++def test_hosts_no_network():
++
++    name = 'example.com'
++    addr_from_ns = '1.0.2.0'
++    addr6_from_ns = 'dead:beef::1'
++
++    hr = _make_host_resolver()
++    rp = greendns.ResolverProxy(hosts_resolver=hr, filename=None)
++    base = _make_mock_base_resolver()
++    base.rr.address = addr_from_ns
++    base.rr6.address = addr6_from_ns
++    rp._resolver = base()
++
++    with tests.mock.patch.object(greendns, 'resolver',
++                                 new_callable=tests.mock.PropertyMock(return_value=rp)):
++        res = greendns.getaddrinfo('example.com', 'domain', socket.AF_UNSPEC)
++        # Default behavior
++        addr = (addr_from_ns, 53)
++        tcp = (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, addr)
++        udp = (socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP, addr)
++        addr = (addr6_from_ns, 53, 0, 0)
++        tcp6 = (socket.AF_INET6, socket.SOCK_STREAM, socket.IPPROTO_TCP, addr)
++        udp6 = (socket.AF_INET6, socket.SOCK_DGRAM, socket.IPPROTO_UDP, addr)
++        filt_res = [ai[:3] + (ai[4],) for ai in res]
++        assert tcp in filt_res
++        assert udp in filt_res
++        assert tcp6 in filt_res
++        assert udp6 in filt_res
++
++        # Hosts result must shadow that from nameservers
++        hr = _make_host_resolver()
++        hr.hosts.write(b'1.2.3.4 example.com')
++        hr.hosts.flush()
++        hr._load()
++        greendns.resolver._hosts = hr
++
++        res = greendns.getaddrinfo('example.com', 'domain', socket.AF_UNSPEC)
++        filt_res = [ai[:3] + (ai[4],) for ai in res]
++
++        # Make sure that only IPv4 entry from hosts is present.
++        assert tcp not in filt_res
++        assert udp not in filt_res
++        assert tcp6 not in filt_res
++        assert udp6 not in filt_res
++
++        addr = ('1.2.3.4', 53)
++        tcp = (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, addr)
++        udp = (socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP, addr)
++        assert tcp in filt_res
++        assert udp in filt_res
+--
+2.15.2
+
