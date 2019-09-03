@@ -1,0 +1,73 @@
+From cf9b85db781f0fdb69ffe749184b29718aa0cd02 Mon Sep 17 00:00:00 2001
+From: Lon Hohberger <lon@metamorphism.com>
+Date: Tue, 31 Jul 2018 08:12:43 -0400
+Subject: [PATCH 3/3] tests: Add ipv6 tests for greendns udp() function
+
+Tests:
+ - normal operation
+ - no reply (timeout)
+ - unexpected source address (w/ timeout &
+   ignore_unexpected set)
+ - number of zeroes in ipv6 address string different
+ - unexpected address
+
+Signed-off-by: Lon Hohberger <lon@metamorphism.com>
+---
+ tests/greendns_test.py | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+
+diff --git a/tests/greendns_test.py b/tests/greendns_test.py
+index 17bcd03..373b2db 100644
+--- a/tests/greendns_test.py
++++ b/tests/greendns_test.py
+@@ -191,6 +191,47 @@ def _make_mock_base_resolver():
+     return Resolver
+ 
+ 
++class TestUdp(tests.LimitedTestCase):
++
++    def setUp(self):
++        # Store this so we can reuse it for each test
++        self.query = greendns.dns.message.Message()
++        self.query.flags = greendns.dns.flags.QR
++        self.query_wire = self.query.to_wire()
++        super(TestUdp, self).setUp()
++
++    def test_udp_ipv6(self):
++        with tests.mock.patch('eventlet.support.greendns.socket.socket.recvfrom',
++                              return_value=(self.query_wire,
++                                            ('::1', 53, 0, 0))):
++            greendns.udp(self.query, '::1')
++
++    def test_udp_ipv6_timeout(self):
++        with tests.mock.patch('eventlet.support.greendns.socket.socket.recvfrom',
++                              side_effect=socket.timeout):
++            with tests.assert_raises(dns.exception.Timeout):
++                greendns.udp(self.query, '::1', timeout=0.1)
++
++    def test_udp_ipv6_addr_zeroes(self):
++        with tests.mock.patch('eventlet.support.greendns.socket.socket.recvfrom',
++                              return_value=(self.query_wire,
++                                            ('0:00:0000::1', 53, 0, 0))):
++            greendns.udp(self.query, '::1')
++
++    def test_udp_ipv6_wrong_addr_ignore(self):
++        with tests.mock.patch('eventlet.support.greendns.socket.socket.recvfrom',
++                              side_effect=socket.timeout):
++            with tests.assert_raises(dns.exception.Timeout):
++                greendns.udp(self.query, '::1', timeout=0.1, ignore_unexpected=True)
++
++    def test_udp_ipv6_wrong_addr(self):
++        with tests.mock.patch('eventlet.support.greendns.socket.socket.recvfrom',
++                              return_value=(self.query_wire,
++                                            ('ffff:0000::1', 53, 0, 0))):
++            with tests.assert_raises(dns.query.UnexpectedSource):
++                greendns.udp(self.query, '::1')
++
++
+ class TestProxyResolver(tests.LimitedTestCase):
+ 
+     def test_clear(self):
+-- 
+2.13.6
+

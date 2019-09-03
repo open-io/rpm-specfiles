@@ -1,0 +1,68 @@
+From a98bddd75c51ee59b87273614ba1e3a0aad45d45 Mon Sep 17 00:00:00 2001
+From: Ralf Haferkamp <rhafer@suse.de>
+Date: Fri, 12 Jan 2018 13:48:09 +0100
+Subject: [PATCH] greendns: Treat /etc/hosts entries case-insensitive
+
+Hostname in /etc/hosts are not case-sensitive, this fixes
+HostsResolver() accordingly.
+
+eventlet#458
+
+Co-Authored-By: Thomas Bechtold <tbechtold@suse.com>
+---
+ eventlet/support/greendns.py |  4 +++-
+ tests/greendns_test.py       | 14 ++++++++++++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/eventlet/support/greendns.py b/eventlet/support/greendns.py
+index cff0581..140388e 100644
+--- a/eventlet/support/greendns.py
++++ b/eventlet/support/greendns.py
+@@ -222,9 +222,10 @@ class HostsResolver(object):
+                 ipmap = self._v6
+             else:
+                 continue
+-            cname = parts.pop(0)
++            cname = parts.pop(0).lower()
+             ipmap[cname] = ip
+             for alias in parts:
++                alias = alias.lower()
+                 ipmap[alias] = ip
+                 self._aliases[alias] = cname
+         self._last_load = time.time()
+@@ -251,6 +252,7 @@ class HostsResolver(object):
+             qname = dns.name.from_text(qname)
+         else:
+             name = str(qname)
++        name = name.lower()
+         rrset = dns.rrset.RRset(qname, rdclass, rdtype)
+         rrset.ttl = self._last_load + self.interval - now
+         if rdclass == dns.rdataclass.IN and rdtype == dns.rdatatype.A:
+diff --git a/tests/greendns_test.py b/tests/greendns_test.py
+index 4a47c5e..d55cca8 100644
+--- a/tests/greendns_test.py
++++ b/tests/greendns_test.py
+@@ -174,6 +174,20 @@ class TestHostsResolver(tests.LimitedTestCase):
+         res = set(hr.getaliases('host.example.com'))
+         assert res == set(['host'])
+ 
++    def test_hosts_case_insensitive(self):
++        name = 'example.com'
++        hr = _make_host_resolver()
++        hr.hosts.write(b'1.2.3.4 ExAmPlE.CoM\n')
++        hr.hosts.flush()
++        hr._load()
++
++        ans = hr.query(name)
++        rr = ans.rrset[0]
++        assert isinstance(rr, greendns.dns.rdtypes.IN.A.A)
++        assert rr.rdtype == dns.rdatatype.A
++        assert rr.rdclass == dns.rdataclass.IN
++        assert rr.address == '1.2.3.4'
++
+ 
+ def _make_mock_base_resolver():
+     """A mocked base resolver class"""
+-- 
+2.17.1
+
