@@ -74,7 +74,7 @@ Recommends:	python2-psycopg2 \
 Summary:	Real-time performance monitoring, done right
 Name:		netdata
 Version:	1.9.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	GPLv3+
 Group:		Applications/System
 Source0:	https://github.com/firehol/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
@@ -140,6 +140,9 @@ install -m 644 -p system/netdata.conf "${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}"
 install -m 755 -d "${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d"
 install -m 644 -p system/netdata.logrotate "${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d/%{name}"
 
+# get rid of default heatlhcheck config files
+rm -rf ${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/health.d
+
 %if %{with systemd}
 install -m 755 -d "${RPM_BUILD_ROOT}%{_unitdir}"
 install -m 644 -p system/netdata.service "${RPM_BUILD_ROOT}%{_unitdir}/netdata.service"
@@ -177,7 +180,6 @@ rm -rf "${RPM_BUILD_ROOT}"
 
 %config(noreplace) %{_sysconfdir}/%{name}/*.conf
 %config(noreplace) %{_sysconfdir}/%{name}/charts.d/*.conf
-%config(noreplace) %{_sysconfdir}/%{name}/health.d/*.conf
 #%%config(noreplace) %{_sysconfdir}/%{name}/node.d/*.conf
 %config(noreplace) %{_sysconfdir}/%{name}/python.d/*.conf
 %config(noreplace) %{_sysconfdir}/%{name}/statsd.d/*.conf
@@ -207,7 +209,6 @@ rm -rf "${RPM_BUILD_ROOT}"
 %attr(0770,netdata,netdata) %dir %{_localstatedir}/lib/%{name}
 
 %dir %{_datadir}/%{name}
-%dir %{_sysconfdir}/%{name}/health.d
 %dir %{_sysconfdir}/%{name}/python.d
 %dir %{_sysconfdir}/%{name}/charts.d
 %dir %{_sysconfdir}/%{name}/node.d
@@ -224,6 +225,8 @@ rm -rf "${RPM_BUILD_ROOT}"
 %{_datadir}/%{name}/web
 
 %changelog
+* Thu Sep 5 2019 Vladimir Dombrovski <vladimir@openio.io> - 1.9.0-3
+  Remove default healthcheck provisioning
 * Tue Aug 20 2019 Vladimir Dombrovski <vladimir@openio.io> - 1.9.0-2
   Set epoch to resolve conflict with epel package
 * Sun Dec 17 2017 Costa Tsaousis <costa@tsaousis.gr> - 1.9.0-1
