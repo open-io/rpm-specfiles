@@ -8,7 +8,8 @@ Release: 1%{?dist}
 License: Apache License v2.0
 Group: Applications/Databases
 URL: http://hadoop.apache.org/zookeeper/
-Source0: http://www-us.apache.org/dist/zookeeper/zookeeper-%{version}/zookeeper-%{version}.tar.gz
+#Source0: http://www-us.apache.org/dist/zookeeper/zookeeper-%{version}/zookeeper-%{version}.tar.gz
+Source0: https://archive.apache.org/dist/zookeeper/zookeeper-%{version}/zookeeper-%{version}.tar.gz
 Source1: zookeeper.init
 Source2: zookeeper.logrotate
 Source3: zoo.cfg
