@@ -140,7 +140,7 @@ install -m 644 -p system/netdata.conf "${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}"
 install -m 755 -d "${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d"
 install -m 644 -p system/netdata.logrotate "${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d/%{name}"
 
-# get rid of default heatlhcheck config files
+# get rid of default healthcheck config files
 rm -rf ${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/health.d
 
 %if %{with systemd}
