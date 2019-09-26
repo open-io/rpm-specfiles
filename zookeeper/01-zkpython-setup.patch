@@ -1,0 +1,17 @@
+--- zookeeper-contrib/zookeeper-contrib-zkpython/src/python/setup.py	2019-02-15 13:55:30.000000000 +0100
++++ zookeeper-contrib/zookeeper-contrib-zkpython/src/python/setup.py.new	2019-09-19 15:08:29.571195742 +0200
+@@ -16,11 +16,12 @@
+ 
+ from distutils.core import setup, Extension
+ 
+-zookeeper_basedir = "../../../"
++zookeeper_basedir = "../../"
+ 
+ zookeepermodule = Extension("zookeeper",
+-                            sources=["zookeeper-client/zookeeper-client-c/zookeeper.c"],
++                            sources=["src/c/zookeeper.c"],
+                             include_dirs=[zookeeper_basedir + "/zookeeper-client/zookeeper-client-c/include",
++                                          zookeeper_basedir + "/zookeeper-client/zookeeper-client-c",
+                                           zookeeper_basedir + "/build/c",
+                                           zookeeper_basedir + "/zookeeper-client/zookeeper-client-c/generated"],
+                             libraries=["zookeeper_mt"],
