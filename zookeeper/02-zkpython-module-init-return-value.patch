@@ -1,0 +1,14 @@
+--- zookeeper-contrib/zookeeper-contrib-zkpython/src/c/zookeeper.c	2019-02-15 13:55:30.000000000 +0100
++++ zookeeper-contrib/zookeeper-contrib-zkpython/src/c/zookeeper.c.new	2019-09-19 16:19:37.475628597 +0200
+@@ -1563,7 +1563,11 @@
+   PyObject *module = Py_InitModule("zookeeper", ZooKeeperMethods);
+ #endif
+   if (init_zhandles(32) == 0) {
++#if PY_MAJOR_VERSION >= 3
++    return NULL;
++#else
+     return; // TODO: Is there any way to raise an exception here?
++#endif
+   }
+ 
+   ZooKeeperException = PyErr_NewException("zookeeper.ZooKeeperException",
