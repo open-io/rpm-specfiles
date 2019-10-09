@@ -351,11 +351,11 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 %{_bindir}/%{cli_name}-conscience-agent
 %{_bindir}/%{cli_name}-crawler-storage-tierer
 %{_bindir}/%{cli_name}-event-agent
+%{_bindir}/%{cli_name}-lb-benchmark
 %{_bindir}/%{cli_name}-meta0-client
 %{_bindir}/%{cli_name}-meta0-server
 %{_bindir}/%{cli_name}-meta1-server
 %{_bindir}/%{cli_name}-meta2-server
-%{_bindir}/%{cli_name}-meta1-client
 %{_bindir}/%{cli_name}-rawx
 %{_bindir}/%{cli_name}-rdir-server
 %{_bindir}/%{cli_name}-tool
@@ -386,7 +386,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 
 %files tools
 %defattr(755,root,root,755)
-%{_bindir}/%{cli_name}-flush-all.sh
 %{_bindir}/%{cli_name}-crawler-integrity
 %{_bindir}/%{cli_name}-blob-registrator
 %{_bindir}/%{cli_name}-check-master
