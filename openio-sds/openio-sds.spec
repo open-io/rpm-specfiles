@@ -184,28 +184,6 @@ OpenIO is a fork of Redcurrant, from Worldline by Atos.
 This package contains header files for OpenIO SDS solution client.
 
 
-%package mod-httpd
-Summary: Apache HTTPd module for OpenIO Cloud Storage Solution
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:       %{name}-server  = %{version}
-%else
-Requires:       %{name}-server  = 1:%{version}
-%endif
-%if %{?suse_version}0
-Requires:       apache2        >= 2.2
-Requires:       libdb-6_0
-%else
-Requires:       httpd          >= 2.2
-Requires:       libdb
-%endif
-%description mod-httpd
-OpenIO software storage solution is designed to handle PETA-bytes of
-data in a distributed way, data such as: images, videos, documents, emails,
-and any other personal unstructured data.
-OpenIO is a fork of Redcurrant, from Worldline by Atos.
-This package contains Apache HTTPd module for OpenIO SDS solution.
-
-
 %package tools
 Summary: Side tools for OpenIO Cloud Storage Solution
 %if %{?_with_test:0}%{!?_with_test:1}
@@ -358,13 +336,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 %{_prefix}/include/*
 %{_libdir}/pkgconfig/oio-sds.pc
 
-%files mod-httpd
-%defattr(755,root,root,755)
-%if %{?suse_version}0
-%{_libdir}/apache2/mod_dav_rawx.so*
-%else
-%{_libdir}/httpd/modules/mod_dav_rawx.so*
-%endif
 
 %files tools
 %defattr(755,root,root,755)
@@ -389,14 +360,10 @@ fi
 %post server
 /sbin/ldconfig
 %tmpfiles_create %{_tmpfilesdir}/openio-sds.conf
-%post mod-httpd
-/sbin/ldconfig
 
 %postun common
 /sbin/ldconfig
 %postun server
-/sbin/ldconfig
-%postun mod-httpd
 /sbin/ldconfig
 
 %changelog
