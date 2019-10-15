@@ -97,6 +97,9 @@ Provides:      libzookeeper_st%{so_ver}-devel
 Provides:      libzookeeper_mt-devel
 Provides:      libzookeeper_st-devel
 Requires:      libzookeeper%{so_ver} = %{version}-%{release}
+# CentOS compatibility
+Provides:      zookeeper-lib-devel = %{version}-%{release}
+Obsoletes:     zookeeper-lib-devel < 3.5
 
 %description devel
 ZooKeeper is a centralized service for maintaining configuration
@@ -109,6 +112,7 @@ This package provides development stuff to build software against ZooKeeper.
 Summary:       Python client library for ZooKeeper
 Group:         Development/Libraries/Python
 Requires:      python2
+Provides:      python-ZooKeeper
 
 %description -n python2-zookeeper
 ZooKeeper is a centralized service for maintaining configuration
@@ -121,6 +125,7 @@ This package provides the Python3 client library for ZooKeeper.
 Summary:       Python client library for ZooKeeper
 Group:         Development/Libraries/Python
 Requires:      python3
+Provides:      python-ZooKeeper
 
 %description -n python3-zookeeper
 ZooKeeper is a centralized service for maintaining configuration
