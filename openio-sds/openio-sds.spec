@@ -9,7 +9,7 @@
 Name:           openio-sds
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        5.1.0
+Version:        6.0.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
@@ -21,7 +21,7 @@ Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-%define         targetversion 5.0.0
+%define         targetversion 6.0.0
 %define         git_repo https://github.com/open-io/oio-sds
 Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
 Epoch:          1
@@ -419,6 +419,8 @@ fi
 /sbin/ldconfig
 
 %changelog
+* Tue Oct 15 2019 - 6.0.0-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Fri Aug 16 2019 - 5.1.0-1 - Vladimir Dombrovski <vladimir@openio.io>
 - New release
 * Wed Jun 05 2019 - 5.0.0.0b1-1 - Vladimir Dombrovski <vladimir@openio.io>
