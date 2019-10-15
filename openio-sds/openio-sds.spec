@@ -313,21 +313,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 
 %files common
 %defattr(755,root,root,755)
-%{_libdir}/libgridcluster.so*
-%{_libdir}/libhcresolve.so*
-%{_libdir}/libmeta0utils.so*
-%{_libdir}/libmetautils.so*
-%{_libdir}/libmeta0remote.so*
-%{_libdir}/libmeta1remote.so*
 %{_libdir}/liboio*
-# TODO find why libserver is necessary in common
-%{_libdir}/libserver.so*
-# TODO find why libsqliterepo is necessary in common
-%{_libdir}/libsqliterepo.so*
-%{_libdir}/libsqlitereporemote.so*
-%{_libdir}/libsqlxsrv.so*
-%{_libdir}/libmeta2v2utils.so*
-%{_libdir}/libsqliteutils.so*
 %{_bindir}/%{cli_name}-daemon
 %defattr(0644,openio,openio,0755)
 %{_sysconfdir}/oio
@@ -338,10 +324,6 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 
 %files server
 %defattr(755,root,root,755)
-%{_libdir}/libmeta0v2.so*
-%{_libdir}/libmeta1v2.so*
-%{_libdir}/libmeta2v2.so*
-%{_libdir}/librawx.so*
 %{_bindir}/%{cli_name}-account-server
 %{_bindir}/%{cli_name}-blob-auditor
 %{_bindir}/%{cli_name}-blob-converter
