@@ -57,7 +57,6 @@ BuildRequires:  apache2-devel            >= 2.2
 BuildRequires:  libjson-c-devel          >= 0.12
 BuildRequires:  libdb-6_0-devel
 BuildRequires:  zeromq-devel
-
 BuildRequires:  fdupes
 %else
 BuildRequires:  apr-devel                >= 1.2
@@ -105,6 +104,8 @@ BuildRequires:  zookeeper     >= 3.3.4
 %else
 BuildRequires:  zookeeper-lib >= 3.3.4
 %endif
+
+
 %description common
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -176,6 +177,8 @@ Requires:       %{name}-common = %{version}
 %else
 Requires:       %{name}-common = 1:%{version}
 %endif
+
+
 %description common-devel
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
@@ -191,13 +194,14 @@ Requires:       %{name}-server = %{version}
 %else
 Requires:       %{name}-server = 1:%{version}
 %endif
+
+
 %description tools
 OpenIO software storage solution is designed to handle PETA-bytes of
 data in a distributed way, data such as: images, videos, documents, emails,
 and any other personal unstructured data.
 OpenIO is a fork of Redcurrant, from Worldline by Atos.
 This package contains side tools for OpenIO SDS solution.
-
 
 
 %prep
@@ -223,6 +227,7 @@ mkdir -p /builddir/go/src/golang.org/x
 cd /builddir/go/src/golang.org/x/
 ln -s /builddir/build/BUILD/sys-* sys
 cd -
+
 
 %build
 #VL: Workaround: "ERROR: No build ID note found in ..."
@@ -300,6 +305,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 %{_sharedstatedir}/oio
 %dir %{_datarootdir}/%{name}-%{version}
 
+
 %files server
 %defattr(755,root,root,755)
 %{_bindir}/%{cli_name}-account-server
@@ -331,6 +337,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 /run/oio
 %endif
 
+
 %files common-devel
 %defattr(644,root,root,755)
 %{_prefix}/include/*
@@ -348,6 +355,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 %{_bindir}/%{cli_name}-meta1-rebuilder
 %{_bindir}/%{cli_name}-meta2-rebuilder
 
+
 %pre common
 # Add user and group "openio" if not exists
 getent group openio >/dev/null || groupadd -g 220 openio
@@ -355,16 +363,23 @@ if ! getent passwd openio >/dev/null; then
   useradd -M -d /var/lib/oio -s /bin/bash -u 120 -g openio -c "OpenIO services" openio
 fi
 
+
 %post common
 /sbin/ldconfig
+
+
 %post server
 /sbin/ldconfig
 %tmpfiles_create %{_tmpfilesdir}/openio-sds.conf
 
+
 %postun common
 /sbin/ldconfig
+
+
 %postun server
 /sbin/ldconfig
+
 
 %changelog
 * Tue Oct 15 2019 - 6.0.0-1 - Vincent Legoll <vincent.legoll@openio.io>
