@@ -8,6 +8,7 @@ Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-swift-extended/archive/%{tarversion}.tar.gz
+%define         tarsubdir oio-swift-extended-%{version}
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -17,6 +18,7 @@ Release:        0%{?dist}
 %define         tarversion %{tag}
 %define         targetversion 0.9.0
 Source0:        https://github.com/open-io/oio-swift-extended/archive/%{tarversion}.tar.gz
+%define         tarsubdir open-io-oio-swift-extended-%{tag}
 Epoch:          1
 %endif
 
@@ -35,7 +37,7 @@ Swift proxy middlewares for OpenIO SDS.
 
 
 %prep
-%setup -q -n open-io-oio-swift-extended-%{tarversion}
+%setup -q -n %{tarsubdir}
 
 
 %build
