@@ -68,11 +68,7 @@ BuildRequires:  zeromq3-devel
 %endif
 BuildRequires:  sqlite-devel             >= 3.7.11
 BuildRequires:  libattr-devel            >= 2.4.32
-%if %{?el6}0
-BuildRequires:  compat-libevent-20-devel >= 2.0
-%else
 BuildRequires:  libevent-devel           >= 2.0
-%endif
 BuildRequires:  lzo-devel                >= 2.0
 BuildRequires:  zlib-devel
 BuildRequires:  openio-asn1c             >= 0.9.27
