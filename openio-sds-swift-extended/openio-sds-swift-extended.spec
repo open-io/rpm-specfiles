@@ -7,7 +7,7 @@ Version:        0.9.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
-%define         tarsubdir oio-swift-extended-%{version}
+%define         tarsubdir oio-swift-extended-%{tarversion}
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -16,7 +16,7 @@ Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
 %define         targetversion 0.9.0
-%define         tarsubdir open-io-oio-swift-extended-%{tag}
+%define         tarsubdir oio-swift-extended-%{tarversion}
 Epoch:          1
 %endif
 
