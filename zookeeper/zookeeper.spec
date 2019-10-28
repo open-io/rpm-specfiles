@@ -55,6 +55,7 @@ BuildRequires:  systemd-rpm-macros
 %endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %{?systemd_requires}
+Requires: java
 
 %description
 ZooKeeper is a centralized service for maintaining configuration
@@ -195,10 +196,11 @@ install -p -m 755 bin/zkServer.sh %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_sysconfdir}/zookeeper
 install -p -m 0640 conf/log4j.properties %{buildroot}%{_sysconfdir}/zookeeper
 install -p -m 0640 conf/zoo_sample.cfg %{buildroot}%{_sysconfdir}/zookeeper
-touch %{buildroot}%{_sysconfdir}/zookeeper/zoo.cfg
+install -p -m 0640 conf/zoo_sample.cfg %{buildroot}%{_sysconfdir}/zookeeper/zoo.cfg
 
 mkdir -p %{buildroot}/var/lib/zookeeper/data
-touch %{buildroot}/var/lib/zookeeper/data/myid
+# This file must contain a valid numeric ID
+echo 0 > %{buildroot}/var/lib/zookeeper/data/myid
 
 mkdir -p %{buildroot}/var/log/zookeeper
 
@@ -222,21 +224,34 @@ cd ../..
 groupadd --system zookeeper 2>/dev/null || :
 useradd -g zookeeper -r -d /var/lib/zookeeper -s /bin/false \
         -c "ZooKeeper service account" zookeeper 2>/dev/null || :
-
+%if 0%{?suse_version} >= 1210
 %service_add_pre %{name}.service
+%endif
 
 %post
 ZK_CLASSPATH=%{_javadir}/%{name}.jar:$(find %{_javadir}/%{name} -name "*.jar" -printf %p:)
 echo "CLASSPATH=$ZK_CLASSPATH" > %{_sysconfdir}/zookeeper/java.env
 /sbin/ldconfig > /dev/null 2>&1
+%if 0%{?rhel_version} || 0%{?centos_version}
+%systemd_post %{name}.service
+%else
 %service_add_post %{name}.service
+%endif
 
 %preun
+%if 0%{?rhel_version} || 0%{?centos_version}
+%systemd_preun %{name}.service
+%else
 %service_del_preun %{name}.service
+%endif
 
 %postun
 /sbin/ldconfig > /dev/null 2>&1
+%if 0%{?rhel_version} || 0%{?centos_version}
+%systemd_postun %{name}.service
+%else
 %service_del_postun %{name}.service
+%endif
 
 %post   -n libzookeeper%{so_ver} -p /sbin/ldconfig
 %postun -n libzookeeper%{so_ver} -p /sbin/ldconfig
@@ -249,10 +264,10 @@ echo "CLASSPATH=$ZK_CLASSPATH" > %{_sysconfdir}/zookeeper/java.env
 %{_javadir}/%{name}/*
 %attr(0750,zookeeper,zookeeper) %dir /var/lib/zookeeper
 %attr(0750,zookeeper,zookeeper) %dir /var/lib/zookeeper/data
-%attr(0640,zookeeper,zookeeper) %ghost /var/lib/zookeeper/data/myid
+%attr(0640,zookeeper,zookeeper) /var/lib/zookeeper/data/myid
 %attr(0755,zookeeper,zookeeper) %dir /var/log/zookeeper
 %attr(0755,root,root) %dir %{_sysconfdir}/zookeeper
-%attr(0644,root,root) %ghost %config(noreplace) %{_sysconfdir}/zookeeper/zoo.cfg
+%attr(0644,root,root) %config(noreplace) %{_sysconfdir}/zookeeper/zoo.cfg
 %config %attr(0644,root,root) %{_sysconfdir}/zookeeper/zoo_sample.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/zookeeper/log4j.properties
 %{_unitdir}/%{name}.service
