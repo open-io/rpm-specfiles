@@ -46,10 +46,13 @@ BuildRequires:  python-pbr
 BuildRequires:  zookeeper-devel          >= 3.3.4
 %else
 BuildRequires:  python2-pbr
+BuildRequires:  python3-pbr
 BuildRequires:  zookeeper-lib-devel      >= 3.3.4
 %endif
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 BuildRequires:  libcurl-devel
 %if %{?suse_version}0
 BuildRequires:  libapr1-devel            >= 1.2
@@ -125,6 +128,7 @@ BuildRequires:  zookeeper-lib      >= 3.3.4
 Requires:       python-ZooKeeper
 %endif
 Requires:       python             >= 2.7
+Requires:       python3
 %if %{?suse_version}0
 Requires:       libapr1            >= 1.2
 %else
@@ -154,8 +158,21 @@ Requires:       python-werkzeug
 # Needed for backblaze connector
 Requires:       python-requests    >= 2.6.0
 
+Requires:       python36-pyxattr   >= 0.4
+Requires:       python36-six
+Requires:       python36-urllib3
+
+Requires:       python3-PyYAML
+Requires:       python3-werkzeug
+Requires:       python3-redis
+Requires:       python3-gunicorn    >= 19.4.5
+Requires:       python3-eventlet
+Requires:       python3-cliff       >= 1.13
+
 Provides:       python-oiopy
 
+%{?python_provide:%python_provide python2-oiopy}
+%{?python_provide:%python_provide python3-oiopy}
 
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
@@ -248,7 +265,8 @@ cmake \
 make %{?_smp_mflags}
 
 # Build python
-PBR_VERSION=%{targetversion} %{__python} setup.py build
+PBR_VERSION=%{targetversion} %{__python2} setup.py build
+PBR_VERSION=%{targetversion} %{__python3} setup.py build
 
 
 %install
@@ -260,7 +278,8 @@ PBR_VERSION=%{targetversion} %{__python} setup.py build
 make DESTDIR=$RPM_BUILD_ROOT install
 
 # Install python
-PBR_VERSION=%{targetversion} %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+PBR_VERSION=%{targetversion} %{__python2} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+PBR_VERSION=%{targetversion} %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
 %if %{?suse_version}0
 %fdupes %{buildroot}%{python_sitelib}
 %endif
@@ -325,7 +344,8 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 %{_bindir}/openio
 %{_bindir}/openio-admin
 %defattr(644,root,root,755)
-%{python_sitelib}/oio*
+%{python2_sitelib}/oio*
+%{python3_sitelib}/oio*
 /usr/lib/tmpfiles.d/openio-sds.conf
 %if %{?suse_version}0
 %ghost /run/oio
