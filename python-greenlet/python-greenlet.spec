@@ -23,6 +23,15 @@ that supports micro-threads called "tasklets". Tasklets run
 pseudo-concurrently (typically in a single or a few OS-level threads)
 and are synchronized with data exchanges on "channels".
 
+%package -n python3-greenlet
+Summary:        Lightweight in-process concurrent programming - python3 version
+
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
+
+%description -n python3-greenlet
+This version is for python3
+
 %package devel
 Summary:        C development headers for python-greenlet
 Group:          Development/Libraries
@@ -37,11 +46,13 @@ This package contains header files required for C modules development.
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 chmod 644 benchmarks/*.py
 
 %install
 rm -rf %{buildroot}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
  
 %clean
 rm -rf %{buildroot}
@@ -64,6 +75,11 @@ PYTHONPATH=$(pwd) %{__python} benchmarks/chain.py
 %{python_sitearch}/greenlet.so
 %{python_sitearch}/greenlet*.egg-info
 
+%files -n python3-greenlet
+%defattr(-,root,root,-)
+%{python3_sitearch}/greenlet*.so
+%{python3_sitearch}/greenlet*.egg-info
+
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/python*/greenlet
@@ -77,10 +93,10 @@ PYTHONPATH=$(pwd) %{__python} benchmarks/chain.py
 - Remove s390x from skip check list.
 - Bump release and build of all archs.
 
-* Fri Apr 14 2014 Lokesh Mandvekar <lsm5@redhat.com> 0.4.2-3
+* Mon Apr 14 2014 Lokesh Mandvekar <lsm5@redhat.com> 0.4.2-3
 - gcc-c++ present in default buildroot, not required in BR
 
-* Fri Apr 14 2014 Lokesh Mandvekar <lsm5@redhat.com> 0.4.2-2
+* Mon Apr 14 2014 Lokesh Mandvekar <lsm5@redhat.com> 0.4.2-2
 - include gcc-c++ BR
 - Rebuilt for RHEL-7
 
