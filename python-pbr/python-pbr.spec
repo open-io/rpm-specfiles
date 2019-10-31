@@ -1,13 +1,6 @@
 %global pypi_name pbr
-
-%if 0%{?fedora}
 %global with_python3 1
-%endif
-
-%if 0%{?fedora} > 19
-# we don't have the necessary br's, yet
 %global do_test 0
-%endif
 
 Name:           python-%{pypi_name}
 Version:        1.6.0
@@ -21,6 +14,7 @@ Source0:        https://files.pythonhosted.org/packages/73/29/ce7ad655da1d45715a
 BuildArch:      noarch
 
 BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
 
 %if 0%{?do_test} == 1
 BuildRequires:  python-coverage
@@ -35,14 +29,15 @@ BuildRequires:  gnupg
 %endif
 
 
-%if 0%{?rhel}==6
-BuildRequires: python-sphinx10
-%else
-BuildRequires: python-sphinx >= 1.1.3
-%endif
+#%if 0%{?rhel}==6
+#BuildRequires: python-sphinx10
+#%else
+#BuildRequires: python-sphinx >= 1.1.3
+#%endif
 
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 %endif
 
 %description
@@ -79,14 +74,14 @@ pushd %{py3dir}
 popd
 %endif
 
-# generate html docs 
-%if 0%{?rhel}==6
-sphinx-1.0-build doc/source html
-%else
-sphinx-build doc/source html
-%endif
-# remove the sphinx-build leftovers
-rm -rf html/.{doctrees,buildinfo}
+## generate html docs 
+#%if 0%{?rhel}==6
+#sphinx-1.0-build doc/source html
+#%else
+#sphinx-build doc/source html
+#%endif
+## remove the sphinx-build leftovers
+#rm -rf html/.{doctrees,buildinfo}
 
 
 %install
@@ -108,7 +103,7 @@ rm -rf %{buildroot}%{python_sitelib}/pbr/tests
 
 %files
 %license LICENSE
-%doc html README.rst
+%doc README.rst
 %{_bindir}/pbr
 %{python_sitelib}/*.egg-info
 %{python_sitelib}/%{pypi_name}
@@ -116,7 +111,7 @@ rm -rf %{buildroot}%{python_sitelib}/pbr/tests
 %if 0%{?with_python3}
 %files -n python3-pbr
 %license LICENSE
-%doc html README.rst
+%doc README.rst
 %{python3_sitelib}/*.egg-info
 %{python3_sitelib}/%{pypi_name}
 %endif
