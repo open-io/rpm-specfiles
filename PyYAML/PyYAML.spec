@@ -1,8 +1,5 @@
-%if 0%{?fedora} > 12
 %global with_python3 1
-%else
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-%endif
 
 Name:           PyYAML
 Version:        3.12
@@ -21,7 +18,7 @@ Provides:       python-yaml%{?_isa} = %{version}-%{release}
 %if 0%{?with_python3}
 BuildRequires: python3-devel
 BuildRequires: python3-setuptools
-BuildRequires: python3-Cython
+BuildRequires: python36-Cython
 %endif
 # debian patch, upstream ticket http://pyyaml.org/ticket/247 and
 # https://bitbucket.org/xi/pyyaml/issue/35/test-fails-on-be-s390-x-ppc64
