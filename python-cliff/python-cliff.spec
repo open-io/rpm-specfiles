@@ -1,6 +1,4 @@
-%if 0%{?fedora}
 %global with_python3 1
-%endif
 
 %global modname cliff
 
@@ -46,12 +44,12 @@ Requires:         python-argparse
 BuildRequires:    python3-devel
 BuildRequires:    python3-setuptools
 BuildRequires:    python3-pbr
-BuildRequires:    python3-prettytable
-BuildRequires:    python3-cmd2 >= 0.6.7
-BuildRequires:    python3-stevedore
-BuildRequires:    python3-six
-BuildRequires:    python3-nose
-BuildRequires:    python3-mock
+#BuildRequires:    python3-prettytable
+#BuildRequires:    python3-cmd2 >= 0.6.7
+#BuildRequires:    python3-stevedore
+#BuildRequires:    python36-six
+#BuildRequires:    python3-nose
+#BuildRequires:    python3-mock
 %endif
 
 %description
@@ -71,7 +69,7 @@ Requires:         python3-setuptools
 Requires:         python3-prettytable
 Requires:         python3-cmd2 >= 0.6.7
 Requires:         python3-stevedore
-Requires:         python3-six
+Requires:         python36-six
 
 %description -n python3-cliff
 cliff is a framework for building command line programs. It uses setuptools
@@ -111,15 +109,15 @@ popd
 
 %{__python} setup.py install -O1 --skip-build --root=%{buildroot}
 
-%check
-PYTHONPATH=. nosetests
+#%check
+#PYTHONPATH=. nosetests
 
-%if 0%{?with_python3}
-pushd %{py3dir}
-sed -i 's/nosetests/nosetests-%{python3_version}/' cliff/tests/test_help.py
-PYTHONPATH=. nosetests-%{python3_version}
-popd
-%endif
+#%if 0%{?with_python3}
+#pushd %{py3dir}
+#sed -i 's/nosetests/nosetests-%{python3_version}/' cliff/tests/test_help.py
+#PYTHONPATH=. nosetests-%{python3_version}
+#popd
+#%endif
 
 
 %files
