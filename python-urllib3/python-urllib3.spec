@@ -4,13 +4,9 @@
 %{!?python2_sitearch: %global python2_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 %endif
 
-%if 0%{?fedora}
 %global with_python3 1
 
 %{!?python3_pkgversion: %global python3_pkgversion 3}
-%else
-%{!?python3_pkgversion: %global python3_pkgversion 34}
-%endif
 
 %global srcname urllib3
 

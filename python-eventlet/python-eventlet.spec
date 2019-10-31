@@ -6,9 +6,7 @@
 
 %global pypi_name eventlet
 
-%if 0%{?fedora}
 %global with_python3 1
-%endif
 
 Name:           python-%{pypi_name}
 Version:        0.20.1
