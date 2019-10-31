@@ -1,6 +1,4 @@
-%if 0%{?fedora}
 %global with_python3 1
-%endif
 
 %global modname cmd2
 
@@ -57,7 +55,7 @@ See docs at http://packages.python.org/cmd2/
 Summary:        Extra features for standard library's cmd module
 Group:          Development/Libraries
 
-Requires:       python3-pyparsing
+Requires:       python36-pyparsing
 
 %description -n python3-cmd2
 Enhancements for standard library's cmd module.
