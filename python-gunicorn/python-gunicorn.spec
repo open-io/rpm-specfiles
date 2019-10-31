@@ -1,125 +1,207 @@
 
 %global upstream_name gunicorn
 
-#disable python3 to avoid python3-pytest
-%global with_python3 0
-
-
 Name:           python-%{upstream_name}
-Version:        19.4.5
-Release:        1%{?dist}
+Version:        19.9.0
+Release:        3%{?dist}
 Summary:        Python WSGI application server
-
-Group:          System Environment/Daemons
 License:        MIT
 URL:            http://gunicorn.org/
-Source0:        https://files.pythonhosted.org/packages/1e/67/95248e17050822ab436c8a43dbfc0625a8545775737e33b66508cffad278/gunicorn-19.4.5.tar.gz
+Source0:        https://files.pythonhosted.org/packages/source/g/%{upstream_name}/%{upstream_name}-%{version}.tar.gz
 # distro-specific, not upstreamable
-Patch100:       %{name}-dev-log.patch
-
+Patch101:       0001-use-dev-log-for-syslog.patch
+# upstream version requirements are unnecessarily strict
+Patch102:       0002-relax-version-requirements.patch
 BuildArch:      noarch
-BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
-BuildRequires:  pytest
-%if 0%{?with_python3}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-pytest
-%endif
-
-Requires:       python-setuptools
 
 %description
 Gunicorn ("Green Unicorn") is a Python WSGI HTTP server for UNIX. It uses the 
 pre-fork worker model, ported from Ruby's Unicorn project. It supports WSGI, 
 Django, and Paster applications.
 
-%if 0%{?with_python3}
+%package -n python2-%{upstream_name}
+Summary:        %{summary}
+%{?python_provide:%python_provide python2-%{upstream_name}}
+BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
+#BuildRequires:  python2-pytest
+#BuildRequires:  python2-mock
+#BuildRequires:  python2-pytest-cov
+#BuildRequires:  python2-sphinx
+#BuildRequires:  python2-sphinx_rtd_theme
+Requires:       python2-setuptools
+
+%description -n python2-%{upstream_name}
+Gunicorn ("Green Unicorn") is a Python WSGI HTTP server for UNIX. It uses the 
+pre-fork worker model, ported from Ruby's Unicorn project. It supports WSGI, 
+Django, and Paster applications.
+
 %package -n python3-%{upstream_name}
-Summary:        Python WSGI application server
+Summary:        %{summary}
+%{?python_provide:%python_provide python3-%{upstream_name}}
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
+#BuildRequires:  python3-pytest
+#BuildRequires:  python3-pytest-cov
 Requires:       python3-setuptools
 
 %description -n python3-%{upstream_name}
 Gunicorn ("Green Unicorn") is a Python WSGI HTTP server for UNIX. It uses the 
 pre-fork worker model, ported from Ruby's Unicorn project. It supports WSGI, 
 Django, and Paster applications.
-%endif
+
+%package doc
+Summary:        Documentation for the %{name} package
+
+%description doc
+Documentation for the %{name} package.
 
 %prep
 %setup -q -n %{upstream_name}-%{version}
-%patch100 -p1
-
-%if 0%{?with_python3}
-rm -rf %{py3dir}
-cp -a . %{py3dir}
-%else
-# need to remove gaiohttp worker from the Python 2 version, it is supported on 
-# Python 3 only and t fails byte compilation on 2.x due to using "yield from"
-%{__rm} -fv gunicorn/workers/*gaiohttp.py*
-%endif
-
+%patch101 -p1
+%patch102 -p1
 
 %build
-%{__python} setup.py build
-
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py build
-popd
-%endif
+%py2_build
+%py3_build
+#%{__python2} setup.py build_sphinx
 
 %install
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py install --skip-build --root %{buildroot}
+%py3_install
 # rename executables in /usr/bin so they don't collide
-for executable in %{upstream_name} %{upstream_name}_django %{upstream_name}_paster ; do
-    mv %{buildroot}%{_bindir}/$executable %{buildroot}%{_bindir}/python3-$executable
-done
-popd
+mv %{buildroot}%{_bindir}/gunicorn{,-3}
+mv %{buildroot}%{_bindir}/gunicorn_paster{,-3}
+# symlink extra executable names
+ln -s %{_bindir}/gunicorn-3 %{buildroot}%{_bindir}/gunicorn-%{python3_version}
+ln -s %{_bindir}/gunicorn_paster-3 %{buildroot}%{_bindir}/gunicorn_paster-%{python3_version}
+%if ! (0%{?fedora} >= 29)
+ln -s %{_bindir}/gunicorn-3 %{buildroot}%{_bindir}/python3-gunicorn
+ln -s %{_bindir}/gunicorn_paster-3 %{buildroot}%{_bindir}/python3-gunicorn_paster
 %endif
+%py2_install
+# rename executables in /usr/bin so they don't collide
+mv %{buildroot}%{_bindir}/gunicorn{,-2}
+mv %{buildroot}%{_bindir}/gunicorn_paster{,-2}
+# symlink extra executable names
+ln -s %{_bindir}/gunicorn-2 %{buildroot}%{_bindir}/gunicorn
+ln -s %{_bindir}/gunicorn_paster-2 %{buildroot}%{_bindir}/gunicorn_paster
+ln -s %{_bindir}/gunicorn-2 %{buildroot}%{_bindir}/gunicorn-2.7
+ln -s %{_bindir}/gunicorn_paster-2 %{buildroot}%{_bindir}/gunicorn_paster-2.7
+# need to remove gaiohttp worker from the Python 2 version, it is supported on 
+# Python 3 only and it fails byte compilation on 2.x due to using "yield from"
+rm %{buildroot}%{python2_sitelib}/%{upstream_name}/workers/_gaiohttp.py*
 
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+#%check
+#%{__python2} setup.py test
+#%{__python3} setup.py test
 
-%check
-#%if 0%{?rhel} && 0%{?rhel} <= 7
-#%{__python} setup.py test
-#%endif
-
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py test
-popd
-%endif
-
-%files
-%doc LICENSE NOTICE README.rst THANKS
-%{python_sitelib}/%{upstream_name}*
+%files -n python2-%{upstream_name}
+%license LICENSE
+%doc NOTICE README.rst THANKS
+%{python2_sitelib}/%{upstream_name}*
 %{_bindir}/%{upstream_name}
-%{_bindir}/%{upstream_name}_django
 %{_bindir}/%{upstream_name}_paster
+%{_bindir}/%{upstream_name}-2
+%{_bindir}/%{upstream_name}_paster-2
+%{_bindir}/%{upstream_name}-2.7
+%{_bindir}/%{upstream_name}_paster-2.7
 
-%if 0%{?with_python3}
 %files -n python3-%{upstream_name}
-%doc LICENSE NOTICE README.rst THANKS
+%license LICENSE
+%doc NOTICE README.rst THANKS
 %{python3_sitelib}/%{upstream_name}*
+%{_bindir}/%{upstream_name}-3
+%{_bindir}/%{upstream_name}_paster-3
+%{_bindir}/%{upstream_name}-%{python3_version}
+%{_bindir}/%{upstream_name}_paster-%{python3_version}
+%if ! (0%{?fedora} >= 29)
 %{_bindir}/python3-%{upstream_name}
-%{_bindir}/python3-%{upstream_name}_django
 %{_bindir}/python3-%{upstream_name}_paster
 %endif
 
+%files doc
+%license LICENSE
+#%doc build/sphinx/html/*
+
 %changelog
-* Mon Feb 15 2016 Romain Acciari <romain.acciari@openio.io> - 19.4.5-1
-- New release
-- Skip test
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 19.9.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
-* Thu Jun 11 2015 Romain Acciari <romain.acciari@openio.io> - 19.3.0-1
-- New release
+* Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 19.9.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
-* Thu Apr 24 2014 Lokesh Mandvekar <lsm5@redhat.com> - 18.0-2
-- Rebuilt for RHEL-7
-- Disable python3
-- Modify python3 conditional macros as per fedora docs
+* Tue Jul 10 2018 Dan Callaghan <dcallagh@redhat.com> - 19.9.0-1
+- upstream release 19.9.0: http://docs.gunicorn.org/en/19.9.0/news.html
+
+* Fri Jun 29 2018 Dan Callaghan <dcallagh@redhat.com> - 19.8.1-3
+- Fix for Python 3.7 (async is a reserved word now)
+
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 19.8.1-2
+- Rebuilt for Python 3.7
+
+* Tue May 29 2018 Dan Callaghan <dcallagh@redhat.com> - 19.8.1-1
+- upstream release 19.8.1: http://docs.gunicorn.org/en/19.8.1/news.html
+
+* Mon Apr 16 2018 Dan Callaghan <dcallagh@redhat.com> - 19.7.1-4
+- adjusted executable names to match Python packaging guidelines:
+  gunicorn-2, gunicorn-2.7, gunicorn-3, gunicorn-3.6 (RHBZ#1567198)
+
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 19.7.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 19.7.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Wed Mar 29 2017 Dan Callaghan <dcallagh@redhat.com> - 19.7.1-1
+- upstream release 19.7.1: http://docs.gunicorn.org/en/19.7.1/news.html
+
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 19.6.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 19.6.0-3
+- Rebuild for Python 3.6
+
+* Mon Aug 15 2016 Dan Callaghan <dcallagh@redhat.com> - 19.6.0-2
+- updated to latest Python guidelines
+
+* Mon Aug 15 2016 Dan Callaghan <dcallagh@redhat.com> - 19.6.0-1
+- upstream release 19.6.0: http://docs.gunicorn.org/en/19.6.0/news.html
+
+* Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 19.4.1-3
+- https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
+
+* Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 19.4.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
+
+* Thu Dec 10 2015 Dan Callaghan <dcallagh@redhat.com> - 19.4.1-1
+- upstream release 19.4.1: http://docs.gunicorn.org/en/19.4.1/news.html
+
+* Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 19.3.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
+
+* Thu Nov 05 2015 Dan Callaghan <dcallagh@redhat.com> - 19.3.0-3
+- handle expected HaltServer exception in manage_workers (RHBZ#1200041)
+
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 19.3.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
+* Mon Mar 09 2015 Dan Callaghan <dcallagh@redhat.com> - 19.3.0-1
+- upstream release 19.3.0: http://docs.gunicorn.org/en/19.3.0/news.html
+
+* Tue Aug 19 2014 Dan Callaghan <dcallagh@redhat.com> - 19.1.1-2
+- fixed build requirements, added -doc subpackage with HTML docs
+
+* Tue Aug 19 2014 Dan Callaghan <dcallagh@redhat.com> - 19.1.1-1
+- upstream release 19.1.1: http://docs.gunicorn.org/en/19.1.1/news.html
+
+* Mon Jun 23 2014 Dan Callaghan <dcallagh@redhat.com> - 19.0.0-1
+- upstream release 19.0: http://docs.gunicorn.org/en/19.0/news.html
+
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 18.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
+* Wed May 28 2014 Kalev Lember <kalevlember@gmail.com> - 18.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
 
 * Fri Sep 06 2013 Dan Callaghan <dcallagh@redhat.com> - 18.0-1
 - upstream release 18.0: http://docs.gunicorn.org/en/latest/news.html
