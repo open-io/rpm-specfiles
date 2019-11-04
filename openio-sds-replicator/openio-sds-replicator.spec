@@ -20,7 +20,7 @@ Epoch:          1
 
 #curl -u "open-io:$TOKEN" -i https://api.github.com/repos/open-io/oio-replicator/tags
 #curl -L https://api.github.com/repos/open-io/oio-replicator/tarball/%{tarversion}?access_token=$TOKEN > ./oio-replicator-%{tarversion}.tar.gz
-Source0:        oio-replicator-%{tarversion}.tar.gz
+Source0:        https://github.com/open-io/oio-replicator/archive/%{tarversion}.tar.gz
 
 Summary:        OpenIO SDS replicator service
 BuildArch:      noarch
@@ -35,7 +35,7 @@ OpenIO SDS replicator service.
 
 
 %prep
-%setup -q -n oio-replicator-%{version}
+%setup -q -n oio-replicator-%{tarversion}
 
 %build
 #OPENIO_API_VERSION=0.6.3 ./gradlew %{gradlew_args} assemble
