@@ -12,7 +12,7 @@ Release:        1%{?dist}
 %global         shortcommit %(c=%{tag}; echo ${c:0:7})
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
-%define         gradlew_args
+%define         gradlew_args -Pdummy=nothing
 %define         tarversion %{tag}
 %define         jarversion 0.5-SNAPSHOT
 Epoch:          1
