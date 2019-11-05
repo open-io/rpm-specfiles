@@ -48,7 +48,7 @@ oiofs FUSE provides another means to access OpenIO SDS Storage.
 
 
 %prep
-%setup -q -n open-io-oio-fs-%{tarversion}
+%setup -q -n oio-fs-%{tarversion}
 
 
 %build
