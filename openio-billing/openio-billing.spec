@@ -37,9 +37,9 @@ OpenIO Billing service
 
 %prep
 %if %{?_with_test:0}%{!?_with_test:1}
-%setup -q -n open-io-%{tarname}-%{tarversion}
+%setup -q -n %{tarname}-%{tarversion}
 %else
-%setup -q -n open-io-%{tarname}-%{tarversion}
+%setup -q -n %{tarname}-%{tarversion}
 %endif
 
 
