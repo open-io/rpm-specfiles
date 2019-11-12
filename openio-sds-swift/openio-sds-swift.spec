@@ -3,7 +3,7 @@
 Name:           openio-sds-swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.9.3
+Version:        1.11.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 Source0:        https://github.com/open-io/oio-swift/archive/%{tarversion}.tar.gz
@@ -41,13 +41,18 @@ Swift proxy for OpenIO SDS.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install --root $RPM_BUILD_ROOT
+%{__python} setup.py install -O1 --root $RPM_BUILD_ROOT
 
 %files
 %{python_sitelib}/*
+%{_bindir}/oioswift-*
 
 
 %changelog
+* Tue Nov 12 2019 - 1.11.0-1 - Florent Vennetier <florent@openio.io>
+- New release: 1.11.0
+- Include oioswift-proxy-server binary
+- Build with -O1 flag
 * Fri Aug 16 2019 - 1.9.3-1 - Vladimir Dombrovski <vladimir@openio.io>
 - New release
 * Wed Mar 27 2019 - 1.7.0-1 - Vincent Legoll <vincent.legoll@openio.io>
