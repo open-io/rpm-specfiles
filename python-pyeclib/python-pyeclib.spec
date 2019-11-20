@@ -1,31 +1,22 @@
-%if 0%{?fedora}
-%global with_python3 1
-%endif
-
 Name:           python-pyeclib
 Version:        1.5.0
-Release:        1%{?dist}
+Release:        12%{?dist}
 Summary:        Python interface to erasure codes
 
 License:        BSD
 URL:            https://bitbucket.org/kmgreen2/pyeclib/
 Source0:        https://github.com/openstack/pyeclib/archive/%{version}.tar.gz
 
-BuildRequires:  python2-devel
-%if 0%{?with_python3}
 BuildRequires:  python3-devel
-%endif
-BuildRequires:  python-setuptools
 BuildRequires:  liberasurecode-devel >= 1.5.0
 
-Requires:       liberasurecode >= 1.5.0
-
-%description
-This library provides a simple Python interface for implementing erasure
-codes. A number of back-end implementations is supported either directly
+%global _description\
+This library provides a simple Python interface for implementing erasure\
+codes. A number of back-end implementations is supported either directly\
 or through the C interface liberasurecode.
 
-%if 0%{?with_python3}
+%description %_description
+
 %package -n python3-pyeclib
 Summary:        Python 3 interface to erasure codes
 
@@ -33,53 +24,58 @@ Summary:        Python 3 interface to erasure codes
 This library provides a simple Python 3 interface for implementing erasure
 codes. A number of back-end implementations is supported either directly
 or through the C interface liberasurecode.
-%endif
 
 %prep
 %setup -q -n pyeclib-%{version}
 
-%if 0%{?with_python3}
-# The {py3dir} is a convenience built-in that Fedora provides in F13
-rm -rf %{py3dir}
-cp -a . %{py3dir}
-find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!/usr/bin/env python|#!%{__python3}|'
-%endif
-
 %build
-%{__python2} setup.py build
-
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py build
-popd
-%endif
+%py3_build
 
 %install
-%{__python2} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py install --skip-build --root $RPM_BUILD_ROOT
-popd
-%endif
+%py3_install
  
-%files
-%license License.txt
-%doc README.rst
-%{_libdir}/python2*/site-packages/*
-# There is no __python2_sitearch on F21
-#{__python_sitearch}/*
-
-%if 0%{?with_python3}
 %files -n python3-pyeclib
 %license License.txt
 %doc README.rst
-%{_libdir}/python3*/site-packages/*
-# There is no __python3_sitearch on F21
-#{__python3_sitearch}/*
-%endif
+%{python3_sitearch}/pyeclib*
 
 %changelog
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 1.5.0-12
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 1.5.0-11
+- Rebuilt for Python 3.8
+
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-9
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Thu Oct 11 2018 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.5.0-8
+- Python2 binary package has been removed
+  See https://fedoraproject.org/wiki/Changes/Mass_Python_2_Package_Removal
+
+* Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 1.5.0-6
+- Rebuilt for Python 3.7
+
+* Mon Feb 12 2018 Iryna Shcherbina <ishcherb@redhat.com> - 1.5.0-5
+- Update Python 2 dependency declarations to new packaging standards
+  (See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3)
+
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Sat Aug 19 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 1.5.0-3
+- Python 2 binary package renamed to python2-pyeclib
+  See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3
+
+* Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
 * Thu Jul 27 2017 Pete Zaitcev <zaitcev@redhat.com> 1.5.0-1
 - Upstream 1.5.0, companion with liberasurecode 1.5.0
 
