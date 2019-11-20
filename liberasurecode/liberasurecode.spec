@@ -1,6 +1,6 @@
 Name:           liberasurecode
-Version:        1.5.0
-Release:        1%{?dist}
+Version:        1.6.0
+Release:        4%{?dist}
 Summary:        Erasure Code API library written in C with pluggable backends
 
 # Main license is a 2-clause BSD with clause numbers removed for some reason.
@@ -9,6 +9,8 @@ URL:            https://bitbucket.org/tsg-/liberasurecode/
 Source0:        https://github.com/openstack/liberasurecode/archive/%{version}.tar.gz
 Patch2:         liberasurecode-1.0.5-docs.patch
 Patch3:         liberasurecode-1.5.0-ldtest.patch
+Patch4:         liberasurecode-1.6.0-nowarn.patch
+Patch5:         liberasurecode-1.6.0-crc32shift.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -19,6 +21,7 @@ BuildRequires:  gcc
 BuildRequires:  libtool
 BuildRequires:  make
 BuildRequires:  sed
+BuildRequires:  zlib-devel
 
 %description
 An API library for Erasure Code, written in C. It provides a number
@@ -43,6 +46,8 @@ developing applications that use %{name}.
 %setup -q
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 autoreconf -i -v
@@ -59,10 +64,11 @@ make test
 find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
 find $RPM_BUILD_ROOT%{_datadir}/doc -type f -exec chmod a-x {} ';'
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
-
+%postun
+/sbin/ldconfig
 
 # N.B. We place .so to the main package because PyECLib insists on it.
 %files
@@ -80,6 +86,38 @@ find $RPM_BUILD_ROOT%{_datadir}/doc -type f -exec chmod a-x {} ';'
 
 
 %changelog
+* Thu Jul 25 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Tue Feb 12 2019 Pete Zaitcev <zaitcev@redhat.com> 1.6.0-3
+- Hush warnings that prevent building with our "warning-is-error" settings
+- Fix liberasurecode_crc32_alt on s390x
+
+* Fri Feb 01 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Fri Sep 21 2018 Pete Zaitcev <zaitcev@redhat.com> 1.6.0-1
+- Upstream 1.6.0
+
+* Tue Sep 11 2018 Pete Zaitcev <zaitcev@redhat.com> 1.5.0-8
+- Ensure that we're using the correct checksum
+- Get tests pass on s390x (a big-endian arch)
+
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Wed Feb 07 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Wed Jan 10 2018 Pete Zaitcev <zaitcev@redhat.com> 1.5.0-4
+- Stop using -p in scrptlets, it's dangerous (#1532872)
+
+* Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Wed Jul 26 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.5.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Wed Jul 05 2017 Pete Zaitcev <zaitcev@redhat.com> 1.5.0-1
 - Upstream 1.5.0: --disable-mmi is included upstream
 

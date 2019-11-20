@@ -1,0 +1,39 @@
+commit 60edaa6cf3ad37dadcdb9bbe5cba85a682b7eb89
+Author: Pete Zaitcev <zaitcev@kotori.zaitcev.us>
+Date:   Tue Feb 12 22:08:26 2019 -0600
+
+    Make our crc32 more portable
+    
+    Apparently the author of our crc32 assumed that shifting an int
+    to the right sign-extends, which is not always the case. Result is,
+    building and running make test on s390x fails. The fix is to force
+    a sign-extension using the "xor 0x80; sub 0x80" trick.
+
+diff --git a/src/erasurecode.c b/src/erasurecode.c
+index bc401ca..f1f6270 100644
+--- a/src/erasurecode.c
++++ b/src/erasurecode.c
+@@ -1045,8 +1045,7 @@ int liberasurecode_get_fragment_metadata(char *fragment,
+     }
+ 
+     /* Verify metadata checksum */
+-    if (is_invalid_fragment_header(
+-            (fragment_header_t *) fragment)) {
++    if (is_invalid_fragment_header((fragment_header_t *) fragment)) {
+         log_error("Invalid fragment header information!");
+         ret = -EBADHEADER;
+         goto out;
+diff --git a/src/utils/chksum/crc32.c b/src/utils/chksum/crc32.c
+index b11dec9..0c46107 100644
+--- a/src/utils/chksum/crc32.c
++++ b/src/utils/chksum/crc32.c
+@@ -97,7 +97,8 @@ liberasurecode_crc32_alt(int crc, const void *buf, size_t size)
+   crc = crc ^ ~0U;
+ 
+   while (size--)
+-    crc = crc32_tab[(crc ^ *p++) & 0xFF] ^ (crc >> 8);
++    crc = crc32_tab[(crc ^ *p++) & 0xFF] ^
++            ((((crc >> 8) & 0x00FFFFFF) ^ 0x00800000) - 0x00800000);
+ 
+   return crc ^ ~0U;
+ }
