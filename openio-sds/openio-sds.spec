@@ -152,7 +152,7 @@ Requires:       python-futures
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
 Requires:       python-cliff       >= 1.13
-Requires:       python-pyeclib     >= 1.2.0
+Requires:       python3-pyeclib    >= 1.5.0
 Requires:       python-urllib3     >= 1.12
 Requires:       python-werkzeug
 # Needed for backblaze connector
