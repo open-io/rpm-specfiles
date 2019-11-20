@@ -20,7 +20,7 @@
 %define so_ver   2
 
 Name:           zookeeper
-Version:        3.5.5
+Version:        3.5.6
 Release:        0
 License:        Apache-2.0
 Summary:        A high-performance coordination service for distributed applications
@@ -143,7 +143,8 @@ sed -i 's,^#!/usr/bin/env bash,#!/bin/bash,' bin/*.sh
 
 # Prepare C and Python APIs
 cd ../%{realname}-%{version}
-%patch1
+# VL: This patch is obsolete, starting from version 3.5.6
+#%patch1
 %patch2
 %patch3
 
