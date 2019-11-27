@@ -360,6 +360,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 %{_bindir}/%{cli_name}-rdir-server
 %{_bindir}/%{cli_name}-tool
 %{_bindir}/%{cli_name}-proxy
+%{_bindir}/%{cli_name}-xcute
 %{_bindir}/openio
 %{_bindir}/openio-admin
 %defattr(644,root,root,755)
