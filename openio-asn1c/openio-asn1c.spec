@@ -1,19 +1,20 @@
 %define		realname asn1c
 
 Name:		openio-%{realname}
-Version:	0.9.27.1
+Version:	0.9.28
 Release:	1%{?dist}
 Summary:	Free, Open Source ASN.1 compiler
 
 License:	BSD
 URL:		http://lionet.info/asn1c
-Source0:	https://github.com/open-io/asn1c/archive/v%{version}.tar.gz
+Source0:	https://github.com/vlm/asn1c/archive/v%{version}.tar.gz
 %if 0%{?suse_version}
 Source1:	%{name}-rpmlintrc
 %endif
 
 BuildRequires:	autoconf,automake,libtool
 #Requires:	
+Provides:   asn1c
 
 %description
 Compiles ASN.1 data structures into C source structures that can be
@@ -45,13 +46,15 @@ make install DESTDIR=%{buildroot}
 #%doc BUGS COPYING ChangeLog FAQ README.md
 #%doc TODO doc/asn1c-quick.pdf doc/asn1c-usage.pdf
 %{_bindir}/*
-%{_libdir}/*
 %{_mandir}/man1/*
 %{_datadir}/%{realname}
 %{_defaultdocdir}/%{name}-%{version}
 
 
 %changelog
+* Wed Nov 27 2019 Florent Vennetier <florent@openio.io> - 0.9.28-1
+- Compile the official version again
+
 * Sun Jan 31 2016 Florent Venntier <florent.vennetier@openio.io> - 0.9.27.1-1
 - Compile custom OpenIO version
 
