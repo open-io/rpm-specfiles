@@ -113,6 +113,7 @@ This package provides development stuff to build software against ZooKeeper.
 Summary:       Python client library for ZooKeeper
 Group:         Development/Libraries/Python
 Requires:      python2
+Requires:      libzookeeper%{so_ver} = %{version}-%{release}
 Provides:      python-ZooKeeper
 
 %description -n python2-zookeeper
@@ -126,6 +127,7 @@ This package provides the Python3 client library for ZooKeeper.
 Summary:       Python client library for ZooKeeper
 Group:         Development/Libraries/Python
 Requires:      python3
+Requires:      libzookeeper%{so_ver} = %{version}-%{release}
 Provides:      python-ZooKeeper
 
 %description -n python3-zookeeper
