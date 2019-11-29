@@ -74,7 +74,7 @@ Recommends:	python2-psycopg2 \
 Summary:	Real-time performance monitoring, done right
 Name:		netdata
 Version:	1.19.0
-Release:	3%{?dist}
+Release:	1%{?dist}
 License:	GPLv3+
 Group:		Applications/System
 Source0:	https://github.com/netdata/%{name}/releases/download/v%{version}/%{name}-v%{version}.tar.gz
