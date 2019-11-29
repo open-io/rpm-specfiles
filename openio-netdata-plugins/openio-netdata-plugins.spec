@@ -3,7 +3,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.5.0
+Version:        0.6.1
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -21,6 +21,7 @@ Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
 
 Source1:        https://github.com/go-redis/redis/archive/v6.12.0.tar.gz
 Source2:        https://github.com/aws/aws-sdk-go/archive/v1.19.37.tar.gz
+Source3:        https://github.com/go-yaml/yaml/archive/v2.2.7.tar.gz
 
 Summary:        OpenIO Plugins for netdata
 License:        AGPL-3.0
@@ -38,13 +39,17 @@ OpenIO Plugins for netdata
 cd ..
 tar xf %{SOURCE1}
 tar xf %{SOURCE2}
-mkdir -p go/src/github.com/go-redis go/src/github.com/aws
+tar xf %{SOURCE3}
+mkdir -p go/src/github.com/go-redis go/src/github.com/aws go/src/gopkg.in/
 cd go/src
 ln -s ../../%{tarname}-%{tarversion} oionetdata
 cd github.com/go-redis
 ln -s ../../../../redis-* redis
 cd ../aws
 ln -s ../../../../aws-* aws-sdk-go
+cd ../../gopkg.in
+ln -s ../../../yaml-* yaml.v2
+
 
 
 %build
@@ -54,6 +59,7 @@ go build cmd/zookeeper.plugin/zookeeper.plugin.go
 go build cmd/container.plugin/container.plugin.go
 go build cmd/command.plugin/command.plugin.go
 go build cmd/fs.plugin/fs.plugin.go
+go build cmd/redis.plugin/redis.plugin.go
 go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
 
 
@@ -65,6 +71,7 @@ go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
     container.plugin \
     command.plugin \
     fs.plugin \
+    redis.plugin \
     s3roundtrip.plugin \
     ${RPM_BUILD_ROOT}%{_libexecdir}/netdata/plugins.d
 # Looks like bare golang's `go build` don't do the required linker magic
@@ -78,11 +85,14 @@ go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
 %{_libexecdir}/netdata/plugins.d/zookeeper.plugin
 %{_libexecdir}/netdata/plugins.d/command.plugin
 %{_libexecdir}/netdata/plugins.d/fs.plugin
+%{_libexecdir}/netdata/plugins.d/redis.plugin
 %{_libexecdir}/netdata/plugins.d/container.plugin
 %{_libexecdir}/netdata/plugins.d/s3roundtrip.plugin
 
 
 %changelog
+* Fri Nov 29 2019 - 0.6.1-1 - Vladimir Dombrovski <vladimir@openio.io>
+- New release
 * Fri May 24 2019 - 0.5.0-1 - Vladimir Dombrovski <vladimir@openio.io>
 - New release
 * Mon Mar 18 2019 - 0.4.0-1 - Vladimir Dombrovski <vladimir@openio.io>
