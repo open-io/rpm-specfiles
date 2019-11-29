@@ -73,11 +73,11 @@ Recommends:	python2-psycopg2 \
 
 Summary:	Real-time performance monitoring, done right
 Name:		netdata
-Version:	1.9.0
+Version:	1.19.0
 Release:	3%{?dist}
 License:	GPLv3+
 Group:		Applications/System
-Source0:	https://github.com/firehol/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.xz
+Source0:	https://github.com/netdata/%{name}/releases/download/v%{version}/%{name}-v%{version}.tar.gz
 Epoch:		1
 URL:		http://my-netdata.io
 BuildRequires:	pkgconfig
@@ -119,7 +119,7 @@ so that you can get insights of what is happening now and what just
 happened, on your systems and applications.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n %{name}-v%{version}
 
 %build
 %configure \
@@ -137,11 +137,17 @@ rm -rf "${RPM_BUILD_ROOT}"
 find "${RPM_BUILD_ROOT}" -name .keep -delete
 
 install -m 644 -p system/netdata.conf "${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}"
+
+install -m 644 -p collectors/charts.d.plugin/*.conf "${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/charts.d/"
+install -m 644 -p collectors/python.d.plugin/*.conf "${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/python.d/"
+install -m 644 -p collectors/charts.d.plugin/*.conf "${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/statsd.d/"
+
 install -m 755 -d "${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d"
 install -m 644 -p system/netdata.logrotate "${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d/%{name}"
 
-# get rid of default healthcheck config files
+# get rid of default healthcheck config files and edit-config script
 rm -rf ${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/health.d
+rm -rf ${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/edit-config
 
 %if %{with systemd}
 install -m 755 -d "${RPM_BUILD_ROOT}%{_unitdir}"
@@ -180,15 +186,14 @@ rm -rf "${RPM_BUILD_ROOT}"
 
 %config(noreplace) %{_sysconfdir}/%{name}/*.conf
 %config(noreplace) %{_sysconfdir}/%{name}/charts.d/*.conf
-#%%config(noreplace) %{_sysconfdir}/%{name}/node.d/*.conf
 %config(noreplace) %{_sysconfdir}/%{name}/python.d/*.conf
 %config(noreplace) %{_sysconfdir}/%{name}/statsd.d/*.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 
 # To be eventually moved to %%_defaultdocdir
-%{_sysconfdir}/%{name}/node.d/*.md
 %{_libexecdir}/%{name}
 %{_sbindir}/%{name}
+%{_libdir}/%{name}
 
 %caps(cap_dac_read_search,cap_sys_ptrace=ep) %attr(0550,root,netdata) %{_libexecdir}/%{name}/plugins.d/apps.plugin
 
@@ -225,6 +230,8 @@ rm -rf "${RPM_BUILD_ROOT}"
 %{_datadir}/%{name}/web
 
 %changelog
+* Fri Nov 29 2019 Vladimir Dombrovski <vladimir@openio.io> - 1.19.0-1
+  New release
 * Thu Sep 5 2019 Vladimir Dombrovski <vladimir@openio.io> - 1.9.0-3
   Remove default healthcheck provisioning
 * Tue Aug 20 2019 Vladimir Dombrovski <vladimir@openio.io> - 1.9.0-2
