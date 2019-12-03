@@ -43,10 +43,11 @@ BuildRequires:  glib2-devel              >= 2.52.0
 BuildRequires:  leveldb-devel
 %if %{?fedora}%{?suse_version}0
 BuildRequires:  python-pbr
+BuildRequires:  python3-pbr
 BuildRequires:  zookeeper-devel          >= 3.3.4
 %else
 BuildRequires:  python2-pbr
-BuildRequires:  python3-pbr
+BuildRequires:  python36-pbr
 BuildRequires:  zookeeper-lib-devel      >= 3.3.4
 %endif
 BuildRequires:  python-devel
@@ -398,6 +399,8 @@ fi
 
 
 %changelog
+* Tue Dec 03 2019 - 6.0.0-2 - Vladimir Dombrovski <vladimir@openio.io>
+- Fix python3-pbr dependency
 * Tue Oct 15 2019 - 6.0.0-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Fri Aug 16 2019 - 5.1.0-1 - Vladimir Dombrovski <vladimir@openio.io>
