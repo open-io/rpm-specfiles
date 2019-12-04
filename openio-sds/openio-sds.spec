@@ -171,9 +171,9 @@ Requires:       python3-eventlet
 Requires:       python3-cliff       >= 1.13
 
 Provides:       python-oiopy
+Provides:       python2-oiopy
+Provides:       python3-oiopy
 
-%{?python_provide:%python_provide python2-oiopy}
-%{?python_provide:%python_provide python3-oiopy}
 
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
