@@ -47,7 +47,7 @@ BuildRequires:  python2-devel
 BuildRequires:  python-setuptools
 Requires:       python-greenlet
 
-%{?python_provide:%python_provide python2-%{pypi_name}}
+#%{?python_provide:%python_provide python2-%{pypi_name}}
 # python_provide does not exist in CBS Cloud buildroot
 Provides:   python-%{pypi_name} = %{version}-%{release}
 Obsoletes:  python-%{pypi_name} < 0.17.4-3
@@ -70,7 +70,7 @@ BuildRequires:  python3-greenlet
 
 Requires:       python3-greenlet
 
-%{?python_provide:%python_provide python3-eventlet}
+#%{?python_provide:%python_provide python3-eventlet}
 
 %description -n python3-eventlet
 Eventlet is a networking library written in Python. It achieves high
