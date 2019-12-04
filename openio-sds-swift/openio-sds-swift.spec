@@ -27,6 +27,7 @@ BuildRequires:  python-setuptools
 Requires:       openio-sds-common
 Requires:       openstack-swift-proxy
 Requires:       python-lxml
+Requires:       python-pyeclib
 
 
 %description
