@@ -80,27 +80,6 @@ io operations appear blocking at the source code level.
 %endif
 
 
-%package -n python2-%{pypi_name}-doc
-Summary:        Documentation for %{name}
-BuildRequires:  python-sphinx
-
-%{?python_provide:%python_provide python2-%{pypi_name}-doc}
-# python_provide does not exist in CBS Cloud buildroot
-Provides:   python-%{pypi_name}-doc = %{version}-%{release}
-Obsoletes:  python-%{pypi_name}-doc < 0.17.4-3
-
-%description -n python2-%{pypi_name}-doc
-Documentation for the python-eventlet package.
-
-%if 0%{?with_python3}
-%package -n python3-eventlet-doc
-Summary: Documentation for python3-eventlet-doc
-BuildRequires:  python3-sphinx
-
-%description -n python3-eventlet-doc
-Documentation for the python-eventlet package.
-%endif
-
 %prep
 %setup -q -n %{pypi_name}-%{version}
 rm -rf *.egg-info
@@ -115,11 +94,6 @@ rm -rf *.egg-info
 
 # generate html docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
-pushd doc
-make html
-# remove the sphinx-build leftovers
-rm -rf html/.{doctrees,buildinfo}
-popd
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -127,11 +101,6 @@ cp -a . %{py3dir}
 find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 # generate html docs
 export PYTHONPATH="$( pwd ):$PYTHONPATH"
-pushd doc
-make html
-# remove the sphinx-build leftovers
-rm -rf html/.{doctrees,buildinfo}
-popd
 %endif
 
 %build
@@ -172,16 +141,6 @@ rm -rf %{buildroot}/%{python2_sitelib}/%{pypi_name}/green/http/{cookiejar,client
 %license LICENSE
 %{python3_sitelib}/%{pypi_name}
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif
-
-%files -n python2-%{pypi_name}-doc
-%license LICENSE
-%doc doc/_build/html
-
-%if 0%{?with_python3}
-%files -n python3-%{pypi_name}-doc
-%license LICENSE
-%doc doc/_build/html
 %endif
 
 %changelog
