@@ -17,7 +17,7 @@ This is a Python interface to the Redis key-value store.
 
 %package -n     python3-redis
 Summary:        Python 3 interface to the Redis key-value store
-%{?python_provide:%python_provide python3-redis}
+#%{?python_provide:%python_provide python3-redis}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 #BuildRequires:  python3-py
