@@ -13,7 +13,6 @@ Version:        6.0.0
 Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
-Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
 %define         requiredversion %{version}
 %else
 # Testing purpose only. Do not modify.
@@ -23,11 +22,13 @@ Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
 %define         targetversion 6.0.0
-%define         git_repo https://github.com/open-io/oio-sds
-Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
 %define         requiredversion 1:%{version}
 Epoch:          1
 %endif
+
+%define         git_repo https://github.com/open-io/oio-sds
+
+Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
 
 Summary:        OpenIO Cloud Storage Solution
 License:        AGPL-3.0
