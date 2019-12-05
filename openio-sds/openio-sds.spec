@@ -1,4 +1,5 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+
 %define cli_name oio
 %define tarname  oio-sds
 
@@ -7,6 +8,9 @@
 %endif
 
 Name:           openio-sds
+Summary:        OpenIO Cloud Storage Solution
+License:        AGPL-3.0
+URL:            http://www.openio.io/
 
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        6.0.0
@@ -29,10 +33,6 @@ Epoch:          1
 %define         git_repo https://github.com/open-io/oio-sds
 
 Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
-
-Summary:        OpenIO Cloud Storage Solution
-License:        AGPL-3.0
-URL:            http://www.openio.io/
 Source1:        openio-sds.tmpfiles
 
 # golang deps
@@ -271,11 +271,11 @@ PBR_VERSION=%{targetversion} %{__python3} setup.py build
 %{__sed} -i -e 's,#!/usr/bin/env bash,#!/bin/bash,g' tools/*.sh
 %endif
 
-make DESTDIR=$RPM_BUILD_ROOT install
+make DESTDIR=${RPM_BUILD_ROOT} install
 
 # Install python
-PBR_VERSION=%{targetversion} %{__python2} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-PBR_VERSION=%{targetversion} %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+PBR_VERSION=%{targetversion} %{__python2} setup.py install -O1 --skip-build --root ${RPM_BUILD_ROOT}
+PBR_VERSION=%{targetversion} %{__python3} setup.py install -O1 --skip-build --root ${RPM_BUILD_ROOT}
 %if %{?suse_version}0
 %fdupes %{buildroot}%{python_sitelib}
 %endif
@@ -293,18 +293,19 @@ PBR_VERSION=%{targetversion} %{__python3} setup.py install -O1 --skip-build --ro
 %{__install} -m 644 %{SOURCE1} ${RPM_BUILD_ROOT}%{_tmpfilesdir}/openio-sds.conf
 
 # Remove unwanted stuff from /usr/bin
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-bootstrap.py
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-reset.sh
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-check-services
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-compress
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-uncompress
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-test-config.py
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-wait-scored.sh
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-file-tool
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx-server
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
+rm -f \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-dump-buried-events.py \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-webhook-test.py \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-bootstrap.py \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-reset.sh \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-check-services \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-compress \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-rawx-uncompress \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-test-config.py \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-wait-scored.sh \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-file-tool \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx-server \
+  ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 
 
 %files common
@@ -371,7 +372,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 
 
 %pre common
-# Add user and group "openio" if not exists
+# Add "openio" user and group if they do not exist
 getent group openio >/dev/null || groupadd -g 220 openio
 if ! getent passwd openio >/dev/null; then
   useradd -M -d %{_sharedstatedir}/oio -s /bin/bash -u 120 -g openio -c "OpenIO services" openio
