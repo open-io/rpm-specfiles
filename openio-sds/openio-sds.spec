@@ -14,6 +14,7 @@ Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 Source0:        https://github.com/open-io/oio-sds/archive/%{tarversion}.tar.gz
+%define         requiredversion %{version}
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -24,6 +25,7 @@ Release:        0%{?dist}
 %define         targetversion 6.0.0
 %define         git_repo https://github.com/open-io/oio-sds
 Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
+%define         requiredversion 1:%{version}
 Epoch:          1
 %endif
 
@@ -116,11 +118,9 @@ This package contains common files used by other OpenIO SDS packages.
 
 %package server
 Summary: Server files for OpenIO Cloud Storage Solution
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:       %{name}-common = %{version}
-%else
-Requires:       %{name}-common = 1:%{version}
-%endif
+
+Requires:      %{name}-common       = %{requiredversion}
+
 %if %{?fedora}%{?suse_version}0
 BuildRequires:  zookeeper          >= 3.3.4
 Requires:       python-zookeeper
@@ -186,11 +186,8 @@ solution.
 
 %package common-devel
 Summary: Header files for OpenIO Cloud Storage Solution
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:       %{name}-common = %{version}
-%else
-Requires:       %{name}-common = 1:%{version}
-%endif
+
+Requires:      %{name}-common       = %{requiredversion}
 
 
 %description common-devel
@@ -203,11 +200,8 @@ This package contains header files for OpenIO SDS solution client.
 
 %package tools
 Summary: Side tools for OpenIO Cloud Storage Solution
-%if %{?_with_test:0}%{!?_with_test:1}
-Requires:       %{name}-server = %{version}
-%else
-Requires:       %{name}-server = 1:%{version}
-%endif
+
+Requires:      %{name}-server       = %{requiredversion}
 
 
 %description tools
