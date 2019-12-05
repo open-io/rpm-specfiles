@@ -120,6 +120,10 @@ This package contains common files used by other OpenIO SDS packages.
 %package server
 Summary: Server files for OpenIO Cloud Storage Solution
 
+Provides:      python-oiopy         = %{version}-%{release}
+Provides:      python2-oiopy        = %{version}-%{release}
+Provides:      python3-oiopy        = %{version}-%{release}
+
 Requires:      %{name}-common       = %{requiredversion}
 
 %if %{?fedora}%{?suse_version}0
@@ -170,10 +174,6 @@ Requires:       python3-redis
 Requires:       python3-gunicorn    >= 19.4.5
 Requires:       python3-eventlet
 Requires:       python3-cliff       >= 1.13
-
-Provides:       python-oiopy
-Provides:       python2-oiopy
-Provides:       python3-oiopy
 
 
 %description server
