@@ -260,7 +260,7 @@ cmake \
   -DAPACHE2_LIBDIR="%{_libdir}/apache2" \
   -DAPACHE2_MODDIR="%{_libdir}/apache2" \
 %endif
-  "-DGCLUSTER_AGENT_SOCK_PATH=\"/run/oio/sds/sds-agent-0.sock\"" \
+  -DGCLUSTER_AGENT_SOCK_PATH="%{_rundir}/oio/sds/sds-agent-0.sock" \
   .
 
 make %{?_smp_mflags}
@@ -286,13 +286,15 @@ PBR_VERSION=%{targetversion} %{__python3} setup.py install -O1 --skip-build --ro
 %endif
 
 # Install OpenIO SDS directories
-%{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_localstatedir}/log/oio/sds \
+%{__mkdir_p} -v \
+  ${RPM_BUILD_ROOT}%{_datarootdir}/%{name}-%{version} \
+  ${RPM_BUILD_ROOT}%{_localstatedir}/log/oio/sds \
   ${RPM_BUILD_ROOT}%{_sharedstatedir}/oio/sds \
   ${RPM_BUILD_ROOT}%{_sysconfdir}/oio/sds \
-  ${RPM_BUILD_ROOT}%{_datarootdir}/%{name}-%{version}
+  ${RPM_BUILD_ROOT}%{_rundir}/oio/sds \
+  ${RPM_BUILD_ROOT}%{_tmpfilesdir}
 
 # Install tmpfiles
-%{__mkdir_p} -v ${RPM_BUILD_ROOT}%{_tmpfilesdir} ${RPM_BUILD_ROOT}/run/oio/sds
 %{__install} -m 644 %{SOURCE1} ${RPM_BUILD_ROOT}%{_tmpfilesdir}/openio-sds.conf
 
 # Remove unwanted stuff from /usr/bin
@@ -347,11 +349,11 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 %defattr(644,root,root,755)
 %{python2_sitelib}/oio*
 %{python3_sitelib}/oio*
-/usr/lib/tmpfiles.d/openio-sds.conf
+%{_tmpfilesdir}/openio-sds.conf
 %if %{?suse_version}0
-%ghost /run/oio
+%ghost %{_rundir}/oio
 %else
-/run/oio
+%{_rundir}/oio
 %endif
 
 
@@ -377,7 +379,7 @@ rm -f ${RPM_BUILD_ROOT}%{_bindir}/%{cli_name}-sqlx
 # Add user and group "openio" if not exists
 getent group openio >/dev/null || groupadd -g 220 openio
 if ! getent passwd openio >/dev/null; then
-  useradd -M -d /var/lib/oio -s /bin/bash -u 120 -g openio -c "OpenIO services" openio
+  useradd -M -d %{_sharedstatedir}/oio -s /bin/bash -u 120 -g openio -c "OpenIO services" openio
 fi
 
 
