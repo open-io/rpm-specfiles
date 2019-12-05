@@ -1,6 +1,6 @@
 %define		realname asn1c
 
-Name:		openio-%{realname}
+Name:		%{realname}
 Version:	0.9.28
 Release:	1%{?dist}
 Summary:	Free, Open Source ASN.1 compiler
@@ -13,7 +13,6 @@ Source1:	%{name}-rpmlintrc
 %endif
 
 BuildRequires:	autoconf,automake,libtool
-#Requires:	
 Provides:   asn1c
 
 %description
