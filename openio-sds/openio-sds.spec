@@ -78,7 +78,7 @@ BuildRequires:  libattr-devel            >= 2.4.32
 BuildRequires:  libevent-devel           >= 2.0
 BuildRequires:  lzo-devel                >= 2.0
 BuildRequires:  zlib-devel
-BuildRequires:  openio-asn1c             >= 0.9.27
+BuildRequires:  asn1c                    >= 0.9.28
 BuildRequires:  cmake,bison,flex
 BuildRequires:  golang
 
@@ -94,7 +94,7 @@ OpenIO is a fork of Redcurrant, from Worldline by Atos.
 Summary: Common files for OpenIO Cloud Storage Solution
 Requires:       expat
 Requires:       glib2         >= 2.52
-Requires:       openio-asn1c  >= 0.9.27
+Requires:       asn1c         >= 0.9.28
 Requires:       zeromq        >= 4.0.0
 Requires:       zlib
 %if %{?suse_version}0
@@ -149,7 +149,7 @@ BuildRequires:  libevent           >= 2.0
 %endif
 Requires:       leveldb
 Requires:       lzo                >= 2.0
-Requires:       openio-asn1c       >= 0.9.27
+Requires:       asn1c              >= 0.9.28
 Requires:       python-gunicorn    >= 19.4.5
 Requires:       python-eventlet
 Requires:       python-redis
