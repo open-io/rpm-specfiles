@@ -11,6 +11,7 @@ URL:              http://pypi.python.org/pypi/cmd2
 Source0:          https://pypi.python.org/packages/source/c/%{modname}/%{modname}-%{version}.tar.gz
 BuildArch:        noarch
 
+Patch0:           01-fix-eventlet-exception-hijacking-bug.patch
 
 %global _description\
 Enhancements for standard library's cmd module.\
@@ -98,6 +99,7 @@ See docs at http://packages.python.org/cmd2/
 
 %prep
 %setup -q -n %{modname}-%{version}
+%patch0 -p1
 
 %build
 %py2_build

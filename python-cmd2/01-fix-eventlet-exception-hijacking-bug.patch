@@ -1,0 +1,21 @@
+diff --git a/cmd2.py b/cmd2.py
+index b804211..4fc4057 100755
+--- a/cmd2.py
++++ b/cmd2.py
+@@ -364,12 +364,16 @@ def remaining_args(opts_plus_args, arg_list):
+ 
+ 
+ def _which(editor):
++    import eventlet
+     try:
+         editor_path = subprocess.check_output(['which', editor], stderr=subprocess.STDOUT).strip()
+         if six.PY3:
+             editor_path = editor_path.decode()
+     except subprocess.CalledProcessError:
+         editor_path = None
++    except eventlet.green.subprocess.SubprocessError:
++        # See: https://github.com/eventlet/eventlet/issues/413
++        editor_path = None
+     return editor_path
+ 
+ 
