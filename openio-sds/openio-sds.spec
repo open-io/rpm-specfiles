@@ -386,6 +386,10 @@ fi
 %post server
 /sbin/ldconfig
 %tmpfiles_create %{_tmpfilesdir}/openio-sds.conf
+test -d %{_sysconfdir}/bash_completion.d && \
+  openio complete > %{_sysconfdir}/bash_completion.d/openio && \
+  openio-admin complete > %{_sysconfdir}/bash_completion.d/openio-admin || \
+  true
 
 
 %postun common
