@@ -31,7 +31,7 @@ BuildRequires:  git
 
 %package -n     python2-%{pypi_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python2-%{pypi_name}}
+#%{?python_provide:%python_provide python2-%{pypi_name}}
 
 BuildRequires:  python2-devel
 BuildRequires:  python2-pbr
@@ -56,7 +56,7 @@ Requires:       python2-pbr >= 2.0.0
 %if 0%{?with_python3}
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{pypi_name}}
+#%{?python_provide:%python_provide python3-%{pypi_name}}
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-pbr
