@@ -3,7 +3,7 @@
 %global modname cliff
 
 Name:             python-cliff
-Version:          1.14.0
+Version:          1.17.0
 Release:          2%{?dist}
 Summary:          Command Line Interface Formulation Framework
 
@@ -135,6 +135,9 @@ popd
 %endif
 
 %changelog
+* Thu Dec 12 2019 Vincent Legoll <vincent.legoll@openio.io> 1.17.0-2
+- New version (required for CLI `openio complete` to work properly)
+
 * Tue Aug 25 2015 Romain Acciari <romain.acciari@openio.io> 1.13.0-2
 - Add version to python-six require
 
