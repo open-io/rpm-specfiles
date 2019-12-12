@@ -3,9 +3,7 @@
 %global module_name os_service_types
 %global repo_bootstrap 1
 
-%if 0%{?fedora}
 %global with_python3 1
-%endif
 
 %global common_desc \
 OsServiceTypes is a Python library for consuming OpenStack sevice-types-authority data \
