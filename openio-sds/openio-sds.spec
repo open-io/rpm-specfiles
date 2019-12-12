@@ -47,12 +47,11 @@ BuildRequires:  leveldb-devel
 %if %{?fedora}%{?suse_version}0
 BuildRequires:  python-pbr
 BuildRequires:  python3-pbr
-BuildRequires:  zookeeper-devel          >= 3.3.4
 %else
 BuildRequires:  python2-pbr
 BuildRequires:  python36-pbr
-BuildRequires:  zookeeper-lib-devel      >= 3.3.4
 %endif
+BuildRequires:  zookeeper-devel          >= 3.5.6
 BuildRequires:  python-devel
 BuildRequires:  python-setuptools
 BuildRequires:  python3-devel
@@ -105,7 +104,7 @@ Requires:       json-c        >= 0.12
 %if %{?fedora}%{?suse_version}0
 BuildRequires:  zookeeper     >= 3.3.4
 %else
-BuildRequires:  zookeeper-lib >= 3.3.4
+BuildRequires:  libzookeeper2 >= 3.5.6
 %endif
 
 
@@ -130,8 +129,11 @@ Requires:      %{name}-common       = %{requiredversion}
 BuildRequires:  zookeeper          >= 3.3.4
 Requires:       python-zookeeper
 %else
-BuildRequires:  zookeeper-lib      >= 3.3.4
-Requires:       python-ZooKeeper
+BuildRequires:  zookeeper-devel    >= 3.5.6
+Requires:       zookeeper          >= 3.5.6
+Requires:       libzookeeper2      >= 3.5.6
+Requires:       python2-zookeeper  >= 3.5.6
+Requires:       python3-zookeeper  >= 3.5.6
 %endif
 Requires:       python             >= 2.7
 Requires:       python3
@@ -158,7 +160,7 @@ Requires:       python-futures
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
 Requires:       python-cliff       >= 1.13
-Requires:       python3-pyeclib    >= 1.5.0
+Requires:       python-pyeclib     >= 1.5.0
 Requires:       python-urllib3     >= 1.12
 Requires:       python-werkzeug
 # Needed for backblaze connector
@@ -174,6 +176,7 @@ Requires:       python3-redis
 Requires:       python3-gunicorn    >= 19.4.5
 Requires:       python3-eventlet
 Requires:       python3-cliff       >= 1.13
+Requires:       python3-pyeclib     >= 1.5.0
 
 
 %description server
