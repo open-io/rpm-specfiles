@@ -40,7 +40,7 @@ Source2:        https://github.com/tylerb/graceful/archive/v1.2.15.tar.gz
 Source3:        https://github.com/go-ini/ini/archive/v1.38.2.tar.gz
 Source4:        https://github.com/golang/sys/archive/release-branch.go1.11.tar.gz
 
-Obsoletes:      openio-sds-client,openio-sds-client-devel
+Obsoletes:      openio-sds-client,openio-sds-client-devel,openio-sds-mod-httpd
 
 BuildRequires:  glib2-devel              >= 2.52.0
 BuildRequires:  leveldb-devel
