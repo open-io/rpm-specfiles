@@ -106,6 +106,7 @@ BuildRequires:  zookeeper     >= 3.3.4
 %else
 BuildRequires:  libzookeeper2 >= 3.5.6
 %endif
+Obsoletes:      openio-sds-client,openio-sds-client-devel,openio-sds-mod-httpd
 
 
 %description common
@@ -178,6 +179,8 @@ Requires:       python3-eventlet
 Requires:       python3-cliff       >= 1.13
 Requires:       python3-pyeclib     >= 1.5.0
 
+Obsoletes:      openio-sds-client,openio-sds-client-devel,openio-sds-mod-httpd
+
 
 %description server
 OpenIO software storage solution is designed to handle PETA-bytes of
@@ -192,6 +195,7 @@ solution.
 Summary: Header files for OpenIO Cloud Storage Solution
 
 Requires:      %{name}-common       = %{requiredversion}
+Obsoletes:      openio-sds-client,openio-sds-client-devel,openio-sds-mod-httpd
 
 
 %description common-devel
@@ -206,6 +210,7 @@ This package contains header files for OpenIO SDS solution client.
 Summary: Side tools for OpenIO Cloud Storage Solution
 
 Requires:      %{name}-server       = %{requiredversion}
+Obsoletes:      openio-sds-client,openio-sds-client-devel,openio-sds-mod-httpd
 
 
 %description tools
