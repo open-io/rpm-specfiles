@@ -115,6 +115,7 @@ Group:         Development/Libraries/Python
 Requires:      python2
 Requires:      libzookeeper%{so_ver} = %{version}-%{release}
 Provides:      python-ZooKeeper
+Obsoletes:     python-ZooKeeper < 3.5
 
 %description -n python2-zookeeper
 ZooKeeper is a centralized service for maintaining configuration
@@ -129,6 +130,7 @@ Group:         Development/Libraries/Python
 Requires:      python3
 Requires:      libzookeeper%{so_ver} = %{version}-%{release}
 Provides:      python-ZooKeeper
+Obsoletes:     python-ZooKeeper < 3.5
 
 %description -n python3-zookeeper
 ZooKeeper is a centralized service for maintaining configuration
