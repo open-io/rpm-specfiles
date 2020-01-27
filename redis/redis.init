@@ -4,13 +4,21 @@
 #
 # chkconfig:   - 20 80
 # description: Starts and stops the redis daemon.
+#
+### BEGIN INIT INFO
+# Provides: redis-server
+# Required-Start: $local_fs $remote_fs $network
+# Required-Stop: $local_fs $remote_fs $network
+# Short-Description: start and stop Redis server
+# Description: A persistent key-value database
+### END INIT INFO
 
 # Source function library.
 . /etc/rc.d/init.d/functions
 
 name="redis-server"
 exec="/usr/bin/$name"
-shut="/usr/bin/redis-shutdown"
+shut="/usr/libexec/redis-shutdown"
 pidfile="/var/run/redis/redis.pid"
 REDIS_CONFIG="/etc/redis.conf"
 
@@ -51,10 +59,6 @@ restart() {
     start
 }
 
-reload() {
-    false
-}
-
 rh_status() {
     status -p $pidfile $name
 }
@@ -75,13 +79,6 @@ case "$1" in
         ;;
     restart)
         $1
-        ;;
-    reload)
-        rh_status_q || exit 7
-        $1
-        ;;
-    force-reload)
-        force_reload
         ;;
     status)
         rh_status
