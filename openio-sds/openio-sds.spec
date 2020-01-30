@@ -170,8 +170,8 @@ Requires:       python-requests    >= 2.6.0
 Requires:       python36-pyxattr   >= 0.4
 Requires:       python36-six
 Requires:       python36-urllib3
+Requires:       python36-PyYAML
 
-Requires:       python3-PyYAML
 Requires:       python3-werkzeug
 Requires:       python3-redis
 Requires:       python3-gunicorn    >= 19.4.5
