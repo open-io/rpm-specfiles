@@ -38,7 +38,9 @@ Summary:        An SDK for building applications to work with OpenStack
 BuildRequires:  python2-devel
 BuildRequires:  python2-pbr >= 2.0.0
 BuildRequires:  python2-sphinx
+%if 0%{?with_doc}
 BuildRequires:  python2-openstackdocstheme
+%endif
 BuildRequires:  python2-keystoneauth1
 BuildRequires:  python2-appdirs
 BuildRequires:  python2-requestsexceptions
