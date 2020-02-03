@@ -3,7 +3,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.6.1
+Version:        0.6.5
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -91,6 +91,8 @@ go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
 
 
 %changelog
+* Mon Feb 03 2020 - 0.6.5-1 - Jerome Loyet <jerome@openio.io>
+- New release
 * Fri Nov 29 2019 - 0.6.1-1 - Vladimir Dombrovski <vladimir@openio.io>
 - New release
 * Fri May 24 2019 - 0.5.0-1 - Vladimir Dombrovski <vladimir@openio.io>
