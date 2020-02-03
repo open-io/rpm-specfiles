@@ -3,7 +3,7 @@
 
 Name:           PyYAML
 Version:        3.12
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        YAML parser and emitter for Python
 
 Group:          Development/Libraries
@@ -38,11 +38,12 @@ PyYAML is applicable for a broad range of tasks from complex
 configuration files to object serialization and persistance.
 
 %if 0%{?with_python3}
-%package -n python3-PyYAML
+%package -n python36-PyYAML
+Provides: python3-PyYAML = %{version}-%{release}
 Summary: YAML parser and emitter for Python
 Group: Development/Libraries
 
-%description -n python3-PyYAML
+%description -n python36-PyYAML
 YAML is a data serialization format designed for human readability and
 interaction with scripting languages.  PyYAML is a YAML parser and
 emitter for Python.
@@ -109,7 +110,7 @@ popd
 %{python_sitearch}/*
 
 %if 0%{?with_python3}
-%files -n python3-PyYAML
+%files -n python36-PyYAML
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
 %doc CHANGES PKG-INFO README examples
@@ -118,6 +119,9 @@ popd
 
 
 %changelog
+* Mon Feb 03 2020 Vincent Legoll <vincent.legoll@openio.io> - 3.12-2
+- python3-PyYAML => python36-PyYAML
+
 * Mon Oct 08 2018 Romain Acciari <romain.acciari@openio.io> - 3.12-1
 - New upstream release 3.12
 
