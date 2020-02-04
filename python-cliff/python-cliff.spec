@@ -1,220 +1,160 @@
-%global with_python3 1
+# Macros for py2/py3 compatibility
+%if 0%{?fedora} || 0%{?rhel} > 7
+%global pyver %{python3_pkgversion}
+%else
+%global pyver 2
+%endif
+%global pyver_bin python%{pyver}
+%global pyver_sitelib %python%{pyver}_sitelib
+%global pyver_install %py%{pyver}_install
+%global pyver_build %py%{pyver}_build
+# End of macros for py2/py3 compatibility
+
+%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
 
 %global modname cliff
 
-Name:             python-cliff
-Version:          1.17.0
+%global common_desc \
+cliff is a framework for building command line programs. It uses setuptools \
+entry points to provide subcommands, output formatters, and other \
+extensions. \
+\
+Documentation for cliff is hosted on readthedocs.org at \
+http://readthedocs.org/docs/cliff/en/latest/
+
+%global common_desc_tests This package contains tests for the python cliff library.
+
+Name:             python-%{modname}
+Version:          2.16.0
 Release:          2%{?dist}
 Summary:          Command Line Interface Formulation Framework
 
 Group:            Development/Libraries
 License:          ASL 2.0
-URL:              http://pypi.python.org/pypi/cliff
-Source0:          https://pypi.python.org/packages/source/c/%{modname}/%{modname}-%{version}.tar.gz
+URL:              https://pypi.io/pypi/cliff
+Source0:          https://pypi.io/packages/source/c/cliff/cliff-%{version}.tar.gz
 
 BuildArch:        noarch
 
-BuildRequires:    python2-devel
-BuildRequires:    python-setuptools
-BuildRequires:    python-pbr
-BuildRequires:    python-prettytable
-BuildRequires:    python-cmd2 >= 0.6.7
-BuildRequires:    python-stevedore
-BuildRequires:    python-six >= 1.9.0
+%package -n python%{pyver}-%{modname}
+Summary:          Command Line Interface Formulation Framework
+%{?python_provide:%python_provide python%{pyver}-%{modname}}
+
+BuildRequires:    python%{pyver}-devel
+BuildRequires:    python%{pyver}-setuptools
+BuildRequires:    python%{pyver}-pbr
+BuildRequires:    python%{pyver}-prettytable
+BuildRequires:    python%{pyver}-stevedore
+BuildRequires:    python%{pyver}-six
+BuildRequires:    python%{pyver}-pyparsing
+# FIXME (jcapitao): As soon as CentOS8 is out, bump version of python-cmd2 to 0.8.3
+BuildRequires:    python%{pyver}-cmd2 >= 0.6.7
+
+Requires:         python%{pyver}-prettytable
+Requires:         python%{pyver}-stevedore >= 1.20.0
+Requires:         python%{pyver}-six
+Requires:         python%{pyver}-cmd2 >= 0.6.7
+Requires:         python%{pyver}-pyparsing
+# Handle python2 exception
+%if %{pyver} == 2
+Requires:         PyYAML
+Requires:         python%{pyver}-unicodecsv
+%else
+Requires:         python%{pyver}-PyYAML
+%endif
+
+%description -n python%{pyver}-%{modname}
+%{common_desc}
+
+%package -n python%{pyver}-%{modname}-tests
+Summary:          Command Line Interface Formulation Framework
+%{?python_provide:%python_provide python%{pyver}-%{modname}-tests}
 
 # Required for the test suite
-BuildRequires:    python-nose
-BuildRequires:    python-mock
+BuildRequires:    python%{pyver}-mock
 BuildRequires:    bash
-BuildRequires:    bash-completion
-
-Requires:         python-setuptools
-Requires:         python-prettytable
-Requires:         python-cmd2 >= 0.6.7
-Requires:         python-stevedore
-Requires:         python-six >= 1.9.0
-
-%if %{?rhel}%{!?rhel:0} == 6
-BuildRequires:    python-argparse
-Requires:         python-argparse
+BuildRequires:    which
+BuildRequires:    python%{pyver}-subunit
+BuildRequires:    python%{pyver}-testtools
+BuildRequires:    python%{pyver}-testscenarios
+BuildRequires:    python%{pyver}-testrepository
+# Handle python2 exception
+%if %{pyver} == 2
+BuildRequires:    python-docutils
+BuildRequires:    PyYAML
+BuildRequires:    python%{pyver}-unicodecsv
+%else
+BuildRequires:    python%{pyver}-docutils
+BuildRequires:    python%{pyver}-PyYAML
 %endif
 
-
-%if 0%{?with_python3}
-BuildRequires:    python3-devel
-BuildRequires:    python3-setuptools
-BuildRequires:    python3-pbr
-#BuildRequires:    python3-prettytable
-#BuildRequires:    python3-cmd2 >= 0.6.7
-#BuildRequires:    python3-stevedore
-#BuildRequires:    python36-six
-#BuildRequires:    python3-nose
-#BuildRequires:    python3-mock
+Requires:         python%{pyver}-%{modname} = %{version}-%{release}
+Requires:         python%{pyver}-mock
+Requires:         bash
+Requires:         which
+Requires:         python%{pyver}-subunit
+Requires:         python%{pyver}-testtools
+Requires:         python%{pyver}-testscenarios
+Requires:         python%{pyver}-testrepository
+# Handle python2 exception
+%if %{pyver} == 2
+Requires:         PyYAML
+Requires:         python%{pyver}-unicodecsv
+%else
+Requires:         python%{pyver}-PyYAML
 %endif
+
+%description -n python%{pyver}-%{modname}-tests
+%{common_desc_tests}
 
 %description
-cliff is a framework for building command line programs. It uses setuptools
-entry points to provide subcommands, output formatters, and other
-extensions.
-
-Documentation for cliff is hosted on readthedocs.org at
-http://readthedocs.org/docs/cliff/en/latest/
-
-%if 0%{?with_python3}
-%package -n python3-cliff
-Summary:        Command Line Interface Formulation Framework
-Group:          Development/Libraries
-
-Requires:         python3-setuptools
-Requires:         python3-prettytable
-Requires:         python3-cmd2 >= 0.6.7
-Requires:         python3-stevedore
-Requires:         python36-six
-
-%description -n python3-cliff
-cliff is a framework for building command line programs. It uses setuptools
-entry points to provide subcommands, output formatters, and other
-extensions.
-
-Documentation for cliff is hosted on readthedocs.org at
-http://readthedocs.org/docs/cliff/en/latest/
-%endif
+%{common_desc}
 
 %prep
-%setup -q -n %{modname}-%{version}
+%setup -q -n %{modname}-%{upstream_version}
+rm -rf {test-,}requirements.txt
 
-# let RPM handle deps
-rm -f requirements.txt
-
-%if 0%{?with_python3}
-rm -rf %{py3dir}
-cp -a . %{py3dir}
-%endif
+# Remove bundled egg info
+rm -rf *.egg-info
 
 %build
-%{__python} setup.py build
-
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py build
-popd
-%endif
+%{pyver_build}
 
 %install
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
-popd
-%endif
+%{pyver_install}
 
-%{__python} setup.py install -O1 --skip-build --root=%{buildroot}
+%check
+PYTHON=python%{pyver} %{pyver_bin} setup.py test
 
-#%check
-#PYTHONPATH=. nosetests
-
-#%if 0%{?with_python3}
-#pushd %{py3dir}
-#sed -i 's/nosetests/nosetests-%{python3_version}/' cliff/tests/test_help.py
-#PYTHONPATH=. nosetests-%{python3_version}
-#popd
-#%endif
-
-
-%files
+%files -n python%{pyver}-%{modname}
 %license LICENSE
-%doc doc/ README.rst ChangeLog AUTHORS announce.rst CONTRIBUTING.rst
-%{python_sitelib}/%{modname}
-%{python_sitelib}/%{modname}-%{version}*
+%doc doc/ README.rst ChangeLog AUTHORS CONTRIBUTING.rst
+%{pyver_sitelib}/%{modname}
+%{pyver_sitelib}/%{modname}-*.egg-info
+%exclude %{pyver_sitelib}/%{modname}/tests
 
-%if 0%{?with_python3}
-%files -n python3-%{modname}
-%license LICENSE
-%doc doc/ README.rst ChangeLog AUTHORS announce.rst CONTRIBUTING.rst
-%{python3_sitelib}/%{modname}
-%{python3_sitelib}/%{modname}-%{version}-*
-%endif
+%files -n python%{pyver}-%{modname}-tests
+%{pyver_sitelib}/%{modname}/tests
 
 %changelog
-* Thu Dec 12 2019 Vincent Legoll <vincent.legoll@openio.io> 1.17.0-2
-- New version (required for CLI `openio complete` to work properly)
+* Wed Nov 06 2019 Alfredo Moralejo <amoralej@redhat.com> 2.16.0-2
+- Update to upstream version 2.16.0
 
-* Tue Aug 25 2015 Romain Acciari <romain.acciari@openio.io> 1.13.0-2
-- Add version to python-six require
+* Sun Oct 06 2019 Kevin Fenzi <kevin@scrye.com> - 2.16.0-1
+- Update to 2.16.0. Fixes bug #1749959
 
-* Thu Jun 25 2015 Alan Pevec <alan.pevec@redhat.com> 1.13.0-1
-- Update to upstream 1.13.0
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 2.15.0-4
+- Rebuilt for Python 3.8.0rc1 (#1748018)
 
-* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.10.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 2.15.0-3
+- Rebuilt for Python 3.8
 
-* Mon Mar 30 2015 Ralph Bean <rbean@redhat.com> - 1.10.0-2
-- Remove setuptools dep on argparse.
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.15.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
-* Wed Mar 04 2015 Ralph Bean <rbean@redhat.com> - 1.10.0-1
-- new version
-- Update list of files packages under %%doc.
-- Explicitly package the license file.
+* Sat Jun 29 2019 Kevin Fenzi <kevin@scrye.com> - 2.15.0-1
+- Update to 2.15.0. Fixed bug #1686683
 
-* Mon Sep 22 2014 Alan Pevec <alan.pevec@redhat.com> 1.7.0-1
-- Update to upstream 1.7.0
+* Fri Mar 08 2019 RDO <dev@lists.rdoproject.org> 2.14.1-1
+- Update to 2.14.1
 
-* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.6.1-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
-
-* Wed May 14 2014 Bohuslav Kabrda <bkabrda@redhat.com> - 1.6.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
-
-* Thu Apr 17 2014 Ralph Bean <rbean@redhat.com> - 1.6.1-1
-- Latest upstream.
-
-* Tue Jan 28 2014 Ralph Bean <rbean@redhat.com> - 1.6.0-1
-- Latest upstream.
-- Add dep on python-pbr (python build reasonableness)
-- Add dep on python-stevedore
-- Add build requirements on python-nose, python-mock, and bash
-- Change check to use 'nosetests' directly.
-- Remove bundled egg-info
-
-* Thu Nov 14 2013 Ralph Bean <rbean@redhat.com> - 1.4.5-1
-- Latest upstream.
-- Remove patch now that the latest cmd2 and pyparsing are required.
-
-* Thu Nov 14 2013 Ralph Bean <rbean@redhat.com> - 1.4.4-2
-- Enable python3 subpackage now that python3-pyparsing is available.
-- Adjust patch to simplify pyparsing setuptools constraints further.
-
-* Fri Sep 13 2013 Pádraig Brady <pbrady@redhat.com> - 1.4.4-1
-- Latest upstream.
-
-* Tue Aug 06 2013 Ralph Bean <rbean@redhat.com> - 1.4-1
-- Latest upstream.
-
-* Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
-
-* Wed Apr 10 2013 Ralph Bean <rbean@redhat.com> - 1.3.2-1
-- Latest upstream.
-- Patched pyparsing version constraint for py2.
-- Modernized python3 conditional.
-- Temporarily disabled python3 subpackage for python3-pyparsing dep.
-- Added temporary explicit dependency on python3-pyparsing>=2.0.0.
-
-* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
-
-* Tue Jan 22 2013 Ralph Bean <rbean@redhat.com> - 1.3-1
-- Latest upstream.
-- Enabled python3 subpackage.
-- Remove requirement on python-tablib
-
-* Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
-
-* Fri Jul 06 2012 Ralph Bean <rbean@redhat.com> - 1.0-3
-- Require python-argparse on epel.
-
-* Thu Jul 05 2012 Ralph Bean <rbean@redhat.com> - 1.0-2
-- Manually disable python3 support until python3-prettytable is available.
-
-* Thu Jun 28 2012 Ralph Bean <rbean@redhat.com> - 1.0-1
-- initial package for Fedora
