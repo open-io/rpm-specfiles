@@ -45,14 +45,14 @@ BuildRequires:    python%{pyver}-setuptools
 BuildRequires:    python%{pyver}-pbr
 BuildRequires:    python%{pyver}-prettytable
 BuildRequires:    python%{pyver}-stevedore
-BuildRequires:    python%{pyver}-six
+BuildRequires:    python36-six
 BuildRequires:    python%{pyver}-pyparsing
 # FIXME (jcapitao): As soon as CentOS8 is out, bump version of python-cmd2 to 0.8.3
 BuildRequires:    python%{pyver}-cmd2 >= 0.6.7
 
 Requires:         python%{pyver}-prettytable
 Requires:         python%{pyver}-stevedore >= 1.20.0
-Requires:         python%{pyver}-six
+Requires:         python36-six
 Requires:         python%{pyver}-cmd2 >= 0.6.7
 Requires:         python%{pyver}-pyparsing
 # Handle python2 exception
@@ -65,47 +65,6 @@ Requires:         python%{pyver}-PyYAML
 
 %description -n python%{pyver}-%{modname}
 %{common_desc}
-
-%package -n python%{pyver}-%{modname}-tests
-Summary:          Command Line Interface Formulation Framework
-%{?python_provide:%python_provide python%{pyver}-%{modname}-tests}
-
-# Required for the test suite
-BuildRequires:    python%{pyver}-mock
-BuildRequires:    bash
-BuildRequires:    which
-BuildRequires:    python%{pyver}-subunit
-BuildRequires:    python%{pyver}-testtools
-BuildRequires:    python%{pyver}-testscenarios
-BuildRequires:    python%{pyver}-testrepository
-# Handle python2 exception
-%if %{pyver} == 2
-BuildRequires:    python-docutils
-BuildRequires:    PyYAML
-BuildRequires:    python%{pyver}-unicodecsv
-%else
-BuildRequires:    python%{pyver}-docutils
-BuildRequires:    python%{pyver}-PyYAML
-%endif
-
-Requires:         python%{pyver}-%{modname} = %{version}-%{release}
-Requires:         python%{pyver}-mock
-Requires:         bash
-Requires:         which
-Requires:         python%{pyver}-subunit
-Requires:         python%{pyver}-testtools
-Requires:         python%{pyver}-testscenarios
-Requires:         python%{pyver}-testrepository
-# Handle python2 exception
-%if %{pyver} == 2
-Requires:         PyYAML
-Requires:         python%{pyver}-unicodecsv
-%else
-Requires:         python%{pyver}-PyYAML
-%endif
-
-%description -n python%{pyver}-%{modname}-tests
-%{common_desc_tests}
 
 %description
 %{common_desc}
@@ -123,9 +82,6 @@ rm -rf *.egg-info
 %install
 %{pyver_install}
 
-%check
-PYTHON=python%{pyver} %{pyver_bin} setup.py test
-
 %files -n python%{pyver}-%{modname}
 %license LICENSE
 %doc doc/ README.rst ChangeLog AUTHORS CONTRIBUTING.rst
@@ -133,8 +89,6 @@ PYTHON=python%{pyver} %{pyver_bin} setup.py test
 %{pyver_sitelib}/%{modname}-*.egg-info
 %exclude %{pyver_sitelib}/%{modname}/tests
 
-%files -n python%{pyver}-%{modname}-tests
-%{pyver_sitelib}/%{modname}/tests
 
 %changelog
 * Wed Nov 06 2019 Alfredo Moralejo <amoralej@redhat.com> 2.16.0-2
