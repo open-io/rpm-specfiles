@@ -16,7 +16,7 @@ and local caching of the fetched data.
 
 Name:           python-%{pypi_name}
 Version:        1.2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python library for consuming OpenStack sevice-types-authority data
 
 License:        ASL 2.0
@@ -35,14 +35,7 @@ Summary:        %{summary}
 
 BuildRequires:  python2-devel
 BuildRequires:  python2-pbr
-BuildRequires:  python2-subunit
-BuildRequires:  python2-testscenarios
 BuildRequires:  python2-setuptools
-%if 0%{?fedora} || 0%{?rhel} > 7
-BuildRequires:  python2-requests-mock
-%else
-BuildRequires:  python-requests-mock
-%endif
 
 %if 0%{?repo_bootstrap} == 0
 BuildRequires:  python2-keystoneauth1
@@ -60,9 +53,6 @@ Summary:        %{summary}
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-pbr
-BuildRequires:  python3-subunit
-BuildRequires:  python3-testscenarios
-BuildRequires:  python3-requests-mock
 BuildRequires:  python3-setuptools
 %if 0%{?repo_bootstrap} == 0
 BuildRequires:  python3-keystoneauth1
@@ -74,17 +64,6 @@ Requires:       python3-pbr >= 2.0.0
 %{common_desc}
 %endif
 
-%package -n python-%{pypi_name}-doc
-Summary:        %{pypi_name} documentation
-
-BuildRequires:  python2-openstackdocstheme
-BuildRequires:  python2-sphinx
-
-%description -n python-%{pypi_name}-doc
-%{common_desc}
-
-
-Documentation for %{pypi_name}
 
 %prep
 %autosetup -n %{pypi_name}-%{upstream_version} -S git
@@ -98,10 +77,7 @@ rm -rf %{pypi_name}.egg-info
 %py3_build
 %endif
 %py2_build
-# generate html docs
-%{__python2} setup.py build_sphinx -b html
-# remove the sphinx-build leftovers
-rm -rf doc/build/html/.{doctrees,buildinfo}
+
 
 %install
 %if 0%{?with_python3}
@@ -110,15 +86,6 @@ rm -rf doc/build/html/.{doctrees,buildinfo}
 
 %py2_install
 
-
-%check
-%if 0%{?repo_bootstrap} == 0
-%if 0%{?with_python3}
-%{__python3} setup.py test
-%endif
-
-%{__python2} setup.py test
-%endif
 
 %files -n python2-%{pypi_name}
 %license LICENSE
@@ -134,11 +101,10 @@ rm -rf doc/build/html/.{doctrees,buildinfo}
 %{python3_sitelib}/%{module_name}-%{upstream_version}-py?.?.egg-info
 %endif
 
-%files -n python-%{pypi_name}-doc
-%license LICENSE
-%doc doc/build/html
 
 %changelog
+* Wed Feb 05 2020 Vincent Legoll <vincent.legoll@openio.io> 1.2.0-2
+- Remove useless doc & tests
 * Mon Oct 08 2018 Romain Acciari <romain.acciari@openio.io> 1.2.0-1
 - Rebuild for OpenIO SDS
 * Tue Aug 07 2018 RDO <dev@lists.rdoproject.org> 1.2.0-1
