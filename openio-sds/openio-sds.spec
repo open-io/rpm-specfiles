@@ -13,8 +13,8 @@ License:        AGPL-3.0
 URL:            http://www.openio.io/
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        6.0.0
-Release:        1%{?dist}
+Version:        6.0.1
+Release:        3%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 %define         requiredversion %{version}
@@ -160,7 +160,7 @@ Requires:       PyYAML
 Requires:       python-futures
 Requires:       pyxattr            >= 0.4
 Requires:       python-simplejson  >= 2.0.9
-Requires:       python-cliff       >= 1.13
+Requires:       python-cliff       >= 2.16.0
 Requires:       python-pyeclib     >= 1.5.0
 Requires:       python-urllib3     >= 1.12
 Requires:       python-werkzeug
@@ -176,7 +176,7 @@ Requires:       python3-werkzeug
 Requires:       python3-redis
 Requires:       python3-gunicorn    >= 19.4.5
 Requires:       python3-eventlet
-Requires:       python3-cliff       >= 1.13
+Requires:       python3-cliff       >= 2.16.0
 Requires:       python3-pyeclib     >= 1.5.0
 
 Obsoletes:      openio-sds-client,openio-sds-client-devel,openio-sds-mod-httpd
@@ -409,6 +409,12 @@ test -d %{_sysconfdir}/bash_completion.d && \
 
 
 %changelog
+* Wed Feb 02 2020 - 6.0.1-3 - Vincent Legoll <vincent.legoll@openio.io>
+- depends on cliff 2.16.0
+* Thu Jan 30 2020 - 6.0.1-2 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
+* Thu Jan 30 2020 - 6.0.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Tue Dec 03 2019 - 6.0.0-2 - Vladimir Dombrovski <vladimir@openio.io>
 - Fix python3-pbr dependency
 * Tue Oct 15 2019 - 6.0.0-1 - Vincent Legoll <vincent.legoll@openio.io>
