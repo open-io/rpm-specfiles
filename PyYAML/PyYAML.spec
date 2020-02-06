@@ -3,7 +3,7 @@
 
 Name:           PyYAML
 Version:        3.12
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        YAML parser and emitter for Python
 
 Group:          Development/Libraries
@@ -40,6 +40,7 @@ configuration files to object serialization and persistance.
 %if 0%{?with_python3}
 %package -n python36-PyYAML
 Provides: python3-PyYAML = %{version}-%{release}
+Provides: python36-yaml = %{version}-%{release}
 Summary: YAML parser and emitter for Python
 Group: Development/Libraries
 
@@ -119,6 +120,9 @@ popd
 
 
 %changelog
+* Thu Feb 06 2020 Vincent Legoll <vincent.legoll@openio.io> - 3.12-3
+- provides python36-yaml
+
 * Mon Feb 03 2020 Vincent Legoll <vincent.legoll@openio.io> - 3.12-2
 - python3-PyYAML => python36-PyYAML
 
