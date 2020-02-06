@@ -2,7 +2,7 @@
 
 Name:           pyparsing
 Version:        2.0.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An object-oriented approach to text processing
 Group:          Development/Libraries
 License:        MIT
@@ -15,6 +15,9 @@ BuildRequires:  glibc-common
 %if 0%{?with_python3}
 BuildRequires: python3-devel
 %endif # if with_python3
+Provides: python-pyparsing = %{version}-%{release}
+Provides: python2-pyparsing = %{version}-%{release}
+
 
 %description
 pyparsing is a module that can be used to easily and directly configure syntax
@@ -29,6 +32,7 @@ The package contains documentation for pyparsing.
 
 %if 0%{?with_python3}
 %package -n python3-pyparsing
+Provides: python36-pyparsing = %{version}-%{release}
 Summary:        An object-oriented approach to text processing (Python 3 version)
 Group:          Development/Libraries
 
@@ -101,6 +105,9 @@ rm -rf %{buildroot}
 %doc CHANGES README LICENSE HowToUsePyparsing.html docs examples htmldoc
 
 %changelog
+* Thu Feb 06 2020 Vincent Legoll <vincent.legoll@openio.io> - 2.0.3-3
+- provides python*-pyparsing
+
 * Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.0.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
