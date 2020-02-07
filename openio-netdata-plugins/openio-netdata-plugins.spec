@@ -3,7 +3,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.6.6
+Version:        0.6.8
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -62,6 +62,7 @@ go build cmd/fs.plugin/fs.plugin.go
 go build cmd/redis.plugin/redis.plugin.go
 go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
 go build cmd/memcached.plugin/memcached.plugin.go
+go build cmd/beanstalk.plugin/beanstalk.plugin.go
 
 
 %install
@@ -75,6 +76,7 @@ go build cmd/memcached.plugin/memcached.plugin.go
     redis.plugin \
     s3roundtrip.plugin \
     memcached.plugin \
+    beanstalk.plugin \
     ${RPM_BUILD_ROOT}%{_libexecdir}/netdata/plugins.d
 # Looks like bare golang's `go build` don't do the required linker magic
 # http://fedoraproject.org/wiki/Releases/FeatureBuildId
@@ -91,9 +93,12 @@ go build cmd/memcached.plugin/memcached.plugin.go
 %{_libexecdir}/netdata/plugins.d/container.plugin
 %{_libexecdir}/netdata/plugins.d/s3roundtrip.plugin
 %{_libexecdir}/netdata/plugins.d/memcached.plugin
+%{_libexecdir}/netdata/plugins.d/beanstalk.plugin
 
 
 %changelog
+* Fri Feb 07 2020 - 0.6.8-1 - Jerome Loyet <jerome@openio.io>
+- New release
 * Thu Feb 06 2020 - 0.6.6-1 - Jerome Loyet <jerome@openio.io>
 - New release
 * Mon Feb 03 2020 - 0.6.5-1 - Jerome Loyet <jerome@openio.io>
