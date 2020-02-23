@@ -73,8 +73,8 @@ Recommends:	python2-psycopg2 \
 
 Summary:	Real-time performance monitoring, done right
 Name:		netdata
-Version:	1.19.0
-Release:	2%{?dist}
+Version:	1.20.0
+Release:	1%{?dist}
 License:	GPLv3+
 Group:		Applications/System
 Source0:	https://github.com/netdata/%{name}/releases/download/v%{version}/%{name}-v%{version}.tar.gz
@@ -84,8 +84,10 @@ BuildRequires:	pkgconfig
 BuildRequires:	xz
 BuildRequires:	zlib-devel
 BuildRequires:	libuuid-devel
+BuildRequires:	libuv-devel
 Requires:	zlib
 Requires:	libuuid
+Requires:	libuv
 
 # Packages can be found in the EPEL repo
 %if %{with nfacct}
@@ -146,6 +148,10 @@ install -m 644 -p collectors/charts.d.plugin/*.conf "${RPM_BUILD_ROOT}%{_sysconf
 install -m 755 -d "${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d"
 install -m 644 -p system/netdata.logrotate "${RPM_BUILD_ROOT}%{_sysconfdir}/logrotate.d/%{name}"
 
+install -d ${RPM_BUILD_ROOT}%{_localstatedir}/cache/%{name}
+install -d ${RPM_BUILD_ROOT}%{_localstatedir}/log/%{name}
+install -d ${RPM_BUILD_ROOT}%{_localstatedir}/lib/%{name}
+
 # get rid of default healthcheck config files and edit-config script
 rm -rf ${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/health.d
 rm -rf ${RPM_BUILD_ROOT}%{_sysconfdir}/%{name}/edit-config
@@ -194,9 +200,13 @@ rm -rf "${RPM_BUILD_ROOT}"
 # To be eventually moved to %%_defaultdocdir
 %{_libexecdir}/%{name}
 %{_sbindir}/%{name}
+%{_sbindir}/netdatacli
+%{_sbindir}/netdata-claim.sh
+
 %{_libdir}/%{name}
 
 %caps(cap_dac_read_search,cap_sys_ptrace=ep) %attr(0550,root,netdata) %{_libexecdir}/%{name}/plugins.d/apps.plugin
+%caps(cap_sys_resource,cap_sys_admin=ep) %attr(4550,root,netdata) %{_libexecdir}/%{name}/plugins.d/ebpf_process.plugin
 
 %if %{with netns}
 # cgroup-network detects the network interfaces of CGROUPs
@@ -231,6 +241,8 @@ rm -rf "${RPM_BUILD_ROOT}"
 %{_datadir}/%{name}/web
 
 %changelog
+* Sun Feb 23 2020 Jerome Loyet <jerome@openio.io> - 1.20.0-1
+  Update to 1.20.0
 * Tue Jan 28 2020 Jerome Loyet <jerome@openio.io> - 1.19.0-2
   Set LimitNOFILE=30000 in systemd service file
 * Fri Nov 29 2019 Vladimir Dombrovski <vladimir@openio.io> - 1.19.0-1
