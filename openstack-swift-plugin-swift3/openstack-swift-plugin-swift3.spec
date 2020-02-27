@@ -16,7 +16,7 @@ Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
 URL:            https://github.com/open-io/swift3
-Source0:        https://github.com/open-io/swift3/archive/%{tarversion}.tar.gz
+Source0:        https://github.com/open-io/swift3/archive/%{tarversion}-openio.tar.gz
 Epoch:          1
 %endif
 
@@ -43,7 +43,7 @@ Amazon S3 API.
 %setup -q -n swift3-%{version}-openio
 %else
 # Testing purpose only. Do not modify.
-%setup -q -n swift3-%{tarversion}
+%setup -q -n swift3-%{tarversion}-openio
 %endif
 
 %build
