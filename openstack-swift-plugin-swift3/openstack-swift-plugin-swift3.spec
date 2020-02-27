@@ -6,6 +6,7 @@ Summary:        The swift3 plugin for OpenIO SDS Swift
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        1.12.15
 Release:        1%{?dist}
+%define         targetversion %{version}
 URL:            https://github.com/open-io/swift3
 Source0:        https://github.com/open-io/swift3/archive/%{version}-openio.tar.gz
 %else
@@ -15,6 +16,7 @@ Source0:        https://github.com/open-io/swift3/archive/%{version}-openio.tar.
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
+%define         targetversion 1.12.0
 URL:            https://github.com/open-io/swift3
 Source0:        https://github.com/open-io/swift3/archive/%{tarversion}-openio.tar.gz
 Epoch:          1
@@ -47,11 +49,11 @@ Amazon S3 API.
 %endif
 
 %build
-PBR_VERSION=1.12.0 %{__python2} setup.py build
+PBR_VERSION=%{version} %{__python2} setup.py build
 
 %install
 rm -rf %{buildroot}
-PBR_VERSION=1.12.0 %{__python2} setup.py install -O1 --skip-build --root %{buildroot}
+PBR_VERSION=%{version} %{__python2} setup.py install -O1 --skip-build --root %{buildroot}
 
 %files
 %defattr(-,root,root,-)
