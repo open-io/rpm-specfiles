@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name:    oio-prometheus
-Version: 2.16.0
+Version: 2.17.0
 Release: 1%{?dist}
 Summary: The Prometheus 2.x monitoring system and time series database.
 License: ASL 2.0
@@ -21,7 +21,7 @@ results, and can trigger alerts if some condition is observed to be true.
 %build
 
 %install
-install -D -m 755 prometheus %{buildroot}%{_sbindir}/oio-prometheus
+install -D -m 755 prometheus %{buildroot}%{_sbindir}/%{name}
 install -D -m 755 promtool %{buildroot}%{_bindir}/oio-promtool
 install -D -m 644 prometheus.yml %{buildroot}%{_datadir}/%{name}/config/prometheus.yml
 install -D -m 644 NOTICE %{buildroot}%{_datadir}/%{name}/NOTICE
@@ -34,10 +34,12 @@ done
 
 %files
 %defattr(-,root,root,-)
-%{_sbindir}/oio-prometheus
+%{_sbindir}/%{name}
 %{_bindir}/oio-promtool
 %{_datarootdir}/%{name}
 
 %changelog
+* Wed Mar 25 2020 Jérôme Loyet <jerome@openio.io> 2.17.0-1
+- update to 2.17.0
 * Wed Mar 04 2020 Jérôme Loyet <jerome@openio.io> 2.16.0-1
 - Initial release, version 2.16.0
