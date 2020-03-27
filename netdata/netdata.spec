@@ -74,7 +74,7 @@ Recommends:	python2-psycopg2 \
 Summary:	Real-time performance monitoring, done right
 Name:		netdata
 Version:	1.20.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPLv3+
 Group:		Applications/System
 Source0:	https://github.com/netdata/%{name}/releases/download/v%{version}/%{name}-v%{version}.tar.gz
@@ -123,6 +123,7 @@ happened, on your systems and applications.
 %prep
 %setup -q -n %{name}-v%{version}
 sed -i '/^PIDFile/aLimitNOFILE=30000' ./system/netdata.service.in
+sed -i '/sharedscripts/a\\tsu netdata netdata' ./system/netdata.logrotate.in
 
 %build
 %configure \
@@ -241,6 +242,8 @@ rm -rf "${RPM_BUILD_ROOT}"
 %{_datadir}/%{name}/web
 
 %changelog
+* Fri Mar 27 2020 Jerome Loyet <jerome@openio.io> - 1.20.0-2
+  add missing su in logrotate
 * Sun Feb 23 2020 Jerome Loyet <jerome@openio.io> - 1.20.0-1
   Update to 1.20.0
 * Tue Jan 28 2020 Jerome Loyet <jerome@openio.io> - 1.19.0-2
