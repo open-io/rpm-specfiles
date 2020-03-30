@@ -19,6 +19,10 @@
 %define srcext   tar.gz
 %define so_ver   2
 
+# VL: Easily switch from current to older releases
+#%define mirror   www.apache.org
+%define mirror   archive.apache.org
+
 Name:           zookeeper
 Version:        3.5.6
 Release:        0
@@ -27,9 +31,9 @@ Summary:        A high-performance coordination service for distributed applicat
 Group:          Development/Libraries/Java
 Url:            http://zookeeper.apache.org/
 Vendor:         Apache Software Foundation
-Source0:        http://www.apache.org/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}-bin.%{srcext}
+Source0:        http://%{mirror}/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}-bin.%{srcext}
 Source1:        %{name}.service
-Source2:        http://www.apache.org/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}.%{srcext}
+Source2:        http://%{mirror}/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}.%{srcext}
 Patch0:         zkEnv.patch
 Patch1:         01-zkpython-setup.patch
 Patch2:         02-zkpython-module-init-return-value.patch
