@@ -409,7 +409,7 @@ test -d %{_sysconfdir}/bash_completion.d && \
 
 
 %changelog
-* Wed Feb 02 2020 - 6.0.1-3 - Vincent Legoll <vincent.legoll@openio.io>
+* Wed Feb 05 2020 - 6.0.1-3 - Vincent Legoll <vincent.legoll@openio.io>
 - depends on cliff 2.16.0
 * Thu Jan 30 2020 - 6.0.1-2 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
