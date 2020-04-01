@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name:    oio-promtail
-Version: 1.3.0
+Version: 1.4.0
 Release: 1%{?dist}
 Summary: Logging agent for loki
 License: Apache-2.0
@@ -32,5 +32,7 @@ install -D -m 755 promtail-linux-amd64 %{buildroot}%{_sbindir}/oio-promtail
 %{_sbindir}/oio-promtail
 
 %changelog
+* Wed Apr 01 2020 Jérôme Loyet <jerome@openio.io> 1.4.0-1
+- update
 * Wed Mar 04 2020 Jérôme Loyet <jerome@openio.io> 1.3.0-1
 - Initial release, version 1.3.0
