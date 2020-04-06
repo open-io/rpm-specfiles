@@ -2,8 +2,8 @@
 
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.0.2
-Release:        4%{?dist}
+Version:        2.1.0
+Release:        1%{?dist}
 %define         tarversion %{version}
 %else
 %define         date %(date +"%Y%m%d%H%M")
@@ -40,6 +40,7 @@ BuildRequires:  rsyslog
 %endif
 
 Requires:       glib2         >= 2.52
+Requires:       python36-setproctitle
 # SuSe requires
 %if 0%{?suse_version}
 Requires:  systemd
@@ -98,6 +99,8 @@ make DESTDIR=%{buildroot} install
 # Remove dirty .la
 %{__rm} -vf %{buildroot}%{_libdir}/gridinit/*.la
 
+%{__install} -m755 tools/gridinit-syslog-logger %{buildroot}%{_bindir}/gridinit-syslog-logger
+
 
 %files
 %defattr(-,root,root,-)
@@ -145,6 +148,8 @@ fi
 
 
 %changelog
+* Mon Apr 06 2020 - 2.1.0-1 - Jerome Loyet <jerome@openio.io>
+- New release
 * Tue May 28 2019 - 2.0.2-4 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Fri Apr 26 2019 - 2.0.2-3 - Vincent Legoll <vincent.legoll@openio.io>
