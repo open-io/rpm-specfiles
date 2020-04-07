@@ -7,7 +7,7 @@
 %define debug_package %{nil}
 
 Name: oio-exporter
-Version: 0.0.2
+Version: 0.0.3
 Release: 1%{?dist}
 Summary: Prometheus exporter for OpenIO services
 License: OpenIO
@@ -20,19 +20,29 @@ source: https://github.com/open-io/oio-exporter/archive/%{version}.tar.gz
 Prometheus exporter for OpenIO services
 
 %prep
+if ! curl -qs github.com; then
+  echo "No network available, please use --enable-network as arguement to mock" >/dev/stderr
+  exit 1
+fi
 %setup -q -n oio-exporter-%{version}
 
 %build
-go build -ldflags="-X 'main.HEALTHCHECKS=$(base64 -w0 ./healthchecks.yml)' -X 'main.LOGPATTERNS=$(base64 -w0 ./log_patterns.yml)'" oio-exporter.go
+make build
 
 %install
 install -D -m755 oio-exporter ${RPM_BUILD_ROOT}%{_sbindir}/oio-exporter
+for i in README.md healthchecks.yml log_patterns.yml versions.yml; do
+  install -D -m644 $i ${RPM_BUILD_ROOT}%{_datadir}/oio-exporter/$i
+done
 
 %files
 %defattr(-,root,root,-)
 %{_sbindir}/oio-exporter
+%{_datadir}/oio-exporter
 
 %changelog
+* Tue Apr 07 2020 Jérôme Loyet <jerome@openio.io> 0.0.3-1
+- update
 * Mon Mar 30 2020 Jérôme Loyet <jerome@openio.io> 0.0.2-1
 - update
 * Wed Mar 04 2020 Jérôme Loyet <jerome@openio.io> 0.0.1-1
