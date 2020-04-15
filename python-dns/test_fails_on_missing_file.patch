@@ -1,0 +1,12 @@
+diff -ruN /home/avram/Desktop/dnspython-1.15.0.orig/tests/test_zone.py /home/avram/Desktop/dnspython-1.15.0/tests/test_zone.py
+--- a/tests/test_zone.py	2016-09-20 12:24:02.000000000 -0400
++++ b/tests/test_zone.py	2016-10-04 07:59:39.717946790 -0400
+@@ -177,7 +177,7 @@
+     def testToFileFilename(self):
+         z = dns.zone.from_file(here('example'), 'example')
+         try:
+-            z.to_file('example3-filename.out')
++            z.to_file(here('example3-filename.out'))
+             ok = filecmp.cmp(here('example3-filename.out'),
+                              here('example3.good'))
+         finally:
