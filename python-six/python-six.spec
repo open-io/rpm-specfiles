@@ -1,98 +1,209 @@
-%if 0%{?rhel} && 0%{?rhel} <= 6
-%{!?__python2:        %global __python2 /usr/bin/python2}
-%{!?python2_sitelib:  %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%endif
+%global modname six
+%bcond_without wheel
 
-%global with_python3 1
+%bcond_without tests
 
-%global __python3 python3
+%bcond_without python2
+%bcond_without python3
 
-Name:           python-six
-Version:        1.9.0
-Release:        4%{?dist}
+%global python2_wheelname %{modname}-%{version}-py2.py3-none-any.whl
+%global python3_wheelname %python2_wheelname
+
+Name:           python-%{modname}
+Version:        1.12.0
+Release:        1%{?dist}
 Summary:        Python 2 and 3 compatibility utilities
 
-Group:          Development/Languages
 License:        MIT
-URL:            http://pypi.python.org/pypi/six/
-Source0:        https://files.pythonhosted.org/packages/16/64/1dc5e5976b17466fd7d712e59cbe9fb1e18bec153109e5ba3ed6c9102f1a/six-1.9.0.tar.gz
+URL:            https://pypi.python.org/pypi/six
+Source0:        https://files.pythonhosted.org/packages/source/%(n=%{modname}; echo ${n:0:1})/%{modname}/%{modname}-%{version}.tar.gz
 
 BuildArch:      noarch
+
+%global _description \
+%%{name} provides simple utilities for wrapping over differences between\
+Python 2 and Python 3.
+
+%description %{_description}
+
+%if %{with python2}
+%package -n python2-%{modname}
+Summary:        %{summary}
+%{?python_provide:%python_provide python2-%{modname}}
 BuildRequires:  python2-devel
-Provides:       python2-six
+BuildRequires:  python2-setuptools
 
-%description
-python-six provides simple utilities for wrapping over differences between
-Python 2 and Python 3.
-
-This is the Python 2 build of the module.
-
-%if 0%{?with_python3}
-%package -n python3-six
-Summary:        Python 2 and 3 compatibility utilities
-Group:          Development/Languages
-
-BuildRequires:  python3-devel
-
-%description -n python3-six
-python-six provides simple utilities for wrapping over differences between
-Python 2 and Python 3.
-
-This is the Python 3 build of the module.
+%if %{with tests}
+BuildRequires:  python2-pytest
+BuildRequires:  python2-tkinter
 %endif
+
+%if %{with wheel}
+BuildRequires:  python2-pip
+BuildRequires:  python2-wheel
+%endif
+
+%description -n python2-%{modname} %{_description}
+Python 2 version.
+
+%endif
+
+
+%if %{with python3}
+%package -n python3-%{modname}
+Summary:        %{summary}
+%{?python_provide:%python_provide python3-%{modname}}
+Obsoletes:      platform-python-%{modname} < %{version}-%{release}
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
+
+%if %{with tests}
+BuildRequires:  python3-pytest
+BuildRequires:  python3-tkinter
+%endif
+
+%if %{with wheel}
+BuildRequires:  python%{python3_pkgversion}-pip
+BuildRequires:  python%{python3_pkgversion}-wheel
+%endif
+
+%description -n python3-%{modname} %{_description}
+Python 3 version.
+
+%endif
+
 
 %prep
-%setup -q -n six-%{version}
-%if 0%{?with_python3}
-rm -rf %{py3dir}
-cp -a . %{py3dir}
-%endif
+%autosetup -n %{modname}-%{version}
 
 
 %build
-%{__python2} setup.py build
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py build
-popd
+%if %{with python2}
+%if %{with wheel}
+%py2_build_wheel
+%else
+%py2_build
 %endif
+%endif
+
+%if %{with python3}
+%if %{with wheel}
+%py3_build_wheel
+%else
+%py3_build
+%endif
+%endif
+
 
 %install
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
-popd
+%if %{with python2}
+%if %{with wheel}
+%py2_install_wheel %{python2_wheelname}
+%else
+%py2_install
 %endif
-%{__python2} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%endif
+
+%if %{with python3}
+%if %{with wheel}
+%py3_install_wheel %{python3_wheelname}
+%else
+%py3_install
+%endif
+%endif
 
 
-#%check
-#py.test -rfsxX test_six.py
-#%if 0%{?with_python3}
-#pushd %{py3dir}
-#py.test-%{python3_version} -rfsxX test_six.py
-#popd
-#%endif
+%if %{with tests}
+%check
+# Ensure six module is used from the version being build
+export PYTHONPATH=.
+py.test-2 -rfsxX test_six.py
+py.test-3 -rfsxX test_six.py
+%endif
 
 
-%files
-%{!?_licensedir:%global license %%doc}
+%if %{with python2}
+%files -n python2-%{modname}
 %license LICENSE
-%doc README documentation/index.rst
-%{python2_sitelib}/*
+%doc README.rst documentation/index.rst
+%{python2_sitelib}/%{modname}-*.dist-info/
+%{python2_sitelib}/%{modname}.py*
+%endif
 
-%if 0%{?with_python3}
-%files -n python3-six
-%{!?_licensedir:%global license %%doc}
+%if %{with python3}
+%files -n python3-%{modname}
 %license LICENSE
-%doc README documentation/index.rst
-%{python3_sitelib}/*
+%doc README.rst documentation/index.rst
+%{python3_sitelib}/%{modname}-*.dist-info/
+%{python3_sitelib}/%{modname}.py
+%{python3_sitelib}/__pycache__/%{modname}.*
 %endif
 
 
 %changelog
-* Tue Aug 25 2015 Romain Acciari <romain.acciari@openio.io> - 1.9.0-4
-- Commented out %check
+* Wed Feb 13 2019 Yatin Karel <ykarel@redhat.com> - 1.12.0-1
+- Update to 1.12.0
+
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.11.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.11.0-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Sat Jun 16 2018 Miro Hrončok <mhroncok@redhat.com> - 1.11.0-5
+- Rebuilt for Python 3.7
+
+* Wed Jun 13 2018 Miro Hrončok <mhroncok@redhat.com> - 1.11.0-4
+- Bootstrap for Python 3.7
+
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.11.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Wed Nov 15 2017 Lumír Balhar <lbalhar@redhat.com> - 1.11.0-2
+- Removed and obsoleted the platform-python subpackage
+
+* Tue Sep 19 2017 Charalampos Stratakis <cstratak@redhat.com> - 1.11.0-1
+- Update to 1.11.0
+
+* Thu Aug 10 2017 Tomas Orsava <torsava@redhat.com> - 1.10.0-11
+- Added the platform-python subpackage
+
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.10.0-10
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Mon Jul 03 2017 Petr Viktorin <pviktori@redhat.com> - 1.10.0-9
+- Fix unversioned Python BuildRequires
+
+* Mon Feb 13 2017 Charalampos Stratakis <cstratak@redhat.com> - 1.10.0-8
+- Rebuild as wheel
+
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.10.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Tue Dec 13 2016 Charalampos Stratakis <cstratak@redhat.com> - 1.10.0-6
+- Enable tests
+
+* Fri Dec 09 2016 Charalampos Stratakis <cstratak@redhat.com> - 1.10.0-5
+- Rebuild for Python 3.6
+- Disable python3 tests
+
+* Tue Aug 09 2016 Igor Gnatenko <ignatenko@redhat.com> - 1.10.0-4
+- Modernize spec more
+- Depend on system-python(abi)
+- Cleanups
+
+* Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.10.0-3
+- https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
+
+* Wed Feb 3 2016 Orion Poplawski <orion@cora.nwra.com> - 1.10.0-2
+- Modernize spec
+- Fix python3 package file ownership
+
+* Fri Nov 13 2015 Slavek Kabrda <bkabrda@redhat.com> - 1.10.0-1
+- Update to 1.10.0
+
+* Tue Oct 13 2015 Robert Kuska <rkuska@redhat.com> - 1.9.0-4
+- Rebuilt for Python3.5 rebuild
 
 * Mon Jul 13 2015 Slavek Kabrda <bkabrda@redhat.com> - 1.9.0-3
 - Added python2-six provide to python-six
