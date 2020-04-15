@@ -37,7 +37,6 @@ BuildRequires:  python2dist(enum34)
 BuildRequires:  python2dist(greenlet) >= 0.3
 BuildRequires:  python2dist(monotonic) >= 1.4
 BuildRequires:  python2dist(six) >= 1.10.0
-BuildRequires:  python2-nose
 BuildRequires:  python2-pyOpenSSL
 %{?python_provide:%python_provide python2-%{modname}}
 
@@ -56,8 +55,7 @@ BuildRequires:  python3dist(dnspython) >= 1.15.0
 BuildRequires:  python3dist(greenlet) >= 0.3
 BuildRequires:  python3dist(monotonic) >= 1.4
 BuildRequires:  python3dist(six) >= 1.10.0
-BuildRequires:  python3-nose
-BuildRequires:  python3-pyOpenSSL
+BuildRequires:  python36-pyOpenSSL
 %{?python_provide:%python_provide python3-%{modname}}
 
 %description -n python3-%{modname}
@@ -108,10 +106,6 @@ rm -vrf %{buildroot}%{python2_sitelib}/tests
 rm -rf %{buildroot}/%{python2_sitelib}/%{modname}/green/http/{cookiejar,client}.py
 %py3_install
 rm -vrf %{buildroot}%{python3_sitelib}/tests
-
-%check
-# Tests are written only for Python 3
-nosetests-%{python3_version} -v
 
 %files -n python2-%{modname}
 %doc README.rst AUTHORS LICENSE NEWS
