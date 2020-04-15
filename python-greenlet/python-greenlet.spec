@@ -6,7 +6,7 @@ Release:        2%{?dist}
 Summary:        Lightweight in-process concurrent programming
 License:        MIT
 URL:            https://github.com/python-greenlet/greenlet
-Source0:        %{url}/archive/%{version}/%{modname}-%{version}.tar.gz
+Source0:        %{pypi_source %{modname}}
 BuildRequires:  gcc-c++
 
 %global _description \
