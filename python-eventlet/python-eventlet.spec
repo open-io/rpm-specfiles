@@ -27,7 +27,7 @@ BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 BuildRequires:  python-dns >= 1.15.0
 BuildRequires:  python2dist(enum34)
-BuildRequires:  python-greenlet >= 0.3
+BuildRequires:  python2-greenlet >= 0.3
 BuildRequires:  python2-monotonic >= 1.4
 BuildRequires:  python2-six >= 1.10.0
 BuildRequires:  python2-pyOpenSSL
