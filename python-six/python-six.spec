@@ -1,8 +1,6 @@
 %global modname six
 %bcond_without wheel
 
-%bcond_without tests
-
 %bcond_without python2
 %bcond_without python3
 
@@ -33,11 +31,6 @@ Summary:        %{summary}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 
-%if %{with tests}
-BuildRequires:  python2-pytest
-BuildRequires:  python2-tkinter
-%endif
-
 %if %{with wheel}
 BuildRequires:  python2-pip
 BuildRequires:  python2-wheel
@@ -56,11 +49,6 @@ Summary:        %{summary}
 Obsoletes:      platform-python-%{modname} < %{version}-%{release}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-
-%if %{with tests}
-BuildRequires:  python3-pytest
-BuildRequires:  python3-tkinter
-%endif
 
 %if %{with wheel}
 BuildRequires:  python%{python3_pkgversion}-pip
@@ -110,15 +98,6 @@ Python 3 version.
 %else
 %py3_install
 %endif
-%endif
-
-
-%if %{with tests}
-%check
-# Ensure six module is used from the version being build
-export PYTHONPATH=.
-py.test-2 -rfsxX test_six.py
-py.test-3 -rfsxX test_six.py
 %endif
 
 
