@@ -11,14 +11,7 @@ Source0:        %{pypi_source %{modname}}
 
 # Python 3.7 support
 Patch0:         https://github.com/eventlet/eventlet/pull/506.patch#/python37.patch
-Patch1:         0001-dns-hosts-file-was-consulted-after-nameservers.patch
-Patch2:         0002-greendns-don-t-contact-nameservers-if-one-entry-is-r.patch
-Patch3:         0001-Fix-bad-ipv6-comparison.patch
-Patch4:         0002-greendns-udp-Fix-infinite-loop-when-source-address-m.patch
-Patch5:         0003-tests-Add-ipv6-tests-for-greendns-udp-function.patch
-Patch6:         0004-tests-Add-ipv4-udp-tests-for-greendns.patch
-Patch7:         0001-greendns-Treat-etc-hosts-entries-case-insensitive.patch
-Patch8:         0005-case-insensitive-hundred-continue.patch
+Patch1:         0005-case-insensitive-hundred-continue.patch
 
 BuildArch:      noarch
 
