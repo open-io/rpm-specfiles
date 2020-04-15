@@ -59,8 +59,6 @@ io operations appear blocking at the source code level.
 
 %package -n python2-%{modname}-doc
 Summary:        Documentation for python2-%{modname}
-BuildRequires:  python2-sphinx
-BuildRequires:  python2-zmq
 %{?python_provide:%python_provide python2-%{modname}-doc}
 
 %description -n python2-%{modname}-doc
@@ -68,8 +66,6 @@ BuildRequires:  python2-zmq
 
 %package -n python3-%{modname}-doc
 Summary:        Documentation for python3-%{modname}
-BuildRequires:  python3-sphinx
-BuildRequires:  python3-zmq
 
 %description -n python3-%{modname}-doc
 %{summary}.
@@ -86,8 +82,6 @@ sed -i "/'enum-compat',/d" setup.py
 %py3_build
 
 export PYTHONPATH=$(pwd)
-sphinx-build-%{python2_version} -b html -d doctrees doc html-2
-sphinx-build-%{python3_version} -b html -d doctrees doc html-3
 
 %install
 %py2_install
@@ -114,11 +108,9 @@ rm -vrf %{buildroot}%{python3_sitelib}/tests
 
 %files -n python2-%{modname}-doc
 %license LICENSE
-%doc html-2
 
 %files -n python3-%{modname}-doc
 %license LICENSE
-%doc html-3
 
 %changelog
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.24.1-3
