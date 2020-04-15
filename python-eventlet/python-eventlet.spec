@@ -1,21 +1,16 @@
-# sitelib for noarch packages, sitearch for others (remove the unneeded one)
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
+%global modname eventlet
+%{?python_enable_dependency_generator}
 
-%{!?_licensedir:%global license %%doc}
-
-%global pypi_name eventlet
-
-%global with_python3 1
-
-Name:           python-%{pypi_name}
-Version:        0.20.1
-Release:        6%{?dist}
-Epoch:          1
+Name:           python-%{modname}
+Version:        0.24.1
+Release:        3%{?dist}
 Summary:        Highly concurrent networking library
 License:        MIT
 URL:            http://eventlet.net
-Source0:        https://pypi.io/packages/source/e/eventlet/eventlet-%{version}.tar.gz
+Source0:        %{pypi_source %{modname}}
+
+# Python 3.7 support
+Patch0:         https://github.com/eventlet/eventlet/pull/506.patch#/python37.patch
 Patch1:         0001-dns-hosts-file-was-consulted-after-nameservers.patch
 Patch2:         0002-greendns-don-t-contact-nameservers-if-one-entry-is-r.patch
 Patch3:         0001-Fix-bad-ipv6-comparison.patch
@@ -25,13 +20,7 @@ Patch6:         0004-tests-Add-ipv4-udp-tests-for-greendns.patch
 Patch7:         0001-greendns-Treat-etc-hosts-entries-case-insensitive.patch
 Patch8:         0005-case-insensitive-hundred-continue.patch
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
-BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
-BuildRequires:  python-greenlet
-
-Requires:       python-greenlet
 
 %description
 Eventlet is a networking library written in Python. It achieves high
@@ -39,128 +28,153 @@ scalability by using non-blocking io while at the same time retaining
 high programmer usability by using coroutines to make the non-blocking
 io operations appear blocking at the source code level.
 
-
-%package -n python2-%{pypi_name}
-Summary:        Highly concurrent networking library
-
+%package -n python2-%{modname}
+Summary:        %{summary}
 BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
-Requires:       python-greenlet
+BuildRequires:  python2-setuptools
+BuildRequires:  python2dist(dnspython) >= 1.15.0
+BuildRequires:  python2dist(enum34)
+BuildRequires:  python2dist(greenlet) >= 0.3
+BuildRequires:  python2dist(monotonic) >= 1.4
+BuildRequires:  python2dist(six) >= 1.10.0
+BuildRequires:  python2-nose
+BuildRequires:  python2-pyOpenSSL
+%{?python_provide:%python_provide python2-%{modname}}
 
-#%{?python_provide:%python_provide python2-%{pypi_name}}
-# python_provide does not exist in CBS Cloud buildroot
-Provides:   python-%{pypi_name} = %{version}-%{release}
-Obsoletes:  python-%{pypi_name} < 0.17.4-3
-
-%description -n python2-%{pypi_name}
+%description -n python2-%{modname}
 Eventlet is a networking library written in Python. It achieves high
 scalability by using non-blocking io while at the same time retaining
 high programmer usability by using coroutines to make the non-blocking
 io operations appear blocking at the source code level.
 
-
-%if 0%{?with_python3}
-%package -n python3-eventlet
-Summary:        Highly concurrent networking library
+%package -n python3-%{modname}
+Summary:        %{summary}
 BuildArch:      noarch
-
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-greenlet
+BuildRequires:  python3dist(dnspython) >= 1.15.0
+BuildRequires:  python3dist(greenlet) >= 0.3
+BuildRequires:  python3dist(monotonic) >= 1.4
+BuildRequires:  python3dist(six) >= 1.10.0
+BuildRequires:  python3-nose
+BuildRequires:  python3-pyOpenSSL
+%{?python_provide:%python_provide python3-%{modname}}
 
-Requires:       python3-greenlet
-
-#%{?python_provide:%python_provide python3-eventlet}
-
-%description -n python3-eventlet
+%description -n python3-%{modname}
 Eventlet is a networking library written in Python. It achieves high
 scalability by using non-blocking io while at the same time retaining
 high programmer usability by using coroutines to make the non-blocking
 io operations appear blocking at the source code level.
-%endif
 
+%package -n python2-%{modname}-doc
+Summary:        Documentation for python2-%{modname}
+BuildRequires:  python2-sphinx
+BuildRequires:  python2-zmq
+%{?python_provide:%python_provide python2-%{modname}-doc}
+
+%description -n python2-%{modname}-doc
+%{summary}.
+
+%package -n python3-%{modname}-doc
+Summary:        Documentation for python3-%{modname}
+BuildRequires:  python3-sphinx
+BuildRequires:  python3-zmq
+
+%description -n python3-%{modname}-doc
+%{summary}.
 
 %prep
-%setup -q -n %{pypi_name}-%{version}
-rm -rf *.egg-info
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-
-# generate html docs
-export PYTHONPATH="$( pwd ):$PYTHONPATH"
-
-%if 0%{?with_python3}
-rm -rf %{py3dir}
-cp -a . %{py3dir}
-find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
-# generate html docs
-export PYTHONPATH="$( pwd ):$PYTHONPATH"
-%endif
+%autosetup -n %{modname}-%{version} -p1
+rm -vrf *.egg-info
+# Remove dependency on enum-compat from setup.py. enum-compat is installed
+# as Require for python2 subpackage and it is not needed for Python 3
+sed -i "/'enum-compat',/d" setup.py
 
 %build
-%{__python2} setup.py build
+%py2_build
+%py3_build
 
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py build
-popd
-%endif
+export PYTHONPATH=$(pwd)
+sphinx-build-%{python2_version} -b html -d doctrees doc html-2
+sphinx-build-%{python3_version} -b html -d doctrees doc html-3
 
 %install
-%if 0%{?with_python3}
-pushd %{py3dir}
-%{__python3} setup.py install --skip-build --root %{buildroot}
-rm -rf %{buildroot}/%{python3_sitelib}/tests
-popd
-%endif
-
-%{__python2} setup.py install --skip-build --root %{buildroot}
-rm -rf %{buildroot}/%{python2_sitelib}/tests
+%py2_install
+rm -vrf %{buildroot}%{python2_sitelib}/tests
 # FIXME: Those files are not meant to be used with Python 2.7
 # Anyway the whole module eventlet.green.http is Python 3 only
 # Trying to import it will fail under Python 2.7
 # https://github.com/eventlet/eventlet/issues/369
-rm -rf %{buildroot}/%{python2_sitelib}/%{pypi_name}/green/http/{cookiejar,client}.py
+rm -rf %{buildroot}/%{python2_sitelib}/%{modname}/green/http/{cookiejar,client}.py
+%py3_install
+rm -vrf %{buildroot}%{python3_sitelib}/tests
 
+%check
+# Tests are written only for Python 3
+nosetests-%{python3_version} -v
 
-%files -n python2-%{pypi_name}
+%files -n python2-%{modname}
 %doc README.rst AUTHORS LICENSE NEWS
 %license LICENSE
-%{python2_sitelib}/%{pypi_name}
-%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python2_sitelib}/%{modname}/
+%{python2_sitelib}/%{modname}-*.egg-info/
 
-%if 0%{?with_python3}
-%files -n python3-%{pypi_name}
+%files -n python3-%{modname}
 %doc README.rst AUTHORS LICENSE NEWS
 %license LICENSE
-%{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif
+%{python3_sitelib}/%{modname}/
+%{python3_sitelib}/%{modname}-*.egg-info/
+
+%files -n python2-%{modname}-doc
+%license LICENSE
+%doc html-2
+
+%files -n python3-%{modname}-doc
+%license LICENSE
+%doc html-3
 
 %changelog
-* Tue Sep 03 2019 Vincent Legoll <vincent.legoll@openio.io> 0.20.1-6
-- repackaged for OpenIO
-- Added patch for case-insensitive "100-continue" header
-- Epoch set to 1
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.24.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
-* Fri Aug 10 2018 Lon Hohberger <lon@redhat.com> 0.20.1-6
-- Add ipv4 tests for bz1607967
-- Treat names as case-insensitive (rhbz#1612541)
+* Tue Nov 20 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.24.1-2
+- use python dependency generator
 
-* Wed Aug 08 2018 Lon Hohberger <lon@redhat.com> 0.20.1-5
-- Fix ipv6 address handling (rhbz#1607967)
+* Sun Oct 14 2018 Kevin Fenzi <kevin@scrye.com> - 0.24.1-1
+- Update to 0.24.1. Fixes bug #1611023
 
-* Mon Aug 06 2018 Daniel Alvarez <dalvarez@redhat.com> - 0.20.1-3
-- Don't contact nameservers if there's at least one entry in /etc/hosts, lp#1785615
+* Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.23.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
-* Fri Jun 09 2017 Ihar Hrachyshka <ihrachys@redhat.com> - 0.20.1-2
-- Consult /etc/hosts before resolving with DNS, lp#1696094
+* Fri Jun 22 2018 Miro Hrončok <mhroncok@redhat.com> - 0.23.0-1
+- Update to 0.23.0 (#1575434)
+- Add patch for Python 3.7 (#1594248)
+
+* Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 0.22.1-2
+- Rebuilt for Python 3.7
+
+* Sun Feb 18 2018 Kevin Fenzi <kevin@scrye.com> - 0.22.1-1
+- Update to 0.22.1. Fixes bug #1546471
+
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.22.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Sat Jan 13 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.22.0-1
+- Update to 0.22.0
+
+* Tue Oct  3 2017 Haïkel Guémar <hguemar@fedoraproject.org> - 0.21.0-3
+- Fix upstream #401
+- Fix compat with PyOpenSSL 17.3.0
+- Cleanup BR
+
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.21.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Tue May 23 2017 Lumír Balhar <lbalhar@redhat.com> - 0.21.0-1
+- Upstream 0.21.0
+- Fix issue with enum-compat dependency for dependent packages
+- Enable tests
+- Fix tracebacks during docs generating by install python[23]-zmq
 
 * Tue Apr 25 2017 Haïkel Guémar <hguemar@fedoraproject.org> - 0.20.1-1
 - Upstream 0.20.1
