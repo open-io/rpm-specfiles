@@ -32,11 +32,11 @@ io operations appear blocking at the source code level.
 Summary:        %{summary}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
-BuildRequires:  python2dist(dnspython) >= 1.15.0
+BuildRequires:  python-dns >= 1.15.0
 BuildRequires:  python2dist(enum34)
-BuildRequires:  python2dist(greenlet) >= 0.3
-BuildRequires:  python2dist(monotonic) >= 1.4
-BuildRequires:  python2dist(six) >= 1.10.0
+BuildRequires:  python-greenlet >= 0.3
+BuildRequires:  python2-monotonic >= 1.4
+BuildRequires:  python2-six >= 1.10.0
 BuildRequires:  python2-pyOpenSSL
 %{?python_provide:%python_provide python2-%{modname}}
 
@@ -51,10 +51,10 @@ Summary:        %{summary}
 BuildArch:      noarch
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-BuildRequires:  python3dist(dnspython) >= 1.15.0
-BuildRequires:  python3dist(greenlet) >= 0.3
-BuildRequires:  python3dist(monotonic) >= 1.4
-BuildRequires:  python3dist(six) >= 1.10.0
+BuildRequires:  python36-dns >= 1.15.0
+BuildRequires:  python3-greenlet >= 0.3
+BuildRequires:  python3-monotonic >= 1.4
+BuildRequires:  python3-six >= 1.10.0
 BuildRequires:  python36-pyOpenSSL
 %{?python_provide:%python_provide python3-%{modname}}
 
