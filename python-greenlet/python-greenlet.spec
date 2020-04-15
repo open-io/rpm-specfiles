@@ -1,104 +1,168 @@
-# sitelib for noarch packages, sitearch for others (remove the unneeded one)
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
+%global         modname greenlet
 
-Name:           python-greenlet
-Version:        0.4.2
-Release:        4%{?dist}
+Name:           python-%{modname}
+Version:        0.4.14
+Release:        2%{?dist}
 Summary:        Lightweight in-process concurrent programming
-Group:          Development/Libraries
 License:        MIT
-URL:            http://pypi.python.org/pypi/greenlet
-Source0:        https://pypi.python.org/packages/source/g/greenlet/greenlet-%{version}.zip
-#Patch0:         python-greenlet-support-ppc64le-ABIv2.patch
+URL:            https://github.com/python-greenlet/greenlet
+Source0:        %{url}/archive/%{version}/%{modname}-%{version}.tar.gz
+BuildRequires:  gcc-c++
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
-
-%description
-The greenlet package is a spin-off of Stackless, a version of CPython
-that supports micro-threads called "tasklets". Tasklets run
-pseudo-concurrently (typically in a single or a few OS-level threads)
+%global _description \
+The greenlet package is a spin-off of Stackless, a version of CPython\
+that supports micro-threads called "tasklets". Tasklets run\
+pseudo-concurrently (typically in a single or a few OS-level threads)\
 and are synchronized with data exchanges on "channels".
 
-%package -n python3-greenlet
-Summary:        Lightweight in-process concurrent programming - python3 version
+%description %{_description}
 
+%package -n     python2-%{modname}
+Summary:        %{summary}
+%{?python_provide:%python_provide python2-%{modname}}
+BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
+
+%description -n python2-%{modname} %{_description}
+
+Python 2 version.
+
+%package -n     python3-%{modname}
+Summary:        %{summary}
+%{?python_provide:%python_provide python3-%{modname}}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 
-%description -n python3-greenlet
-This version is for python3
+%description -n python3-%{modname} %{_description}
 
-%package devel
-Summary:        C development headers for python-greenlet
-Group:          Development/Libraries
-Requires:       %{name} = %{version}-%{release}
+Python 3 version.
 
-%description devel
-This package contains header files required for C modules development.
+%package -n     python2-%{modname}-devel
+Summary:        C development headers for python2-%{modname}
+%{?python_provide:%python_provide python2-%{modname}-devel}
+Requires:       python2-%{modname}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+
+%description -n python2-%{modname}-devel
+%{summary}.
+
+Python 2 version.
+
+%package -n     python3-%{modname}-devel
+Summary:        C development headers for python3-%{modname}
+%{?python_provide:%python_provide python3-%{modname}-devel}
+Requires:       python3-%{modname}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+
+%description -n python3-%{modname}-devel
+%{summary}.
+
+Python 3 version.
 
 %prep
-%setup -q -n greenlet-%{version}
-#%patch0 -p1 -b .ppc64le
+%autosetup -n %{modname}-%{version} -p1
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
-CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
-chmod 644 benchmarks/*.py
+%py2_build
+%py3_build
 
 %install
-rm -rf %{buildroot}
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
-%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
+%py2_install
+%py3_install
  
-%clean
-rm -rf %{buildroot}
-
-# FIXME!!
-# The checks segfault on ppc. So this arch
-# is essentially not supported until this is fixed
-%ifnarch ppc s390
 %check
-# Run the upstream test suite:
-%{__python} setup.py test
+%{__python2} setup.py test
+%{__python3} setup.py test
 
-# Run the upstream benchmarking suite to further exercise the code:
-PYTHONPATH=$(pwd) %{__python} benchmarks/chain.py
-%endif
+%files -n python2-%{modname}
+%license LICENSE LICENSE.PSF
+%doc AUTHORS NEWS README.rst
+%{python2_sitearch}/%{modname}-*.egg-info
+%{python2_sitearch}/%{modname}.so
 
-%files
-%defattr(-,root,root,-)
-%doc doc/greenlet.txt README.rst benchmarks AUTHORS NEWS
-%{python_sitearch}/greenlet.so
-%{python_sitearch}/greenlet*.egg-info
+%files -n python2-%{modname}-devel
+%{_includedir}/python%{python2_version}*/%{modname}/
 
-%files -n python3-greenlet
-%defattr(-,root,root,-)
-%{python3_sitearch}/greenlet*.so
-%{python3_sitearch}/greenlet*.egg-info
+%files -n python3-%{modname}
+%license LICENSE LICENSE.PSF
+%doc AUTHORS NEWS README.rst
+%{python3_sitearch}/%{modname}-*.egg-info
+%{python3_sitearch}/%{modname}*.so
 
-%files devel
-%defattr(-,root,root,-)
-%{_includedir}/python*/greenlet
+%files -n python3-greenlet-devel
+%{_includedir}/python%{python3_version}*/%{modname}/
 
 %changelog
-* Tue Mar 07 2017 d.marlin <dmarlin@redhat.com>
-- Add support for ppc64 in LE mode running ABIv2
-  Signed-off-by: Ulrich Weigand <uweigand@de.ibm.com>
-  Signed-off-by: Tony Breeds <tony@bakeyournoodle.com>
-  rhbz#1252900
-- Remove s390x from skip check list.
-- Bump release and build of all archs.
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.14-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
-* Mon Apr 14 2014 Lokesh Mandvekar <lsm5@redhat.com> 0.4.2-3
-- gcc-c++ present in default buildroot, not required in BR
+* Wed Jul 18 2018 Kevin Fenzi <kevin@scrye.com> - 0.4.14-1
+- Update to 0.4.14.
+- Drop upstreamed/no longer needed patches.
 
-* Mon Apr 14 2014 Lokesh Mandvekar <lsm5@redhat.com> 0.4.2-2
-- include gcc-c++ BR
-- Rebuilt for RHEL-7
+* Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.13-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Tue Jul 03 2018 Miro Hrončok <mhroncok@redhat.com> - 0.4.13-4
+- Add fix for Python 3.7
+
+* Sat Jun 16 2018 Miro Hrončok <mhroncok@redhat.com> - 0.4.13-3
+- Rebuilt for Python 3.7
+
+* Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.13-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
+
+* Fri Feb 02 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.4.13-1
+- Update to 0.4.13
+
+* Fri Jan 12 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.4.12-1
+- Update to 0.4.12
+
+* Thu Aug 03 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.11-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Binutils_Mass_Rebuild
+
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.11-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.11-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Tue Dec 20 2016 Miro Hrončok <mhroncok@redhat.com> - 0.4.11-2
+- Rebuild for Python 3.6
+
+* Sun Dec 11 2016 Kevin Fenzi <kevin@scrye.com> - 0.4.11-1
+- Update to 0.4.11. Fixes bug #1403514
+
+* Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.9-2
+- Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
+
+* Sun Oct 25 2015 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.4.9-1
+- Update to 0.4.9
+- Use %license macro
+- Follow new RPM Packaging guidelines
+- Cleanups in spec
+
+* Fri Aug 21 2015 Kevin Fenzi <kevin@scrye.com> 0.4.7-2
+- Re-enable tests on secondary arches. Fixes #1252899
+- Applied patch to build on ppc64le. Fixes #1252900
+
+* Fri Jun 26 2015 Kevin Fenzi <kevin@scrye.com> 0.4.7-1
+- Update to 0.4.7. Fixes bug #1235896
+
+* Thu Jun 18 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
+* Sun Mar 29 2015 Terje Røsten <terje.rosten@ntnu.no> - 0.4.5-1
+- 0.4.5
+- Add python3 subpackage
+- Ship license files
+- Some spec clean ups
+- Update fixes FTBFS issue (bz#1106779)
+- Add comment about issues on ppc64, s390 & s390x
+
+* Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.4.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
 * Thu Jan 23 2014 Orion Poplawski <orion@cora.nwra.com> 0.4.2-1
 - Update to 0.4.2
