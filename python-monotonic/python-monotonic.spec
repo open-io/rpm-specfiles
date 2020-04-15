@@ -1,8 +1,6 @@
 %global pypi_name monotonic
 
-%if 0%{?fedora}
 %global with_python3 1
-%endif
 
 Name:           python-%{pypi_name}
 Version:        1.5
