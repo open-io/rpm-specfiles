@@ -7,12 +7,12 @@
 %define debug_package %{nil}
 
 Name: oio-exporter
-Version: 0.0.4
+Version: 0.0.5
 Release: 1%{?dist}
 Summary: Prometheus exporter for OpenIO services
 License: OpenIO
 URL:     https://github.com/open-io/oio-exporter
-BuildRequires:  golang >= 1.12
+BuildRequires:  curl
 
 source: https://github.com/open-io/oio-exporter/archive/%{version}.tar.gz
 
@@ -25,9 +25,10 @@ if ! curl -qs github.com; then
   exit 1
 fi
 %setup -q -n oio-exporter-%{version}
+curl -Lqsko - https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz | tar -xzf - go/{bin,pkg,src}
 
 %build
-make build
+PATH=./go/bin:${PATH} make build
 
 %install
 install -D -m755 oio-exporter ${RPM_BUILD_ROOT}%{_sbindir}/oio-exporter
@@ -41,6 +42,10 @@ done
 %{_datadir}/oio-exporter
 
 %changelog
+* Fri Apr 17 2020 Jérôme Loyet <jerome@openio.io> 0.0.5-1
+- update
+* Fri Apr 17 2020 Jérôme Loyet <jerome@openio.io> 0.0.4-2
+- stop using golang package from distro, but version from golang
 * Fri Apr 17 2020 Jérôme Loyet <jerome@openio.io> 0.0.4-1
 - update
 * Tue Apr 07 2020 Jérôme Loyet <jerome@openio.io> 0.0.3-1
