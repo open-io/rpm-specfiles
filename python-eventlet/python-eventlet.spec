@@ -31,6 +31,12 @@ BuildRequires:  python2-greenlet >= 0.3
 BuildRequires:  python2-monotonic >= 1.4
 BuildRequires:  python2-six >= 1.10.0
 BuildRequires:  python2-pyOpenSSL
+Requires:       python-dns >= 1.15.0
+Requires:       python2dist(enum34)
+Requires:       python2-greenlet >= 0.3
+Requires:       python2-monotonic >= 1.4
+Requires:       python2-six >= 1.10.0
+Requires:       python2-pyOpenSSL
 %{?python_provide:%python_provide python2-%{modname}}
 
 %description -n python2-%{modname}
@@ -49,6 +55,11 @@ BuildRequires:  python3-greenlet >= 0.3
 BuildRequires:  python3-monotonic >= 1.4
 BuildRequires:  python3-six >= 1.10.0
 BuildRequires:  python36-pyOpenSSL
+Requires:       python36-dns >= 1.15.0
+Requires:       python3-greenlet >= 0.3
+Requires:       python3-monotonic >= 1.4
+Requires:       python3-six >= 1.10.0
+Requires:       python36-pyOpenSSL
 %{?python_provide:%python_provide python3-%{modname}}
 
 %description -n python3-%{modname}
