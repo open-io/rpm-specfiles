@@ -31,7 +31,7 @@
 %global macrosdir %(d=%{_rpmconfigdir}/macros.d; [ -d $d ] || d=%{_sysconfdir}/rpm; echo $d)
 
 Name:              redis
-Version:           4.0.11
+Version:           4.0.14
 Release:           1%{?dist}
 Summary:           A persistent key-value database
 # redis, linenoise, lzf, hiredis are BSD
@@ -358,6 +358,9 @@ fi
 
 
 %changelog
+* Fri Apr 17 2020 Vincent Legoll <vincent.legoll@openio.io> - 4.0.14-1
+- Upstream 4.0.14 release.
+
 * Thu Aug 09 2018 Nathan Scott <nathans@redhat.com> - 4.0.11-1
 - Drop the pandoc build dependency, install only markdown.
 - Upstream 4.0.11 release.
