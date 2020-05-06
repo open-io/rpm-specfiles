@@ -1,20 +1,22 @@
 %global modname six
-%bcond_without wheel
 
+# tests are enabled by default, but on Fedora 32+, Python 2 tests are skipped
+%bcond_without tests
+
+# python2 is enabled by default, Fedora 32+ exception is for offlineimap
+# https://pagure.io/fesco/issue/2274
 %bcond_without python2
-%bcond_without python3
 
-%global python2_wheelname %{modname}-%{version}-py2.py3-none-any.whl
-%global python3_wheelname %python2_wheelname
+%global python_wheelname %{modname}-%{version}-py2.py3-none-any.whl
 
 Name:           python-%{modname}
-Version:        1.12.0
-Release:        1%{?dist}
+Version:        1.14.0
+Release:        2%{?dist}
 Summary:        Python 2 and 3 compatibility utilities
 
 License:        MIT
 URL:            https://pypi.python.org/pypi/six
-Source0:        https://files.pythonhosted.org/packages/source/%(n=%{modname}; echo ${n:0:1})/%{modname}/%{modname}-%{version}.tar.gz
+Source0:        %{pypi_source %{modname}}
 
 BuildArch:      noarch
 
@@ -31,34 +33,23 @@ Summary:        %{summary}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 
-%if %{with wheel}
-BuildRequires:  python2-pip
-BuildRequires:  python2-wheel
-%endif
-
 %description -n python2-%{modname} %{_description}
 Python 2 version.
 
 %endif
 
 
-%if %{with python3}
 %package -n python3-%{modname}
 Summary:        %{summary}
+Provides:       python36-%{modname}
 %{?python_provide:%python_provide python3-%{modname}}
-Obsoletes:      platform-python-%{modname} < %{version}-%{release}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-
-%if %{with wheel}
-BuildRequires:  python%{python3_pkgversion}-pip
-BuildRequires:  python%{python3_pkgversion}-wheel
-%endif
+BuildRequires:  python3-pip
+BuildRequires:  python3-wheel
 
 %description -n python3-%{modname} %{_description}
 Python 3 version.
-
-%endif
 
 
 %prep
@@ -67,59 +58,59 @@ Python 3 version.
 
 %build
 %if %{with python2}
-%if %{with wheel}
-%py2_build_wheel
-%else
 %py2_build
 %endif
-%endif
 
-%if %{with python3}
-%if %{with wheel}
 %py3_build_wheel
-%else
-%py3_build
-%endif
-%endif
 
 
 %install
 %if %{with python2}
-%if %{with wheel}
-%py2_install_wheel %{python2_wheelname}
-%else
 %py2_install
 %endif
-%endif
 
-%if %{with python3}
-%if %{with wheel}
-%py3_install_wheel %{python3_wheelname}
-%else
-%py3_install
-%endif
-%endif
+%py3_install_wheel %{python_wheelname}
 
 
 %if %{with python2}
 %files -n python2-%{modname}
 %license LICENSE
 %doc README.rst documentation/index.rst
-%{python2_sitelib}/%{modname}-*.dist-info/
+%{python2_sitelib}/%{modname}-*.egg-info/
 %{python2_sitelib}/%{modname}.py*
 %endif
 
-%if %{with python3}
 %files -n python3-%{modname}
 %license LICENSE
 %doc README.rst documentation/index.rst
 %{python3_sitelib}/%{modname}-*.dist-info/
 %{python3_sitelib}/%{modname}.py
 %{python3_sitelib}/__pycache__/%{modname}.*
-%endif
 
 
 %changelog
+* Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.14.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Fri Jan 17 2020 Miro Hrončok <mhroncok@redhat.com> - 1.14.0-1
+- Update to 1.14.0 (#1768982) for Python 3.9 support (#1788494)
+- Drop old obsoletes for platform-python-six
+
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 1.12.0-7
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
+* Mon Aug 26 2019 Miro Hrončok <mhroncok@redhat.com> - 1.12.0-6
+- Reduce Python 2 build dependencies
+
+* Fri Aug 16 2019 Miro Hrončok <mhroncok@redhat.com> - 1.12.0-5
+- Rebuilt for Python 3.8
+
+* Wed Aug 14 2019 Miro Hrončok <mhroncok@redhat.com> - 1.12.0-4
+- Bootstrap for Python 3.8
+
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.12.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Wed Feb 13 2019 Yatin Karel <ykarel@redhat.com> - 1.12.0-1
 - Update to 1.12.0
 
