@@ -2,7 +2,7 @@
 
 Summary:	Real-time performance monitoring, done right
 Name:		oio-netdata
-Version:	1.21.1
+Version:	1.22.0
 Release:	1%{?dist}
 License:	GPLv3+
 Group:		Applications/System
@@ -47,7 +47,6 @@ sed -i '/^    program_name = /s/"netdata"/"oio-netdata"/' daemon/main.c
 rm -rf "%{buildroot}"
 %{__make} %{?_smp_mflags} DESTDIR="%{buildroot}" install
 
-rm %{buildroot}/usr/libexec/netdata/netdata-switch-dashboard.sh
 find "%{buildroot}" -name .keep -delete
 
 mv %{buildroot}%{_datadir}/netdata %{buildroot}%{_datadir}/%{name}
@@ -104,6 +103,8 @@ rm -rf "%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Mon May 11 2020 Jerome Loyet <jerome@openio.io> - 1.22.0-1
+  update
 * Thu Apr 16 2020 Jerome Loyet <jerome@openio.io> - 1.21.1-1
   update
 * Mon Apr 06 2020 Jerome Loyet <jerome@openio.io> - 1.21.0-1
