@@ -1,8 +1,14 @@
+#
+# Note: to package, please add the `--enable-network` to the
+# mock command line:
+#
+# mock xxx --rebuild /path/to/xxxx.src.rpm  --enable-network
+#
 %define debug_package %{nil}
 
 Summary:	Real-time performance monitoring, done right
 Name:		oio-netdata
-Version:	1.22.0
+Version:	1.22.1
 Release:	1%{?dist}
 License:	GPLv3+
 Group:		Applications/System
@@ -13,6 +19,9 @@ BuildRequires:	xz
 BuildRequires:	zlib-devel
 BuildRequires:	libuuid-devel
 BuildRequires:	libuv-devel
+BuildRequires:  cmake
+BuildRequires:  openssl-devel
+BuildRequires:  curl
 Requires:	zlib
 Requires:	libuuid
 Requires:	libuv
@@ -30,17 +39,24 @@ so that you can get insights of what is happening now and what just
 happened, on your systems and applications.
 
 %prep
+if ! curl -qs github.com; then
+  echo "No network available, please use --enable-network as arguement to mock" >/dev/stderr
+  exit 1
+fi
 %setup -q -n netdata-v%{version}
 sed -i "/^PACKAGE_NAME=/s/netdata/%{name}/" configure
 sed -i "/^PACKAGE_TARNAME=/s/netdata/%{name}/" configure
 sed -i "s@/netdata@/%{name}@" configure
 sed -i '/^    program_name = /s/"netdata"/"oio-netdata"/' daemon/main.c
+export CFLAGS="${CFLAGS} -fPIC" && ./packaging/bundle-mosquitto.sh .
+export CFLAGS="${CFLAGS} -fPIC" && ./packaging/bundle-lws.sh .
 
 %build
 %configure \
 	--with-zlib \
 	--with-math \
-	--with-user=openio
+	--with-user=openio \
+        --disable-cloud
 %{__make} %{?_smp_mflags}
 
 %install
@@ -50,6 +66,7 @@ rm -rf "%{buildroot}"
 find "%{buildroot}" -name .keep -delete
 
 mv %{buildroot}%{_datadir}/netdata %{buildroot}%{_datadir}/%{name}
+./packaging/bundle-dashboard.sh . %{buildroot}%{_datadir}/%{name}/web
 
 install -m 644 -p system/netdata.conf "%{buildroot}%{_sysconfdir}/%{name}"
 
@@ -73,6 +90,7 @@ mv %{buildroot}%{_sysconfdir}/%{name} %{buildroot}%{_datadir}/%{name}/config
 mv %{buildroot}%{_sbindir}/netdata %{buildroot}%{_sbindir}/oio-netdata
 mv %{buildroot}%{_sbindir}/netdatacli %{buildroot}%{_sbindir}/oio-netdatacli
 rm %{buildroot}%{_sbindir}/netdata-claim.sh
+
 
 %clean
 rm -rf "%{buildroot}"
@@ -103,6 +121,8 @@ rm -rf "%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Wed May 13 2020 Jerome Loyet <jerome@openio.io> - 1.22.1-1
+  update
 * Mon May 11 2020 Jerome Loyet <jerome@openio.io> - 1.22.0-1
   update
 * Thu Apr 16 2020 Jerome Loyet <jerome@openio.io> - 1.21.1-1
