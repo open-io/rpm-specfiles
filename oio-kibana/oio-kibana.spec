@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name: oio-kibana
-Version: 7.6.2
+Version: 7.7.0
 Release: 1%{?dist}
 Summary: Explore and visualize your Elasticsearch data
 License: Elastic License
@@ -28,7 +28,9 @@ Explore and visualize your Elasticsearch data
 %{_datarootdir}/%{name}
 
 %changelog
-* Wed Apr 01 2020 Jérôme Loyet <jerome@openio.io> 7-6.2-1
+* Thu May 14 2020 Jérôme Loyet <jerome@openio.io> 7.7.0-1
+- Update
+* Wed Apr 01 2020 Jérôme Loyet <jerome@openio.io> 7.6.2-1
 - Update
 * Wed Mar 04 2020 Jérôme Loyet <jerome@openio.io> 7.6.1-1
 - Initial release, version 7.6.1
