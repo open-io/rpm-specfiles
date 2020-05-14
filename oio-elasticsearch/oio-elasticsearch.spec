@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name: oio-elasticsearch
-Version: 7.6.2
+Version: 7.7.0
 Release: 1%{?dist}
 Summary: Distributed RESTful search engine built for the cloud
 License: Elastic License
@@ -33,7 +33,9 @@ https://www.elastic.co/guide/en/elasticsearch/guide/current/index.html
 %{_datarootdir}/%{name}
 
 %changelog
-* Wed Apr 01 2020 Jérôme Loyet <jerome@openio.io> 7-6.2-1
+* Thu May 14 2020 Jérôme Loyet <jerome@openio.io> 7.7.0-1
+- Update
+* Wed Apr 01 2020 Jérôme Loyet <jerome@openio.io> 7.6.2-1
 - Update
 * Wed Mar 04 2020 Jérôme Loyet <jerome@openio.io> 7.6.1-1
 - Initial release, version 7.6.1
