@@ -29,14 +29,14 @@ BuildRequires:  glib2-devel
 BuildRequires:  json-c-devel
 BuildRequires:  cmake >= 2.8.12
 BuildRequires:  python-setuptools
-BuildRequires:  libsoup-devel
+BuildRequires:  libsoup-devel >= 2.48
 BuildRequires:  libattr-devel
 
 BuildRequires:  openio-sds-common-devel >= 4.0
 
 Requires:       fuse-libs
 Requires:       fuse >= 2.9.2
-Requires:       libsoup
+Requires:       libsoup >= 2.48
 
 Requires:       openio-sds-common >= 4.0
 
