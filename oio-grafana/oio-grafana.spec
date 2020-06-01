@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name: oio-grafana
-Version: 6.7.3
+Version: 7.0.1
 Release: 1%{?dist}
 Summary: Grafana is an open source, feature rich metrics dashboard and graph editor
 License: ASL 2.0
@@ -29,6 +29,10 @@ Graphite, InfluxDB & OpenTSDB.
 %{_datarootdir}/%{name}
 
 %changelog
+* Mon Jun 01 2020 Jérôme Loyet <jerome@openio.io> 7.0.1-1
+- update
+* Mon May 18 2020 Jérôme Loyet <jerome@openio.io> 7.0.0-1
+- update
 * Thu Apr 02 2020 Jérôme Loyet <jerome@openio.io> 6.7.3-1
 - update
 * Thu Apr 02 2020 Jérôme Loyet <jerome@openio.io> 6.7.2-1
