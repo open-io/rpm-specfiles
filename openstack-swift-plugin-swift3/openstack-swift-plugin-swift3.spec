@@ -18,7 +18,7 @@ Release:        0%{?dist}
 %define         tarversion %{tag}
 %define         targetversion 1.12.0
 URL:            https://github.com/open-io/swift3
-Source0:        https://github.com/open-io/swift3/archive/%{tarversion}-openio.tar.gz
+Source0:        https://github.com/open-io/swift3/archive/%{tarversion}.tar.gz
 Epoch:          1
 %endif
 
@@ -45,7 +45,7 @@ Amazon S3 API.
 %setup -q -n swift3-%{version}-openio
 %else
 # Testing purpose only. Do not modify.
-%setup -q -n swift3-%{tarversion}-openio
+%setup -q -n swift3-%{tarversion}
 %endif
 
 %build
