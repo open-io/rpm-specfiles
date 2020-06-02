@@ -4,10 +4,10 @@ License:        ASL 2.0
 Summary:        The swift3 plugin for OpenIO SDS Swift
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        1.12.15
+Version:        1.13.0
 Release:        1%{?dist}
 URL:            https://github.com/open-io/swift3
-Source0:        https://github.com/open-io/swift3/archive/%{version}-openio.tar.gz
+Source0:        https://github.com/open-io/swift3/archive/%{version}.tar.gz
 %else
 # Testing purpose only. Do not modify.
 %define         date %(date +"%Y%m%d%H%M")
@@ -40,7 +40,7 @@ Amazon S3 API.
 
 %prep
 %if %{?_with_test:0}%{!?_with_test:1}
-%setup -q -n swift3-%{version}-openio
+%setup -q -n swift3-%{version}
 %else
 # Testing purpose only. Do not modify.
 %setup -q -n swift3-%{tarversion}
@@ -61,6 +61,9 @@ PBR_VERSION=1.12.0 %{__python2} setup.py install -O1 --skip-build --root %{build
 %doc AUTHORS README.md
 
 %changelog
+* Thu Jun 18 2020 - 1.13.0-1 - Florent Vennetier <florent@openio.io>
+- New release
+- No more expect a "-openio" suffix in archive names
 * Wed Mar 27 2019 - 1.12.15-1 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Fri Jan 25 2019 - 1.12.14-1 - Vincent Legoll <vincent.legoll@openio.io>
