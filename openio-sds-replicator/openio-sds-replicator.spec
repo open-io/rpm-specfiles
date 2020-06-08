@@ -1,10 +1,10 @@
 Name:           openio-sds-replicator
 
+
 %if %{?_with_test:0}%{!?_with_test:1}
 Version:        1.0.0
 Release:        1%{?dist}
 %define         tarversion %{version}
-%define         jarversion %{version}
 %define         gradlew_args -Pbuild.type=release
 %else
 # Testing purpose only. Do not modify.
@@ -12,9 +12,8 @@ Release:        1%{?dist}
 %global         shortcommit %(c=%{tag}; echo ${c:0:7})
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
-%define         gradlew_args
+%define         gradlew_args %{nil}
 %define         tarversion %{tag}
-%define         jarversion 0.5-SNAPSHOT
 Epoch:          1
 %endif
 
@@ -45,10 +44,7 @@ OpenIO SDS replicator service.
 
 %install
 %{__mkdir_p} -v $RPM_BUILD_ROOT%{_javadir}/openio-sds-replicator
-%{__install} -m755 build/libs/openio-sds-replicator-%{jarversion}-all.jar $RPM_BUILD_ROOT%{_javadir}/openio-sds-replicator/
-pushd $RPM_BUILD_ROOT%{_javadir}/openio-sds-replicator
-  %{__ln_s} openio-sds-replicator-%{jarversion}-all.jar openio-sds-replicator-all.jar
-popd
+%{__install} -m755 build/libs/openio-sds-replicator-all.jar $RPM_BUILD_ROOT%{_javadir}/openio-sds-replicator/
 
 
 %files
