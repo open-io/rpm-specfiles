@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name:    oio-alertmanager
-Version: 0.20.0
+Version: 0.21.0
 Release: 1%{?dist}
 Summary: Prometheus Alertmanager.
 License: ASL 2.0
@@ -34,5 +34,7 @@ install -D -m 644 alertmanager.yml %{buildroot}%{_datadir}/%{name}/alertmanager.
 %{_datadir}/%{name}
 
 %changelog
+* Wed Jun 24 2020 Jérôme Loyet <jerome@openio.io> 0.21.0-1
+- update
 * Thu Mar 05 2020 Jérôme Loyet <jerome@openio.io> 0.20.0-1
 - Initial release, version 0.20.0
