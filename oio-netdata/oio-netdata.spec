@@ -8,7 +8,7 @@
 
 Summary:	Real-time performance monitoring, done right
 Name:		oio-netdata
-Version:	1.22.1
+Version:	1.23.0
 Release:	1%{?dist}
 License:	GPLv3+
 Group:		Applications/System
@@ -107,7 +107,7 @@ rm -rf "%{buildroot}"
 %{_libdir}/%{name}
 
 %caps(cap_dac_read_search,cap_sys_ptrace=ep) %attr(0550,root,openio) %{_libexecdir}/%{name}/plugins.d/apps.plugin
-%caps(cap_sys_resource,cap_sys_admin=ep) %attr(4550,root,openio) %{_libexecdir}/%{name}/plugins.d/ebpf_process.plugin
+%caps(cap_sys_resource,cap_sys_admin=ep) %attr(4550,root,openio) %{_libexecdir}/%{name}/plugins.d/ebpf.plugin
 
 %attr(0770,openio,openio) %dir %{_localstatedir}/cache/%{name}
 %attr(0770,openio,openio) %dir %{_localstatedir}/log/%{name}
@@ -121,6 +121,8 @@ rm -rf "%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Thu Jun 25 2020 Jerome Loyet <jerome@openio.io> - 1.23.0-1
+  update
 * Wed May 13 2020 Jerome Loyet <jerome@openio.io> - 1.22.1-1
   update
 * Mon May 11 2020 Jerome Loyet <jerome@openio.io> - 1.22.0-1
