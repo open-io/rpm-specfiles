@@ -7,14 +7,15 @@
 %define debug_package %{nil}
 
 Name: oio-exporter
-Version: 0.0.12
+Version: 0.0.13
 Release: 1%{?dist}
 Summary: Prometheus exporter for OpenIO services
 License: OpenIO
 URL:     https://github.com/open-io/oio-exporter
 BuildRequires:  curl
 
-source: https://github.com/open-io/oio-exporter/archive/%{version}.tar.gz
+#source: https://github.com/open-io/oio-exporter/archive/%{version}.tar.gz
+source: oio-exporter-%{version}.tar.gz
 
 %description
 Prometheus exporter for OpenIO services
@@ -42,6 +43,8 @@ done
 %{_datadir}/oio-exporter
 
 %changelog
+* Fri Jun 26 2020 Jérôme Loyet <jerome@openio.io> 0.0.13-1
+- update
 * Thu Jun 11 2020 Jérôme Loyet <jerome@openio.io> 0.0.12-1
 - update
 * Mon Jun 08 2020 Jérôme Loyet <jerome@openio.io> 0.0.11-1
