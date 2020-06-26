@@ -7,7 +7,7 @@
 %define debug_package %{nil}
 
 Name: oio-exporter
-Version: 0.0.13
+Version: 0.0.14
 Release: 1%{?dist}
 Summary: Prometheus exporter for OpenIO services
 License: OpenIO
@@ -43,6 +43,8 @@ done
 %{_datadir}/oio-exporter
 
 %changelog
+* Fri Jun 26 2020 Jérôme Loyet <jerome@openio.io> 0.0.14-1
+- update
 * Fri Jun 26 2020 Jérôme Loyet <jerome@openio.io> 0.0.13-1
 - update
 * Thu Jun 11 2020 Jérôme Loyet <jerome@openio.io> 0.0.12-1
