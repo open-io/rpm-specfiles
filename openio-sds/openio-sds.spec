@@ -72,7 +72,7 @@ BuildRequires:  json-c-devel             >= 0.12
 BuildRequires:  libdb-devel
 BuildRequires:  zeromq3-devel
 %endif
-BuildRequires:  sqlite-devel             >= 3.7.11
+BuildRequires:  sqlite-devel             >= 3.32.2
 BuildRequires:  libattr-devel            >= 2.4.32
 BuildRequires:  libevent-devel           >= 2.0
 BuildRequires:  lzo-devel                >= 2.0
@@ -143,7 +143,7 @@ Requires:       libapr1            >= 1.2
 %else
 Requires:       apr                >= 1.2
 %endif
-Requires:       sqlite             >= 3.7.11
+Requires:       sqlite             >= 3.32.2
 Requires:       libattr            >= 2.4.32
 %if %{?el6}0
 Requires:       compat-libevent-20 >= 2.0
