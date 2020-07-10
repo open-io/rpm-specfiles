@@ -3,7 +3,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.5.0
+Version:        0.5.6
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -19,7 +19,7 @@ Epoch:          1
 %define         git_repo https://github.com/open-io/%{tarname}
 Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
 
-Source1:        https://github.com/go-redis/redis/archive/v6.12.0.tar.gz
+Source1:        https://github.com/go-redis/redis/archive/v8.0.0-beta.6.tar.gz
 Source2:        https://github.com/aws/aws-sdk-go/archive/v1.19.37.tar.gz
 
 Summary:        OpenIO Plugins for netdata
