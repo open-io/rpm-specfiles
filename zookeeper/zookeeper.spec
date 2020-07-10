@@ -228,9 +228,6 @@ ZK_CLASSPATH=%{_javadir}/%{name}.jar:$(find %{_javadir}/%{name} -name "*.jar" -p
 echo "CLASSPATH=$ZK_CLASSPATH" > %{_sysconfdir}/zookeeper/java.env
 /sbin/ldconfig > /dev/null 2>&1
 
-%preun
-%if 0%{?rhel_version} || 0%{?centos_version}
-
 %postun
 /sbin/ldconfig > /dev/null 2>&1
 
