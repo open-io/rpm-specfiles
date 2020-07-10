@@ -25,15 +25,14 @@
 
 Name:           zookeeper
 Version:        3.5.6
-Release:        0
+Release:        1
 License:        Apache-2.0
 Summary:        A high-performance coordination service for distributed applications
 Group:          Development/Libraries/Java
 Url:            http://zookeeper.apache.org/
 Vendor:         Apache Software Foundation
 Source0:        http://%{mirror}/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}-bin.%{srcext}
-Source1:        %{name}.service
-Source2:        http://%{mirror}/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}.%{srcext}
+Source1:        http://%{mirror}/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}.%{srcext}
 Patch0:         zkEnv.patch
 Patch1:         01-zkpython-setup.patch
 Patch2:         02-zkpython-module-init-return-value.patch
@@ -54,11 +53,7 @@ BuildRequires:  pkgconf-pkg-config
 %endif
 BuildRequires:  python-devel python-setuptools
 BuildRequires:  python3-devel python3-setuptools
-%if 0%{?suse_version} >= 1210
-BuildRequires:  systemd-rpm-macros
-%endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-%{?systemd_requires}
 Requires: java
 
 %description
@@ -144,7 +139,7 @@ providing group services.
 This package provides the Python3 client library for ZooKeeper.
 
 %prep
-%setup -q -b 2 -n %{realname}-%{version}-bin
+%setup -q -b 1 -n %{realname}-%{version}-bin
 %patch0
 sed -i 's/^dataDir=.*$/dataDir=\/var\/lib\/zookeeper\/data/' conf/zoo_sample.cfg
 sed -i 's,^#!/usr/bin/env bash,#!/bin/bash,' bin/*.sh
@@ -213,7 +208,6 @@ echo 0 > %{buildroot}/var/lib/zookeeper/data/myid
 
 mkdir -p %{buildroot}/var/log/zookeeper
 
-install -D -m 644 %{S:1} %{buildroot}%{_unitdir}/%{name}.service
 mkdir -p %{buildroot}%{_sbindir}
 ln -s /usr/sbin/service %{buildroot}%{_sbindir}/rc%{name}
 
@@ -229,38 +223,16 @@ PBR_VERSION=%{version} %{__python3} src/python/setup.py install \
     -O1 --skip-build --root $RPM_BUILD_ROOT
 cd ../..
 
-%pre
-groupadd --system zookeeper 2>/dev/null || :
-useradd -g zookeeper -r -d /var/lib/zookeeper -s /bin/false \
-        -c "ZooKeeper service account" zookeeper 2>/dev/null || :
-%if 0%{?suse_version} >= 1210
-%service_add_pre %{name}.service
-%endif
-
 %post
 ZK_CLASSPATH=%{_javadir}/%{name}.jar:$(find %{_javadir}/%{name} -name "*.jar" -printf %p:)
 echo "CLASSPATH=$ZK_CLASSPATH" > %{_sysconfdir}/zookeeper/java.env
 /sbin/ldconfig > /dev/null 2>&1
-%if 0%{?rhel_version} || 0%{?centos_version}
-%systemd_post %{name}.service
-%else
-%service_add_post %{name}.service
-%endif
 
 %preun
 %if 0%{?rhel_version} || 0%{?centos_version}
-%systemd_preun %{name}.service
-%else
-%service_del_preun %{name}.service
-%endif
 
 %postun
 /sbin/ldconfig > /dev/null 2>&1
-%if 0%{?rhel_version} || 0%{?centos_version}
-%systemd_postun %{name}.service
-%else
-%service_del_postun %{name}.service
-%endif
 
 %post   -n libzookeeper%{so_ver} -p /sbin/ldconfig
 %postun -n libzookeeper%{so_ver} -p /sbin/ldconfig
@@ -279,7 +251,6 @@ echo "CLASSPATH=$ZK_CLASSPATH" > %{_sysconfdir}/zookeeper/java.env
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/zookeeper/zoo.cfg
 %config %attr(0644,root,root) %{_sysconfdir}/zookeeper/zoo_sample.cfg
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/zookeeper/log4j.properties
-%{_unitdir}/%{name}.service
 %{_sbindir}/rc%{name}
 
 # Development stuff
@@ -314,3 +285,5 @@ echo "CLASSPATH=$ZK_CLASSPATH" > %{_sysconfdir}/zookeeper/java.env
 %{python3_sitearch}/*
 
 %changelog
+* Fri Jul 10 2020 Jérôme Loyet <jerome@openio.io> 3.5.6-1
+- remove user/group and service as it is not used in OpenIO context
