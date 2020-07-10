@@ -25,7 +25,7 @@
 
 Name:           zookeeper
 Version:        3.5.6
-Release:        1
+Release:        0%{?dist}
 License:        Apache-2.0
 Summary:        A high-performance coordination service for distributed applications
 Group:          Development/Libraries/Java
@@ -282,5 +282,3 @@ echo "CLASSPATH=$ZK_CLASSPATH" > %{_sysconfdir}/zookeeper/java.env
 %{python3_sitearch}/*
 
 %changelog
-* Fri Jul 10 2020 Jérôme Loyet <jerome@openio.io> 3.5.6-1
-- remove user/group and service as it is not used in OpenIO context
