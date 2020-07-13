@@ -24,7 +24,7 @@
 %define mirror   archive.apache.org
 
 Name:           zookeeper
-Version:        3.5.6
+Version:        3.5.8
 Release:        0%{?dist}
 License:        Apache-2.0
 Summary:        A high-performance coordination service for distributed applications
@@ -34,9 +34,8 @@ Vendor:         Apache Software Foundation
 Source0:        http://%{mirror}/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}-bin.%{srcext}
 Source1:        http://%{mirror}/dist/zookeeper/%{name}-%{version}/%{realname}-%{version}.%{srcext}
 Patch0:         zkEnv.patch
-Patch1:         01-zkpython-setup.patch
 Patch2:         02-zkpython-module-init-return-value.patch
-Patch3:         ftbfs-with-gcc-8.patch
+
 BuildRequires:  autoconf automake libtool
 BuildRequires:  cppunit-devel
 %if 0%{?centos_ver} > 0
@@ -146,10 +145,7 @@ sed -i 's,^#!/usr/bin/env bash,#!/bin/bash,' bin/*.sh
 
 # Prepare C and Python APIs
 cd ../%{realname}-%{version}
-# VL: This patch is obsolete, starting from version 3.5.6
-#%patch1
 %patch2
-%patch3
 
 # C API
 cd zookeeper-client/zookeeper-client-c
