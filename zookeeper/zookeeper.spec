@@ -38,6 +38,7 @@ Patch2:         02-zkpython-module-init-return-value.patch
 
 BuildRequires:  autoconf automake libtool
 BuildRequires:  cppunit-devel
+BuildRequires:  ant
 %if 0%{?centos_ver} > 0
 # CentOS
 BuildRequires:  pkgconfig
@@ -146,6 +147,9 @@ sed -i 's,^#!/usr/bin/env bash,#!/bin/bash,' bin/*.sh
 # Prepare C and Python APIs
 cd ../%{realname}-%{version}
 %patch2
+
+# Generate files for jute
+ant compile_jute
 
 # C API
 cd zookeeper-client/zookeeper-client-c
