@@ -1,7 +1,7 @@
 %define         tarname isa-l
 
 Name:           libisal
-Version:        2.22.0
+Version:        2.29.0
 Release:        1%{?dist}
 Summary:        Intel(R) Intelligent Storage Acceleration Library
 
@@ -54,12 +54,16 @@ make install DESTDIR=%{buildroot}
 %files
 %doc
 %{_libdir}/*
+%{_bindir}/igzip
+%{_mandir}/man1/igzip.1.gz
 
 %files devel
 %{_includedir}/*
 
 
 %changelog
+* Mon Jul 13 2020 Vincent Legoll <vincent.legoll@openio.io> - 2.29.0
+- Update to 2.29.0
 * Thu Jun 28 2018 Romain Acciari <romain.acciari@openio.io> - 2.22.0
 - Update to 2.22.0
 - Update source path to GitHub
