@@ -28,8 +28,8 @@
 %endif
 
 Name:           python%{?srpm_py_suffix}-dns
-Version:        1.15.0
-Release:        10%{?dist}
+Version:        1.16.0
+Release:        1%{?dist}
 Summary:        DNS toolkit for Python
 
 License:        MIT
@@ -38,7 +38,6 @@ URL:            http://www.dnspython.org/
 Source0: http://www.dnspython.org/kits/%{version}/dnspython-%{version}.tar.gz
 
 BuildArch:      noarch
-Patch0:         test_fails_on_missing_file.patch
 
 %if 0%{?rhel} == 6
 BuildRequires:  python-unittest2
@@ -112,7 +111,6 @@ manipulation of DNS zones, messages, names, and records.
 
 %prep
 %setup -q -n dnspython-%{version}
-%patch0 -p1
 
 # strip exec permissions so that we don't pick up dependencies from docs
 find examples -type f | xargs chmod a-x
@@ -135,36 +133,28 @@ find examples -type f | xargs chmod a-x
   %py3_install
 %endif
 
-%check
-%if 0%{?with_python2}
-%{__python2} setup.py test
-%endif
-
-%if 0%{?with_python3}
-%{__python3} setup.py test
-%endif
-
 %if 0%{?with_python2}
 %if 0%{?with_p2subpkg}
 %files -n python2-dns
 %else
 %files
 %endif
-# Add README.* when it is included with the source (commit a906279)
-%doc {ChangeLog,LICENSE,examples}
+%doc {README.md,LICENSE,examples}
 %{python2_sitelib}/*egg-info
 %{python2_sitelib}/dns
 %endif
 
 %if 0%{?with_python3}
 %files -n python%{python3_pkgversion}-dns
-# Add README.* when it is included with the source (commit a906279)
-%doc {ChangeLog,LICENSE,examples}
+%doc {README.md,LICENSE,examples}
 %{python3_sitelib}/*egg-info
 %{python3_sitelib}/dns
 %endif
 
 %changelog
+* Thu Jul 16 2020 Vincent Legoll <vincent.legoll@openio.io> - 1.16.0-1
+- New release
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.15.0-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
