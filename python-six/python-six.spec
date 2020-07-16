@@ -10,8 +10,8 @@
 %global python_wheelname %{modname}-%{version}-py2.py3-none-any.whl
 
 Name:           python-%{modname}
-Version:        1.14.0
-Release:        2%{?dist}
+Version:        1.15.0
+Release:        1%{?dist}
 Summary:        Python 2 and 3 compatibility utilities
 
 License:        MIT
@@ -42,7 +42,6 @@ Python 2 version.
 %package -n python3-%{modname}
 Summary:        %{summary}
 Provides:       python36-%{modname}
-%{?python_provide:%python_provide python3-%{modname}}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-pip
@@ -89,6 +88,9 @@ Python 3 version.
 
 
 %changelog
+* Thu Jul 03 2020 Vincent Legoll <vincent.legoll@openio.io> - 1.15.0-1
+- New version
+
 * Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 1.14.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
