@@ -1,9 +1,10 @@
+%global debug_package %{nil}
 %define tarname openio-netdata-plugins
 
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.5.0
+Version:        0.5.6
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -17,16 +18,14 @@ Epoch:          1
 %endif
 
 %define         git_repo https://github.com/open-io/%{tarname}
-Source0:        %{git_repo}/archive/%{tarversion}.tar.gz
+Source:        %{git_repo}/archive/%{tarversion}.tar.gz
 
-Source1:        https://github.com/go-redis/redis/archive/v6.12.0.tar.gz
-Source2:        https://github.com/aws/aws-sdk-go/archive/v1.19.37.tar.gz
 
 Summary:        OpenIO Plugins for netdata
 License:        AGPL-3.0
 URL:            http://www.openio.io/
 
-BuildRequires:  golang       >= 1.8
+BuildRequires:  curl
 
 
 %description
@@ -34,27 +33,15 @@ OpenIO Plugins for netdata
 
 
 %prep
+if ! curl -qs github.com; then
+  echo "No network available, please use --enable-network as arguement to mock" >/dev/stderr
+  exit 1
+fi
 %setup -q -n %{tarname}-%{tarversion}
-cd ..
-tar xf %{SOURCE1}
-tar xf %{SOURCE2}
-mkdir -p go/src/github.com/go-redis go/src/github.com/aws
-cd go/src
-ln -s ../../%{tarname}-%{tarversion} oionetdata
-cd github.com/go-redis
-ln -s ../../../../redis-* redis
-cd ../aws
-ln -s ../../../../aws-* aws-sdk-go
-
+curl -Lqsko - https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz | tar -xzf - go/{bin,pkg,src}
 
 %build
-export GOPATH=${GOPATH:-$(go env GOPATH)}:$(pwd)/../go
-go build cmd/openio.plugin/openio.plugin.go
-go build cmd/zookeeper.plugin/zookeeper.plugin.go
-go build cmd/container.plugin/container.plugin.go
-go build cmd/command.plugin/command.plugin.go
-go build cmd/fs.plugin/fs.plugin.go
-go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
+PATH=./go/bin:${PATH} make build
 
 
 %install
@@ -67,9 +54,6 @@ go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
     fs.plugin \
     s3roundtrip.plugin \
     ${RPM_BUILD_ROOT}%{_libexecdir}/netdata/plugins.d
-# Looks like bare golang's `go build` don't do the required linker magic
-# http://fedoraproject.org/wiki/Releases/FeatureBuildId
-%undefine _missing_build_ids_terminate_build
 
 
 %files
@@ -83,6 +67,8 @@ go build cmd/s3roundtrip.plugin/s3roundtrip.plugin.go
 
 
 %changelog
+* Wed Jul 15 2020 - 0.5.6-1 - Vladimir Dombrovski <vladimir@openio.io>
+- New release
 * Fri May 24 2019 - 0.5.0-1 - Vladimir Dombrovski <vladimir@openio.io>
 - New release
 * Mon Mar 18 2019 - 0.4.0-1 - Vladimir Dombrovski <vladimir@openio.io>
