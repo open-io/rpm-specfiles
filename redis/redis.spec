@@ -31,7 +31,7 @@
 %global macrosdir %(d=%{_rpmconfigdir}/macros.d; [ -d $d ] || d=%{_sysconfdir}/rpm; echo $d)
 
 Name:              redis
-Version:           4.0.14
+Version:           5.0.9
 Release:           1%{?dist}
 Summary:           A persistent key-value database
 # redis, linenoise, lzf, hiredis are BSD
@@ -156,7 +156,7 @@ and removal, status checks, resharding, rebalancing, and other operations.
 mv ../%{name}-doc-%{doc_commit} doc
 rm -frv deps/jemalloc
 %patch0001 -p1
-%patch0002 -p1
+#%patch0002 -p1
 
 mv deps/lua/COPYRIGHT    COPYRIGHT-lua
 mv deps/hiredis/COPYING  COPYING-hiredis
@@ -358,6 +358,9 @@ fi
 
 
 %changelog
+* Thu Jul 16 2020 Vincent Legoll <vincent.legoll@openio.io> - 5.0.9-1
+- Upstream 5.0.9 release.
+
 * Fri Apr 17 2020 Vincent Legoll <vincent.legoll@openio.io> - 4.0.14-1
 - Upstream 4.0.14 release.
 
