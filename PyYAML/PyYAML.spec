@@ -2,8 +2,8 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           PyYAML
-Version:        3.12
-Release:        3%{?dist}
+Version:        5.3.1
+Release:        1%{?dist}
 Summary:        YAML parser and emitter for Python
 
 Group:          Development/Libraries
@@ -120,6 +120,9 @@ popd
 
 
 %changelog
+* Thu Jul 16 2020 Vincent Legoll <vincent.legoll@openio.io> - 5.3.1-1
+- New release
+
 * Thu Feb 06 2020 Vincent Legoll <vincent.legoll@openio.io> - 3.12-3
 - provides python36-yaml
 
