@@ -8,8 +8,8 @@
 
 Name: keepalived
 Summary: High Availability monitor built upon LVS, VRRP and service pollers
-Version: 2.0.18
-Release: 2%{?dist}
+Version: 2.1.5
+Release: 1%{?dist}
 License: GPLv2+
 URL: http://www.keepalived.org/
 
@@ -97,6 +97,9 @@ mkdir -p %{buildroot}%{_libexecdir}/keepalived
 %{_mandir}/man8/keepalived.8*
 
 %changelog
+* Thu Jul 16 2020 Vincent Legoll <vincent.legoll@openio.io> - 2.1.5-1
+- New release
+
 * Tue Jul 30 2019 Ryan O'Hara <rohara@redhat.com> - 2.0.18-2
 - Change pidfile directory (#1712730)
 
