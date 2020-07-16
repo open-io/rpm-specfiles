@@ -8,7 +8,7 @@
 
 Summary:	Real-time performance monitoring, done right
 Name:		oio-netdata
-Version:	1.23.1
+Version:	1.23.2
 Release:	1%{?dist}
 License:	GPLv3+
 Group:		Applications/System
@@ -121,6 +121,8 @@ rm -rf "%{buildroot}"
 %{_datadir}/%{name}
 
 %changelog
+* Thu Jul 16 2020 Jerome Loyet <jerome@openio.io> - 1.23.2-1
+  update
 * Wed Jul 01 2020 Jerome Loyet <jerome@openio.io> - 1.23.1-1
   update
 * Thu Jun 25 2020 Jerome Loyet <jerome@openio.io> - 1.23.0-1
