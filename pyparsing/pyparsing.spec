@@ -1,23 +1,27 @@
 %global with_python3 1
 
 Name:           pyparsing
-Version:        2.0.3
-Release:        3%{?dist}
+Version:        2.4.7
+Release:        1%{?dist}
 Summary:        An object-oriented approach to text processing
 Group:          Development/Libraries
 License:        MIT
 URL:            http://pyparsing.wikispaces.com/
-Source0:        http://downloads.sourceforge.net/pyparsing/pyparsing-%{version}.tar.gz
+Source0:        https://github.com/pyparsing/pyparsing/releases/download/pyparsing_%{version}/pyparsing-%{version}.tar.gz
 BuildArch:      noarch
-BuildRequires:  python-devel
+
+BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
 BuildRequires:  dos2unix
 BuildRequires:  glibc-common
+
 %if 0%{?with_python3}
 BuildRequires: python3-devel
+BuildRequires:  python3-setuptools
 %endif # if with_python3
+
 Provides: python-pyparsing = %{version}-%{release}
 Provides: python2-pyparsing = %{version}-%{release}
-
 
 %description
 pyparsing is a module that can be used to easily and directly configure syntax
@@ -45,9 +49,7 @@ This is the Python 3 version.
 
 %prep
 %setup -q
-mv docs/pyparsingClassDiagram.PNG docs/pyparsingClassDiagram.png
-rm docs/pyparsingClassDiagram.JPG
-dos2unix -k CHANGES LICENSE README
+dos2unix -k CHANGES LICENSE README.rst
 for f in CHANGES ; do
     mv $f $f.iso88591
     iconv -f ISO-8859-1 -t UTF-8 -o $f $f.iso88591
@@ -85,7 +87,7 @@ popd
 rm -rf %{buildroot}
 
 %files
-%doc CHANGES README LICENSE
+%doc CHANGES README.rst LICENSE
 %if 0%{?fedora} >= 9 || 0%{?rhel} >= 6
 %{python_sitelib}/pyparsing*egg-info
 %endif
@@ -93,7 +95,7 @@ rm -rf %{buildroot}
 
 %if 0%{?with_python3}
 %files -n python3-pyparsing
-%doc CHANGES README LICENSE
+%doc CHANGES README.rst LICENSE
 %{python3_sitelib}/pyparsing*egg-info
 %{python3_sitelib}/pyparsing.py*
 %endif # with_python3
@@ -102,9 +104,12 @@ rm -rf %{buildroot}
 %endif # pycache
 
 %files doc
-%doc CHANGES README LICENSE HowToUsePyparsing.html docs examples htmldoc
+%doc CHANGES README.rst LICENSE docs examples
 
 %changelog
+* Fri Jul 06 2020 Vincent Legoll <vincent.legoll@openio.io> - 2.4.7-1
+- New version
+
 * Thu Feb 06 2020 Vincent Legoll <vincent.legoll@openio.io> - 2.0.3-3
 - provides python*-pyparsing
 
