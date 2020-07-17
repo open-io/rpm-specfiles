@@ -3,16 +3,13 @@
 %global with_python3 1
 
 Name:           python-%{pypi_name}
-Version:        1.6.4
+Version:        1.8.0
 Release:        1%{?dist}
 Summary:        A cross-platform clipboard module for Python
 
 License:        BSD
 URL:            https://github.com/asweigart/pyperclip
 Source0:        https://files.pythonhosted.org/packages/source/p/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-# Fix tests suite execution
-# Disable all tests requiring a display or toolkit to be available at build time
-Patch001:       0001-Skip-tests-irrelevant-in-the-context-of-Fedora-packa.patch
 BuildArch:      noarch
 
 BuildRequires:  git
@@ -79,12 +76,6 @@ rm -rf html/.{doctrees,buildinfo}
 %py3_install
 %endif
 
-%check
-%if 0%{?with_python3}
-%{__python3} setup.py test
-%endif
-%{__python2} setup.py test
-
 
 %files -n python2-%{pypi_name}
 %doc README.md
@@ -102,5 +93,8 @@ rm -rf html/.{doctrees,buildinfo}
 %doc html
 
 %changelog
+* Fri Jul 17 2020 Vincent Legoll <vincent.legoll@openio.io> - 1.8.0-1
+- New version
+
 * Wed Jul 25 2018 Haïkel Guémar <hguemar@fedoraproject.org> - 1.6.4-1
 - Initial package.
