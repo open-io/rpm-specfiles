@@ -4,8 +4,8 @@
 %global srcname Werkzeug
 
 Name:           python-werkzeug
-Version:        0.9.1
-Release:        2%{?dist}
+Version:        1.0.1
+Release:        1%{?dist}
 Summary:        The Swiss Army knife of Python web development 
 
 Group:          Development/Libraries
@@ -66,8 +66,6 @@ bulletin boards, etc.).
 
 %prep
 %setup -q -n %{srcname}-%{version}
-%{__sed} -i 's/\r//' LICENSE
-%{__sed} -i '1d' werkzeug/testsuite/multipart/collect.py
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -110,18 +108,21 @@ popd
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS LICENSE PKG-INFO CHANGES
+%doc LICENSE.rst PKG-INFO CHANGES.rst
 %{python_sitelib}/*
 
 %if 0%{?with_python3}
 %files -n python3-werkzeug
 %defattr(-,root,root,-)
-%doc AUTHORS LICENSE PKG-INFO CHANGES
+%doc LICENSE.rst PKG-INFO CHANGES.rst
 %{python3_sitelib}/*
 %endif
 
 
 %changelog
+* Fri Jul 17 2020 Vincent Legoll <vincent.legoll@openio.io>
+- New version
+
 * Wed Apr 30 2014 Lokesh Mandvekar <lsm5@redhat.com> - 0.9.1-2
 - Rebuilt for RHEL-7
 
