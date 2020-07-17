@@ -1,8 +1,8 @@
 %global         modname greenlet
 
 Name:           python-%{modname}
-Version:        0.4.14
-Release:        2%{?dist}
+Version:        0.4.16
+Release:        1%{?dist}
 Summary:        Lightweight in-process concurrent programming
 License:        MIT
 URL:            https://github.com/python-greenlet/greenlet
@@ -19,7 +19,7 @@ and are synchronized with data exchanges on "channels".
 
 %package -n     python2-%{modname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python2-%{modname}}
+Provides:       python2-%{modname}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 
@@ -29,7 +29,7 @@ Python 2 version.
 
 %package -n     python3-%{modname}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{modname}}
+Provides:       python3-%{modname}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 
@@ -39,7 +39,7 @@ Python 3 version.
 
 %package -n     python2-%{modname}-devel
 Summary:        C development headers for python2-%{modname}
-%{?python_provide:%python_provide python2-%{modname}-devel}
+Provides:       python2-%{modname}-devel
 Requires:       python2-%{modname}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description -n python2-%{modname}-devel
@@ -49,7 +49,7 @@ Python 2 version.
 
 %package -n     python3-%{modname}-devel
 Summary:        C development headers for python3-%{modname}
-%{?python_provide:%python_provide python3-%{modname}-devel}
+Provides:       python3-%{modname}-devel
 Requires:       python3-%{modname}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description -n python3-%{modname}-devel
@@ -91,6 +91,9 @@ Python 3 version.
 %{_includedir}/python%{python3_version}*/%{modname}/
 
 %changelog
+* Fri Jul 17 2020 Vincent Legoll <vincent.legoll@openio.io> - 0.4.16-1
+- New version
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.4.14-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
