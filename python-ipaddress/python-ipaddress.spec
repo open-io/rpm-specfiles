@@ -1,8 +1,8 @@
 %global pyname ipaddress
 
 Name:           python-%{pyname}
-Version:        1.0.18
-Release:        6%{?dist}
+Version:        1.0.23
+Release:        1%{?dist}
 Summary:        Port of the python 3.3+ ipaddress module to 2.6+
 
 License:        Python
@@ -49,6 +49,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jul 17 2020 Vincent Legoll <vincent.legoll@openio.io> - 1.0.23-1
+- New version
+
 * Thu Oct 04 2018 Romain Acciari <romain.acciari@openio.io> - 1.0.18-6
 - Rebuilt for OpenIO SDS
 
