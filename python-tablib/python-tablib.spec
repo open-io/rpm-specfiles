@@ -1,17 +1,15 @@
-%if 0%{?fedora}
 %global with_python3 1
-%endif
 
 %global modname tablib
 
 Name:             python-tablib
-Version:          0.10.0
+Version:          0.14.0
 Release:          1%{?dist}
 Summary:          Format agnostic tabular data library (XLS, JSON, YAML, CSV)
 
 License:          MIT
 URL:              http://github.com/kennethreitz/tablib
-Source0:          https://files.pythonhosted.org/packages/b9/59/ee7267257ad70f795669525a04d9838474ee38b3025f28c018090231e4ad/tablib-0.10.0.tar.gz
+Source0:          https://files.pythonhosted.org/packages/79/ec/69c399f5978012e1fd1fe0778d9855bbf43780a18345b64f4ec477b67ba5/tablib-0.14.0.tar.gz
 BuildArch:        noarch
 
 BuildRequires:    python2-devel
@@ -98,20 +96,23 @@ popd
 
 %files
 %license LICENSE
-%doc README.rst AUTHORS
+%doc README.md AUTHORS
 %{python2_sitelib}/%{modname}
 %{python2_sitelib}/*.egg-info
 
 %if 0%{?with_python3}
 %files -n python3-%{modname}
 %license
-%doc README.rst AUTHORS
+%doc README.md AUTHORS
 %{python3_sitelib}/%{modname}
 %{python3_sitelib}/*.egg-info
 %endif
 
 
 %changelog
+* Fri Jul 17 2020 Vincent Legoll <vincent.legoll@openio.io> - 0.14.0-1
+- New version
+
 * Wed Aug 05 2015 Haïkel Guémar <hguemar@fedoraproject.org> - 0.10.0-1
 - Upstream 0.10.0
 - Enable python3 subpackage
