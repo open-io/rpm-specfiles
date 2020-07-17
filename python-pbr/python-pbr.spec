@@ -3,13 +3,13 @@
 %global do_test 0
 
 Name:           python-%{pypi_name}
-Version:        1.6.0
+Version:        5.4.5
 Release:        1%{?dist}
 Summary:        Python Build Reasonableness
 
 License:        ASL 2.0
 URL:            http://pypi.python.org/pypi/pbr
-Source0:        https://files.pythonhosted.org/packages/73/29/ce7ad655da1d45715a2043c2223b7f4923a69f4a3695c6162e872b157d1e/pbr-1.6.0.tar.gz
+Source0:        https://files.pythonhosted.org/packages/8a/a8/bb34d7997eb360bc3e98d201a20b5ef44e54098bb2b8e978ae620d933002/pbr-5.4.5.tar.gz
 
 BuildArch:      noarch
 
@@ -117,6 +117,9 @@ rm -rf %{buildroot}%{python_sitelib}/pbr/tests
 %endif
 
 %changelog
+* Fri Jul 17 2020 Vincent Legoll <vincent.legoll@openio.io> - 5.4.5-1
+- New version
+
 * Mon Aug 31 2015 Matthias Runge <mrunge@redhat.com> - 1.6.0-1
 - update to upstream 1.6.0 (rhbz#1249840)
 
