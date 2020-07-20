@@ -1,7 +1,7 @@
 %global upstream_name redis
 
 Name:           python-%{upstream_name}
-Version:        3.3.8
+Version:        3.5.3
 Release:        1%{?dist}
 Summary:        Python interface to the Redis key-value store
 License:        MIT
@@ -52,6 +52,9 @@ rm tests/test_commands.py*
 %{python3_sitelib}/%{upstream_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
+* Mon Jul 20 2020 Vincent Legoll <vincent.legoll@openio.io> - 3.5.3-1
+- new version
+
 * Sun Oct 06 2019 Kevin Fenzi <kevin@scrye.com> - 3.3.8-1
 - Update to 3.3.8.
 
