@@ -1,6 +1,6 @@
 Name:           python-pyeclib
-Version:        1.5.0
-Release:        12%{?dist}
+Version:        1.6.0
+Release:        1%{?dist}
 Summary:        Python interface to erasure codes
 
 License:        BSD
@@ -40,6 +40,9 @@ or through the C interface liberasurecode.
 %{python3_sitearch}/pyeclib*
 
 %changelog
+* Mon Jul 20 2020 Vincent Legoll <vincent.legoll@openio.io> - 1.6.0-1
+- new version
+
 * Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 1.5.0-12
 - Rebuilt for Python 3.8.0rc1 (#1748018)
 
