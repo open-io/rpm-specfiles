@@ -11,13 +11,13 @@
 %global srcname urllib3
 
 Name:           python-%{srcname}
-Version:        1.16
-Release:        2%{?dist}
+Version:        1.25.9
+Release:        1%{?dist}
 Summary:        Python HTTP library with thread-safe connection pooling and file post
 
 License:        MIT
 URL:            http://urllib3.readthedocs.org/
-Source0:        https://files.pythonhosted.org/packages/3b/f0/e763169124e3f5db0926bc3dbfcd580a105f9ca44cf5d8e6c7a803c9f6b5/urllib3-1.16.tar.gz
+Source0:        https://files.pythonhosted.org/packages/05/8c/40cd6949373e23081b3ea20d5594ae523e681b6f472e600fbc95ed046a36/urllib3-1.25.9.tar.gz
 
 # Only used for python3 (and for python2 on F22 and newer)
 Source1:        ssl_match_hostname_py3.py
@@ -212,6 +212,9 @@ rm -rf %{buildroot}/%{python3_sitelib}/__pycache__*
 %endif # with_python3
 
 %changelog
+* Mon Jul 20 2020 Vincent Legoll <vincent.legoll@openio.io< - 1.25.9-1
+- new version
+
 * Mon Sep 25 2017 Romain Acciari <romain.acciari@openio.io> - 1.16-2
 - Rebuilt for OpenIO repository
 - nosetests commented as it fails on our build env
