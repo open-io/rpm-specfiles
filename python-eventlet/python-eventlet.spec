@@ -2,17 +2,12 @@
 %{?python_enable_dependency_generator}
 
 Name:           python-%{modname}
-Version:        0.24.1
-Release:        3%{?dist}
+Version:        0.25.2
+Release:        1%{?dist}
 Summary:        Highly concurrent networking library
 License:        MIT
 URL:            http://eventlet.net
 Source0:        %{pypi_source %{modname}}
-
-# Python 3.7 support
-Patch0:         https://github.com/eventlet/eventlet/pull/506.patch#/python37.patch
-Patch1:         0005-case-insensitive-hundred-continue.patch
-
 BuildArch:      noarch
 
 %description
@@ -37,7 +32,6 @@ Requires:       python2-greenlet >= 0.3
 Requires:       python2-monotonic >= 1.4
 Requires:       python2-six >= 1.10.0
 Requires:       python2-pyOpenSSL
-%{?python_provide:%python_provide python2-%{modname}}
 
 %description -n python2-%{modname}
 Eventlet is a networking library written in Python. It achieves high
@@ -60,7 +54,6 @@ Requires:       python3-greenlet >= 0.3
 Requires:       python3-monotonic >= 1.4
 Requires:       python3-six >= 1.10.0
 Requires:       python36-pyOpenSSL
-%{?python_provide:%python_provide python3-%{modname}}
 
 %description -n python3-%{modname}
 Eventlet is a networking library written in Python. It achieves high
@@ -70,7 +63,6 @@ io operations appear blocking at the source code level.
 
 %package -n python2-%{modname}-doc
 Summary:        Documentation for python2-%{modname}
-%{?python_provide:%python_provide python2-%{modname}-doc}
 
 %description -n python2-%{modname}-doc
 %{summary}.
@@ -124,6 +116,9 @@ rm -vrf %{buildroot}%{python3_sitelib}/tests
 %license LICENSE
 
 %changelog
+* Mon Jul 20 2020 Vincent Legoll <vincent.legoll@gmail.com> - 0.25.2-1
+- new version
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.24.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
