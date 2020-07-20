@@ -15,8 +15,8 @@ version of the data to use in case network access is for some reason not possibl
 and local caching of the fetched data.
 
 Name:           python-%{pypi_name}
-Version:        1.2.0
-Release:        2%{?dist}
+Version:        1.7.0
+Release:        1%{?dist}
 Summary:        Python library for consuming OpenStack sevice-types-authority data
 
 License:        ASL 2.0
@@ -103,6 +103,8 @@ rm -rf %{pypi_name}.egg-info
 
 
 %changelog
+* Mon Jul 20 2020 Vincent Legoll <vincent.legoll@openio.io> 1.7.0-1
+- new version
 * Wed Feb 05 2020 Vincent Legoll <vincent.legoll@openio.io> 1.2.0-2
 - Remove useless doc & tests
 * Mon Oct 08 2018 Romain Acciari <romain.acciari@openio.io> 1.2.0-1
