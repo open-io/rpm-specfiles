@@ -5,8 +5,8 @@
 %global common_desc Manage dynamic plugins for Python applications
 
 Name:           python-stevedore
-Version:        1.28.0
-Release:        2%{?dist}
+Version:        1.32.0
+Release:        1%{?dist}
 Summary:        Manage dynamic plugins for Python applications
 
 License:        ASL 2.0
@@ -35,7 +35,6 @@ BuildRequires:  python36-six
 
 %package -n python2-stevedore
 Summary:        Manage dynamic plugins for Python applications
-%{?python_provide:%python_provide python2-stevedore}
 
 Requires:       python2-six
 Requires:       python2-pbr
@@ -46,7 +45,6 @@ Requires:       python2-pbr
 %if 0%{?with_python3}
 %package -n python3-stevedore
 Summary:        Manage dynamic plugins for Python applications
-%{?python_provide:%python_provide python3-stevedore}
 
 Requires:       python36-six
 Requires:       python3-pbr
@@ -110,6 +108,9 @@ popd
 %endif
 
 %changelog
+* Mon Jul 20 2020 Vincent Legoll <vincent.legoll@openio.io> - 1.32.0-1
+- New version
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.28.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
