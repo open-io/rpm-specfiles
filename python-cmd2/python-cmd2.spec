@@ -2,13 +2,13 @@
 %global modname cmd2
 
 Name:             python-cmd2
-Version:          0.8.8
-Release:          5%{?dist}
+Version:          0.8.9
+Release:          1%{?dist}
 Summary:          Extra features for standard library's cmd module
 
 License:          MIT
 URL:              http://pypi.python.org/pypi/cmd2
-Source0:          https://pypi.python.org/packages/source/c/%{modname}/%{modname}-%{version}.tar.gz
+Source0:          https://files.pythonhosted.org/packages/21/48/d48fe56f794e9a3feef440e4fb5c80dd4309575e13e132265fc160e82033/cmd2-0.8.9.tar.gz
 BuildArch:        noarch
 
 Patch0:           01-fix-eventlet-exception-hijacking-bug.patch
@@ -130,6 +130,9 @@ See docs at http://packages.python.org/cmd2/
 %endif
 
 %changelog
+* Tue Jul 21 2020 Vincent Legoll <vincent.legoll@openio.io> - 0.8.9-1
+- new version
+
 * Wed Jul 25 2018 Haïkel Guémar <hguemar@fedoraproject.org> - 0.8.8-5
 - More dependencies
 
