@@ -25,20 +25,19 @@ http://readthedocs.org/docs/cliff/en/latest/
 %global common_desc_tests This package contains tests for the python cliff library.
 
 Name:             python-%{modname}
-Version:          2.16.0
-Release:          2%{?dist}
+Version:          3.3.0
+Release:          1%{?dist}
 Summary:          Command Line Interface Formulation Framework
 
 Group:            Development/Libraries
 License:          ASL 2.0
 URL:              https://pypi.io/pypi/cliff
-Source0:          https://pypi.io/packages/source/c/cliff/cliff-%{version}.tar.gz
+Source0:          https://files.pythonhosted.org/packages/c7/c4/38ea8a52809dd2fd7b6282d21bb17a5f3d13d79df57b53b96dddb41dc2b6/cliff-3.3.0.tar.gz
 
 BuildArch:        noarch
 
 %package -n python%{pyver}-%{modname}
 Summary:          Command Line Interface Formulation Framework
-%{?python_provide:%python_provide python%{pyver}-%{modname}}
 
 BuildRequires:    python%{pyver}-devel
 BuildRequires:    python%{pyver}-setuptools
@@ -91,6 +90,9 @@ rm -rf *.egg-info
 
 
 %changelog
+* Tue Jul 21 2020 Vincent Legoll <vincent.legoll@openio.io> - 3.3.0-1
+- new version
+
 * Wed Nov 06 2019 Alfredo Moralejo <amoralej@redhat.com> 2.16.0-2
 - Update to upstream version 2.16.0
 

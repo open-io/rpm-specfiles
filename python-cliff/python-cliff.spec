@@ -25,20 +25,19 @@ http://readthedocs.org/docs/cliff/en/latest/
 %global common_desc_tests This package contains tests for the python cliff library.
 
 Name:             python-%{modname}
-Version:          2.16.0
-Release:          2%{?dist}
+Version:          3.3.0
+Release:          1%{?dist}
 Summary:          Command Line Interface Formulation Framework
 
 Group:            Development/Libraries
 License:          ASL 2.0
 URL:              https://pypi.io/pypi/cliff
-Source0:          https://pypi.io/packages/source/c/cliff/cliff-%{version}.tar.gz
+Source0:          https://files.pythonhosted.org/packages/c7/c4/38ea8a52809dd2fd7b6282d21bb17a5f3d13d79df57b53b96dddb41dc2b6/cliff-3.3.0.tar.gz
 
 BuildArch:        noarch
 
 %package -n python%{pyver}-%{modname}
 Summary:          Command Line Interface Formulation Framework
-%{?python_provide:%python_provide python%{pyver}-%{modname}}
 
 BuildRequires:    python%{pyver}-devel
 BuildRequires:    python%{pyver}-setuptools
@@ -66,47 +65,6 @@ Requires:         python%{pyver}-PyYAML
 %description -n python%{pyver}-%{modname}
 %{common_desc}
 
-%package -n python%{pyver}-%{modname}-tests
-Summary:          Command Line Interface Formulation Framework
-%{?python_provide:%python_provide python%{pyver}-%{modname}-tests}
-
-# Required for the test suite
-BuildRequires:    python%{pyver}-mock
-BuildRequires:    bash
-BuildRequires:    which
-BuildRequires:    python%{pyver}-subunit
-BuildRequires:    python%{pyver}-testtools
-BuildRequires:    python%{pyver}-testscenarios
-BuildRequires:    python%{pyver}-testrepository
-# Handle python2 exception
-%if %{pyver} == 2
-BuildRequires:    python-docutils
-BuildRequires:    PyYAML
-BuildRequires:    python%{pyver}-unicodecsv
-%else
-BuildRequires:    python%{pyver}-docutils
-BuildRequires:    python%{pyver}-PyYAML
-%endif
-
-Requires:         python%{pyver}-%{modname} = %{version}-%{release}
-Requires:         python%{pyver}-mock
-Requires:         bash
-Requires:         which
-Requires:         python%{pyver}-subunit
-Requires:         python%{pyver}-testtools
-Requires:         python%{pyver}-testscenarios
-Requires:         python%{pyver}-testrepository
-# Handle python2 exception
-%if %{pyver} == 2
-Requires:         PyYAML
-Requires:         python%{pyver}-unicodecsv
-%else
-Requires:         python%{pyver}-PyYAML
-%endif
-
-%description -n python%{pyver}-%{modname}-tests
-%{common_desc_tests}
-
 %description
 %{common_desc}
 
@@ -123,9 +81,6 @@ rm -rf *.egg-info
 %install
 %{pyver_install}
 
-%check
-PYTHON=python%{pyver} %{pyver_bin} setup.py test
-
 %files -n python%{pyver}-%{modname}
 %license LICENSE
 %doc doc/ README.rst ChangeLog AUTHORS CONTRIBUTING.rst
@@ -133,10 +88,11 @@ PYTHON=python%{pyver} %{pyver_bin} setup.py test
 %{pyver_sitelib}/%{modname}-*.egg-info
 %exclude %{pyver_sitelib}/%{modname}/tests
 
-%files -n python%{pyver}-%{modname}-tests
-%{pyver_sitelib}/%{modname}/tests
 
 %changelog
+* Tue Jul 21 2020 Vincent Legoll <vincent.legoll@openio.io> - 3.3.0-1
+- new version
+
 * Wed Nov 06 2019 Alfredo Moralejo <amoralej@redhat.com> 2.16.0-2
 - Update to upstream version 2.16.0
 
