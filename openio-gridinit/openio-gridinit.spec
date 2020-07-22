@@ -2,7 +2,7 @@
 
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.1.0
+Version:        2.1.1
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -148,6 +148,8 @@ fi
 
 
 %changelog
+* Wed Jul 22 2020 - 2.1.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Mon Apr 06 2020 - 2.1.0-1 - Jerome Loyet <jerome@openio.io>
 - New release
 * Tue May 28 2019 - 2.0.2-4 - Vincent Legoll <vincent.legoll@openio.io>
