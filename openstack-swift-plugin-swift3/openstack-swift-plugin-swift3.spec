@@ -16,7 +16,7 @@ Source0:        https://github.com/open-io/swift3/archive/%{version}.tar.gz
 Version:        test%{date}.git%{shortcommit}
 Release:        0%{?dist}
 %define         tarversion %{tag}
-%define         targetversion 1.12.0
+%define         targetversion 1.14.0
 URL:            https://github.com/open-io/swift3
 Source0:        https://github.com/open-io/swift3/archive/%{tarversion}.tar.gz
 Epoch:          1
