@@ -13,8 +13,8 @@ License:        AGPL-3.0
 URL:            http://www.openio.io/
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        6.0.1
-Release:        3%{?dist}
+Version:        7.0.1
+Release:        1%{?dist}
 %define         tarversion %{version}
 %define         targetversion %{version}
 %define         requiredversion %{version}
@@ -410,6 +410,8 @@ test -d %{_sysconfdir}/bash_completion.d && \
 
 
 %changelog
+* Wed Jul 22 2020 - 7.0.1-1 - Vincent Legoll <vincent.legoll@openio.io>
+- New release
 * Wed Feb 05 2020 - 6.0.1-3 - Vincent Legoll <vincent.legoll@openio.io>
 - depends on cliff 2.16.0
 * Thu Jan 30 2020 - 6.0.1-2 - Vincent Legoll <vincent.legoll@openio.io>
