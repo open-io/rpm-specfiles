@@ -1,17 +1,16 @@
-
 %global upstream_name gunicorn
 
 Name:           python-%{upstream_name}
-Version:        19.9.0
-Release:        3%{?dist}
+Version:        19.10.0
+Release:        1%{?dist}
 Summary:        Python WSGI application server
 License:        MIT
 URL:            http://gunicorn.org/
-Source0:        https://files.pythonhosted.org/packages/source/g/%{upstream_name}/%{upstream_name}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/2c/f3/8d576c38213aff3e2841bb93522e0822871a74395e7e0fb5f3741a3c014a/gunicorn-19.10.0.tar.gz
 # distro-specific, not upstreamable
 Patch101:       0001-use-dev-log-for-syslog.patch
 # upstream version requirements are unnecessarily strict
-Patch102:       0002-relax-version-requirements.patch
+#Patch102:       0002-relax-version-requirements.patch
 BuildArch:      noarch
 
 %description
@@ -21,7 +20,6 @@ Django, and Paster applications.
 
 %package -n python2-%{upstream_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python2-%{upstream_name}}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 #BuildRequires:  python2-pytest
@@ -38,7 +36,6 @@ Django, and Paster applications.
 
 %package -n python3-%{upstream_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{upstream_name}}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 #BuildRequires:  python3-pytest
@@ -59,7 +56,7 @@ Documentation for the %{name} package.
 %prep
 %setup -q -n %{upstream_name}-%{version}
 %patch101 -p1
-%patch102 -p1
+#%patch102 -p1
 
 %build
 %py2_build
@@ -124,6 +121,9 @@ rm %{buildroot}%{python2_sitelib}/%{upstream_name}/workers/_gaiohttp.py*
 #%doc build/sphinx/html/*
 
 %changelog
+* Wed Jul 22 2020 Vincent Legoll <vincent.legoll@openio.io> - 19.10.0-1
+- new version
+
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 19.9.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
