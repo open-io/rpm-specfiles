@@ -1,7 +1,7 @@
 %define dist_sn       el
 %define dist_ln       Entreprise Linux
 
-%define oiorelease    20.04
+%define oiorelease    20.10
 
 %define host          http://mirror.openio.io
 %define basedir       /pub/repo/openio/sds/%{oiorelease}
@@ -69,6 +69,8 @@ EOF
 
 
 %changelog
+* Wed Jul 22 2020 <vincent.legoll@openio.io> - 20.10-1
+- New release
 * Tue Mar 31 2020 <vincent.legoll@openio.io> - 20.04-1
 - New release
 * Wed Feb 19 2020 <vincent.legoll@openio.io> - 19.10-1
