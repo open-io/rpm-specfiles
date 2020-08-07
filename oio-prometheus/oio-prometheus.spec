@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name:    oio-prometheus
-Version: 2.20.0
+Version: 2.20.1
 Release: 1%{?dist}
 Summary: The Prometheus 2.x monitoring system and time series database.
 License: ASL 2.0
@@ -39,6 +39,8 @@ done
 %{_datarootdir}/%{name}
 
 %changelog
+* Fri Aug 07 2020 Jérôme Loyet <jerome@openio.io> 2.20.1-1
+- update
 * Thu Jul 23 2020 Jérôme Loyet <jerome@openio.io> 2.20.0-1
 - update
 * Fri Jun 26 2020 Jérôme Loyet <jerome@openio.io> 2.19.2-1
