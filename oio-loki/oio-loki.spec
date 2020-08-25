@@ -1,7 +1,7 @@
 %define debug_package %{nil}
 
 Name:    oio-loki
-Version: 1.6.0
+Version: 1.6.1
 Release: 1%{?dist}
 Summary: Set of components that can be composed into a fully featured logging stack.
 License: Apache-2.0
@@ -31,6 +31,8 @@ install -D -m 755 logcli-linux-amd64 %{buildroot}%{_bindir}/oio-logcli
 %{_bindir}/oio-logcli
 
 %changelog
+* Tue Aug 25 2020 Jérôme Loyet <jerome@openio.io> 1.6.1-1
+- update
 * Fri Aug 14 2020 Jérôme Loyet <jerome@openio.io> 1.6.0-1
 - update
 * Wed May 20 2020 Jérôme Loyet <jerome@openio.io> 1.5.0-1
