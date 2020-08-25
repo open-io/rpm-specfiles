@@ -4,7 +4,7 @@
 Name:           openio-netdata-plugins
 
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        0.5.6
+Version:        0.5.7
 Release:        1%{?dist}
 %define         tarversion %{version}
 %else
@@ -67,6 +67,8 @@ PATH=./go/bin:${PATH} make build
 
 
 %changelog
+* Tue Aug 25 2020 - 0.5.7-1 - Vladimir Dombrovski <vladimir@openio.io>
+- New release
 * Wed Jul 15 2020 - 0.5.6-1 - Vladimir Dombrovski <vladimir@openio.io>
 - New release
 * Fri May 24 2019 - 0.5.0-1 - Vladimir Dombrovski <vladimir@openio.io>
