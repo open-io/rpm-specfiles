@@ -1,0 +1,26 @@
+From 5a6de5f7f8921f91098cc3be7f341b76299a061b Mon Sep 17 00:00:00 2001
+From: Anoop C S <anoopcs@samba.org>
+Date: Tue, 14 Jul 2020 11:03:16 +0530
+Subject: [PATCH] s4:lib/samba-policy: Remove talloc and ldb requirements
+
+Signed-off-by: Anoop C S <anoopcs@samba.org>
+---
+ source4/lib/policy/samba-policy.pc.in | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/source4/lib/policy/samba-policy.pc.in b/source4/lib/policy/samba-policy.pc.in
+index 3247ae33647..5b3af254c3a 100644
+--- a/source4/lib/policy/samba-policy.pc.in
++++ b/source4/lib/policy/samba-policy.pc.in
+@@ -5,8 +5,6 @@ includedir=@includedir@
+ 
+ Name: samba-policy
+ Description: Active Directory Group Policy library
+-Requires: talloc
+-Requires.private: ldb
+ Version: @PACKAGE_VERSION@
+ Libs: @LIB_RPATH@ -L${libdir} -lsamba-policy
+ Cflags: -I${includedir}  -DHAVE_IMMEDIATE_STRUCTURES=1
+-- 
+2.26.2
+

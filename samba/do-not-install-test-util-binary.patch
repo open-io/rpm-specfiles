@@ -1,0 +1,24 @@
+From 161086398b2f3e3fa52d5a3940b0aef907dc0a13 Mon Sep 17 00:00:00 2001
+From: Anoop C S <anoopcs@samba.org>
+Date: Tue, 25 Aug 2020 16:12:45 +0530
+Subject: [PATCH] lib/util: Do not install test_util
+
+Signed-off-by: Anoop C S <anoopcs@samba.org>
+---
+ lib/util/wscript_build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/lib/util/wscript_build b/lib/util/wscript_build
+index 4ac0a9cc064..e04752cb130 100644
+--- a/lib/util/wscript_build
++++ b/lib/util/wscript_build
+@@ -291,4 +291,5 @@ else:
+     bld.SAMBA_BINARY('test_util',
+                      source='tests/test_util.c',
+                      deps='cmocka replace talloc samba-util',
+-                     local_include=False)
++                     local_include=False,
++                     install=False)
+-- 
+2.26.2
+
