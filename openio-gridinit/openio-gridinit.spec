@@ -2,8 +2,8 @@
 
 Name:           openio-%{realname}
 %if %{?_with_test:0}%{!?_with_test:1}
-Version:        2.0.2
-Release:        4%{?dist}
+Version:        2.2.0
+Release:        1%{?dist}
 %define         tarversion %{version}
 %else
 %define         date %(date +"%Y%m%d%H%M")
@@ -63,6 +63,7 @@ OpenIO gridinit is a fork of Redcurrant gridinit, from Worldline by Atos.
 cmake \
   -DCMAKE_BUILD_TYPE=RelWithDebInfo \
   -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+  -DAPI_VERSION=%{Version} \
   -DGRIDINIT_SOCK_PATH="/run/%{realname}/%{realname}.sock" \
   .
 
@@ -145,6 +146,8 @@ fi
 
 
 %changelog
+* Wed Jan 13 2021 - 2.2.0-1 - Vincent Legoll <vincent.legoll@ovhcloud.com>
+- New release
 * Tue May 28 2019 - 2.0.2-4 - Vincent Legoll <vincent.legoll@openio.io>
 - New release
 * Fri Apr 26 2019 - 2.0.2-3 - Vincent Legoll <vincent.legoll@openio.io>
